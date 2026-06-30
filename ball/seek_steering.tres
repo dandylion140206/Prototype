@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="SeekSteering" format=3 uid="uid://box7n6kkqfsn3"]
+
+[ext_resource type="Script" uid="uid://bfxi8yeeihmvb" path="res://ball/seek_steering.gd" id="1_4q8l2"]
+
+[resource]
+script = ExtResource("1_4q8l2")
+metadata/_custom_type_script = "uid://bfxi8yeeihmvb"
