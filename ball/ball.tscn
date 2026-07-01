@@ -5,24 +5,63 @@
 [ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://components/movement.gd" id="3_6xd6y"]
 [ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="3_biv8x"]
 [ext_resource type="Script" uid="uid://bjnyisktek3ev" path="res://ball/ball_boost.gd" id="5_0p2w7"]
+[ext_resource type="AudioStream" uid="uid://c1k0prxqnpsex" path="res://assets/sfx/ブースト/DSGNMisc_HIT-Synth Hit_HY_PC-001.wav" id="6_r541t"]
+[ext_resource type="Script" uid="uid://coc8o2pj55jhv" path="res://ball/boost_smoke.gd" id="7_b1xky"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
+radius = 20.0
+
+[sub_resource type="Curve" id="Curve_b1xky"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.385088, 0.0, 0, 0]
+point_count = 2
 
 [node name="Ball" type="Node2D" unique_id=698706806]
 script = ExtResource("1_6plaf")
 seek_steering = ExtResource("2_pwunn")
 
+[node name="HitArea" type="Area2D" parent="." unique_id=1563584028]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=1822812094]
+shape = SubResource("CircleShape2D_ua4af")
+
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
 script = ExtResource("3_biv8x")
 metadata/_custom_type_script = "uid://b3mrwkpsh0eno"
 
-[node name="Movement" type="Node" parent="." unique_id=478808833]
+[node name="Movement" type="Node" parent="." unique_id=607524805]
 unique_name_in_owner = true
 script = ExtResource("3_6xd6y")
-metadata/_custom_type_script = "uid://cmfnqgmqx1sow"
 
-[node name="BallBoost" type="Node" parent="." unique_id=1086839082]
+[node name="BallBoost" type="Node2D" parent="." unique_id=686657638]
 unique_name_in_owner = true
 script = ExtResource("5_0p2w7")
-metadata/_custom_type_script = "uid://bjnyisktek3ev"
 
 [node name="CooldownTimer" type="Timer" parent="BallBoost" unique_id=893500511]
 one_shot = true
+
+[node name="BoostSound" type="AudioStreamPlayer2D" parent="BallBoost" unique_id=379679797]
+stream = ExtResource("6_r541t")
+bus = &"SFX"
+
+[node name="Smoke" type="CPUParticles2D" parent="BallBoost" unique_id=233816195]
+unique_name_in_owner = true
+emitting = false
+amount = 42
+lifetime = 0.28
+randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 8.0
+spread = 15.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 150.0
+initial_velocity_max = 300.0
+damping_min = 300.0
+damping_max = 300.0
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_b1xky")
+color = Color(1, 1, 1, 0.3882353)
+script = ExtResource("7_b1xky")
+
+[connection signal="boost_used" from="BallBoost" to="BallBoost/BoostSound" method="play"]
+[connection signal="boost_used" from="BallBoost" to="BallBoost/Smoke" method="start_emitting"]

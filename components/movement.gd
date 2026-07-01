@@ -8,6 +8,7 @@ var _velocity: Vector2 = Vector2.ZERO
 
 
 func setup(body: Node2D) -> void:
+	assert(body != null, "body must not be null.")
 	_body = body
 
 

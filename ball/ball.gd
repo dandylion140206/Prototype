@@ -4,14 +4,16 @@ extends Node2D
 @export var seek_steering: SeekSteering
 
 @onready var movement: Movement = %Movement
-@onready var ball_boost: BallBoost = %BallBoost
+@onready var boost: BallBoost = %BallBoost
+@onready var smoke: BoostSmoke = %Smoke
 
 
 func _ready() -> void:
 	assert(seek_steering != null, "seek_steering must not be null.")
 
 	movement.setup(self)
-	ball_boost.setup(movement)
+	boost.setup(movement)
+	smoke.setup(movement)
 
 
 func _process(delta: float) -> void:
@@ -35,4 +37,4 @@ func _update_velocity(target_position: Vector2, delta: float) -> void:
 
 func _use_boost() -> void:
 	if Input.is_action_just_pressed("primary_action"):
-		ball_boost.use()
+		boost.use()
