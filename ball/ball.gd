@@ -3,36 +3,36 @@ extends Node2D
 
 @export var seek_steering: SeekSteering
 
-var _velocity: Vector2 = Vector2.ZERO
+@onready var movement: Movement = %Movement
+@onready var ball_boost: BallBoost = %BallBoost
 
 
 func _ready() -> void:
-	if not _validate_setup():
-		set_process(false)
-		return
+	assert(seek_steering != null, "seek_steering must not be null.")
+
+	movement.setup(self)
+	ball_boost.setup(movement)
 
 
 func _process(delta: float) -> void:
 	var target_position := get_global_mouse_position()
 
 	_update_velocity(target_position, delta)
-	global_position += _velocity * delta
+	_use_boost()
+	movement.move(delta)
 
 
 func _update_velocity(target_position: Vector2, delta: float) -> void:
-	_velocity = seek_steering.calculate_velocity(
-		_velocity,
+	var new_velocity := seek_steering.calculate_velocity(
+		movement.get_velocity(),
 		global_position,
 		target_position,
 		delta
 	)
 
+	movement.set_velocity(new_velocity)
 
-func _validate_setup() -> bool:
-	var is_valid := true
 
-	if seek_steering == null:
-		push_error("seek_steering is not assigned.")
-		is_valid = false
-
-	return is_valid
+func _use_boost() -> void:
+	if Input.is_action_just_pressed("primary_action"):
+		ball_boost.use()

@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://baj11f6v855i"]
 
 [ext_resource type="Script" uid="uid://g3hjyqdduhw0" path="res://ball/ball.gd" id="1_6plaf"]
-[ext_resource type="Resource" uid="uid://box7n6kkqfsn3" path="res://ball/seek_steering.tres" id="2_pwunn"]
+[ext_resource type="Resource" uid="uid://box7n6kkqfsn3" path="res://components/seek_steering.tres" id="2_pwunn"]
+[ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://components/movement.gd" id="3_6xd6y"]
 [ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="3_biv8x"]
+[ext_resource type="Script" uid="uid://bjnyisktek3ev" path="res://ball/ball_boost.gd" id="5_0p2w7"]
 
 [node name="Ball" type="Node2D" unique_id=698706806]
 script = ExtResource("1_6plaf")
@@ -11,3 +13,16 @@ seek_steering = ExtResource("2_pwunn")
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
 script = ExtResource("3_biv8x")
 metadata/_custom_type_script = "uid://b3mrwkpsh0eno"
+
+[node name="Movement" type="Node" parent="." unique_id=478808833]
+unique_name_in_owner = true
+script = ExtResource("3_6xd6y")
+metadata/_custom_type_script = "uid://cmfnqgmqx1sow"
+
+[node name="BallBoost" type="Node" parent="." unique_id=1086839082]
+unique_name_in_owner = true
+script = ExtResource("5_0p2w7")
+metadata/_custom_type_script = "uid://bjnyisktek3ev"
+
+[node name="CooldownTimer" type="Timer" parent="BallBoost" unique_id=893500511]
+one_shot = true
