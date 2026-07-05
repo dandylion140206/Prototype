@@ -1,8 +1,6 @@
 class_name HitStop
 extends Node
 
-@export var profile: HitStopProfile
-
 var _remaining_time: float = 0.0
 var _is_active: bool = false
 
@@ -15,14 +13,6 @@ func _process(delta: float) -> void:
 
 	if _remaining_time <= 0.0:
 		cancel()
-
-
-func start_by_speed(speed: float) -> void:
-	if profile == null:
-		push_error("HitStopProfile must not be null.")
-		return
-
-	start(profile.calculate_duration(speed))
 
 
 func start(duration: float) -> void:

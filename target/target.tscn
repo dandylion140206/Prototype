@@ -16,6 +16,7 @@ radius = 40.0
 
 [node name="Target" type="Node2D" unique_id=1674259745]
 script = ExtResource("1_6nu6o")
+hit_stop_profile = ExtResource("10_iod3p")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1265824670]
 unique_name_in_owner = true
@@ -58,4 +59,3 @@ bus = &"SFX"
 [node name="HitStop" type="Node" parent="." unique_id=911343182]
 unique_name_in_owner = true
 script = ExtResource("9_fash6")
-profile = ExtResource("10_iod3p")

@@ -2,6 +2,7 @@ class_name Ball
 extends Node2D
 
 @export var seek_steering: SeekSteering
+@export var hit_stop_profile: HitStopProfile
 
 @onready var hitbox: Hitbox = %Hitbox
 @onready var movement: Movement = %Movement
@@ -13,9 +14,9 @@ extends Node2D
 
 func _ready() -> void:
 	assert(seek_steering != null, "seek_steering must not be null.")
+	assert(hit_stop_profile != null, "hit_stop_profile must not be null.")
 
 	movement.setup(self)
-	contact_damage.setup(Callable(movement, "get_speed"))
 	boost.setup(movement)
 	boost_smoke.setup(movement)
 
@@ -56,7 +57,8 @@ func _on_hit_detected(hurtbox: Hurtbox) -> void:
 		return
 
 	var speed := movement.get_speed()
+	var damage_amount := contact_damage.calculate_damage(speed)
+	var hit_stop_duration := hit_stop_profile.calculate_duration(speed)
 
-	contact_damage.send_damage_to(hurtbox)
-	hit_stop.start_by_speed(speed)
-	hurtbox.notify_hit(speed)
+	hurtbox.receive_hit(damage_amount, speed)
+	hit_stop.start(hit_stop_duration)

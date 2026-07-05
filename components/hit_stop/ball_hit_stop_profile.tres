@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource("1_ak27w")
+base_duration = 0.0
+duration_add_per_1000_speed = 0.007
 metadata/_custom_type_script = "uid://cr0mnohb23681"

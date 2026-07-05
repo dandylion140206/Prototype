@@ -33,9 +33,6 @@ func _spawn_target() -> void:
 	add_child(target)
 
 	target.global_position = _find_spawn_position()
-
-	# Target の @onready var health は add_child 後に有効になるため、
-	# add_child 後に接続する。
 	target.health.died.connect(_on_target_died.bind(target))
 
 	targets.append(target)

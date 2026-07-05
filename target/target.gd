@@ -1,6 +1,8 @@
 class_name Target
 extends Node2D
 
+@export var hit_stop_profile: HitStopProfile
+
 @onready var visual: TargetVisual = %Visual
 @onready var hit_flash: HitFlash = %HitFlash
 @onready var hurtbox: Hurtbox = %Hurtbox
@@ -14,6 +16,8 @@ var _is_dying: bool = false
 
 
 func _ready() -> void:
+	assert(hit_stop_profile != null, "hit_stop_profile must not be null.")
+
 	hit_flash.setup(visual)
 	hurtbox.setup(health)
 
@@ -63,8 +67,9 @@ func _on_died() -> void:
 	queue_free()
 
 
-func _on_hit_received(speed: float) -> void:
-	hit_stop.start_by_speed(speed)
+func _on_hit_received(hit_speed: float) -> void:
+	var hit_stop_duration := hit_stop_profile.calculate_duration(hit_speed)
+	hit_stop.start(hit_stop_duration)
 
 
 func _play_sound_from_start(sound: AudioStreamPlayer2D) -> void:

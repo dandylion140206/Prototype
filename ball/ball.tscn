@@ -22,6 +22,7 @@ point_count = 2
 [node name="Ball" type="Node2D" unique_id=698706806]
 script = ExtResource("1_6plaf")
 seek_steering = ExtResource("2_pwunn")
+hit_stop_profile = ExtResource("11_melhi")
 
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
 script = ExtResource("3_biv8x")
@@ -43,7 +44,6 @@ script = ExtResource("3_6xd6y")
 unique_name_in_owner = true
 script = ExtResource("9_orjm5")
 base_damage = 5.0
-multiplier = 0.01
 
 [node name="BallBoost" type="Node2D" parent="." unique_id=686657638]
 unique_name_in_owner = true
@@ -78,7 +78,6 @@ script = ExtResource("7_b1xky")
 [node name="HitStop" type="Node" parent="." unique_id=1979259650]
 unique_name_in_owner = true
 script = ExtResource("10_orjm5")
-profile = ExtResource("11_melhi")
 
 [connection signal="boost_used" from="BallBoost" to="BallBoost/BoostSound" method="play"]
 [connection signal="boost_used" from="BallBoost" to="BallBoost/Smoke" method="start_emitting"]
