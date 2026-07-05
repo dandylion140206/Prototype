@@ -59,15 +59,15 @@ func _create_circle_texture(size: int) -> Texture2D:
 
 	for y in range(size):
 		for x in range(size):
-			var position := Vector2(x, y)
-			var distance := position.distance_to(center)
+			var pixel_position := Vector2(x, y)
+			var distance := pixel_position.distance_to(center)
 
 			if distance > radius:
 				continue
 
 			var alpha := 1.0 - smoothstep(radius * 0.6, radius, distance)
-			var color := Color(1.0, 1.0, 1.0, alpha)
+			var pixel_color := Color(1.0, 1.0, 1.0, alpha)
 
-			image.set_pixel(x, y, color)
+			image.set_pixel(x, y, pixel_color)
 
 	return ImageTexture.create_from_image(image)

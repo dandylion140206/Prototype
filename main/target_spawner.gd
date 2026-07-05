@@ -52,10 +52,10 @@ func _on_target_died(target: Target) -> void:
 
 func _find_spawn_position() -> Vector2:
 	for i in range(max_spawn_attempts):
-		var position := _get_random_position()
+		var spawn_position := _get_random_position()
 
-		if _is_valid_spawn_position(position):
-			return position
+		if _is_valid_spawn_position(spawn_position):
+			return spawn_position
 
 	return _get_random_position()
 
@@ -67,7 +67,7 @@ func _get_random_position() -> Vector2:
 	return Vector2(x, y)
 
 
-func _is_valid_spawn_position(position: Vector2) -> bool:
+func _is_valid_spawn_position(spawn_position: Vector2) -> bool:
 	for target in targets:
 		if target == null:
 			continue
@@ -75,7 +75,7 @@ func _is_valid_spawn_position(position: Vector2) -> bool:
 		if not is_instance_valid(target):
 			continue
 
-		if position.distance_to(target.global_position) < min_distance_from_targets:
+		if spawn_position.distance_to(target.global_position) < min_distance_from_targets:
 			return false
 
 	return true

@@ -6,7 +6,7 @@ extends Node
 @export var slow_key: Key = KEY_SHIFT
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not enabled:
 		Engine.time_scale = 1.0
 		return

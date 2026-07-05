@@ -16,6 +16,7 @@ script = ExtResource("2_ipbj0")
 [node name="TargetSpawner" type="Node2D" parent="." unique_id=713743795]
 script = ExtResource("6_kfbq2")
 target_scene = ExtResource("5_3wy1v")
+target_count = 100
 
 [node name="Cursor" parent="." unique_id=413606096 instance=ExtResource("3_c2dye")]
 
