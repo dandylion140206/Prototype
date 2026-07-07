@@ -1,7 +1,8 @@
 class_name Ball
 extends Node2D
 
-signal boosted(ball: Ball, movement: Movement)
+signal boosted
+signal speed_updated(speed: float)
 
 @export var seek_steering: SeekSteering
 @export var hit_stop_profile: HitStopProfile
@@ -28,6 +29,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if hit_stop.is_active():
 		_use_boost()
+		speed_updated.emit(movement.get_speed())
 		return
 
 	var target_position := get_global_mouse_position()
@@ -35,6 +37,8 @@ func _physics_process(delta: float) -> void:
 	_update_velocity(target_position, delta)
 	_use_boost()
 	movement.move(delta)
+
+	speed_updated.emit(movement.get_speed())
 
 
 func _update_velocity(target_position: Vector2, delta: float) -> void:
@@ -54,7 +58,7 @@ func _use_boost() -> void:
 
 
 func _on_boost_used() -> void:
-	boosted.emit(self, movement)
+	boosted.emit()
 
 
 func _on_hit_detected(hurtbox: Hurtbox) -> void:
