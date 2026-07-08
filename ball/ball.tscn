@@ -16,6 +16,7 @@
 radius = 20.0
 
 [node name="Ball" type="Node2D" unique_id=698706806]
+physics_interpolation_mode = 1
 z_index = 10
 script = ExtResource("1_6plaf")
 seek_steering = ExtResource("2_pwunn")

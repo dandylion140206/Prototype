@@ -20,6 +20,7 @@ metadata/_snap_enabled = true
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [node name="Main" type="Node2D" unique_id=764362608]
+physics_interpolation_mode = 2
 script = ExtResource("1_ipbj0")
 
 [node name="DebugController" type="Node" parent="." unique_id=486050992]
@@ -41,10 +42,6 @@ target_scene = ExtResource("5_3wy1v")
 [node name="BoostTrail" type="Node2D" parent="EffectsLayer" unique_id=134229688]
 unique_name_in_owner = true
 script = ExtResource("8_grrlh")
-boost_point_lifetime = null
-lifetime_increase_duration = null
-boost_trail_hold_duration = null
-lifetime_decrease_duration = null
 
 [node name="Trail" type="Line2D" parent="EffectsLayer/BoostTrail" unique_id=454232775]
 physics_interpolation_mode = 2
