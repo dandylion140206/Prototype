@@ -2,6 +2,7 @@
 class_name ActiveAbility
 extends Node
 
+@warning_ignore("unused_signal")
 signal activated
 
 

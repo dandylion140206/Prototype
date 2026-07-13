@@ -12,5 +12,4 @@ func _on_area_entered(area: Area2D) -> void:
 	if not area is Hurtbox:
 		return
 
-	var hurtbox := area as Hurtbox
-	hit_detected.emit(hurtbox)
+	hit_detected.emit(area as Hurtbox)

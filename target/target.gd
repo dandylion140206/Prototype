@@ -1,8 +1,6 @@
 class_name Target
 extends Node2D
 
-@export var hit_stop_profile: HitStopProfile
-
 @onready var visual: TargetVisual = %Visual
 @onready var hit_flash: HitFlash = %HitFlash
 @onready var hurtbox: Hurtbox = %Hurtbox
@@ -12,14 +10,11 @@ extends Node2D
 @onready var hit_sound: AudioStreamPlayer2D = %HitSound
 @onready var death_sound: AudioStreamPlayer2D = %DeathSound
 
-var _is_dying: bool = false
+var _is_dying := false
 
 
 func _ready() -> void:
-	assert(hit_stop_profile != null, "hit_stop_profile must not be null.")
-
 	hit_flash.setup(visual)
-	hurtbox.setup(health)
 
 	hurtbox.hit_received.connect(_on_hit_received)
 
@@ -31,6 +26,11 @@ func _ready() -> void:
 		health.get_current_health(),
 		health.max_health
 	)
+
+
+func _on_hit_received(hit_data: HitData) -> void:
+	health.damage(hit_data.damage)
+	hit_stop.start(hit_data.target_hit_stop_duration)
 
 
 func _on_damaged(
@@ -65,11 +65,6 @@ func _on_died() -> void:
 	await death_sound.finished
 
 	queue_free()
-
-
-func _on_hit_received(hit_speed: float) -> void:
-	var hit_stop_duration := hit_stop_profile.get_duration(hit_speed)
-	hit_stop.start(hit_stop_duration)
 
 
 func _play_sound_from_start(sound: AudioStreamPlayer2D) -> void:

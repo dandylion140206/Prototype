@@ -3,23 +3,19 @@ extends Node2D
 
 signal active_ability_activated
 
-@export var hit_stop_profile: HitStopProfile
-
 var _target_position := Vector2.ZERO
 
 @onready var hitbox: Hitbox = %Hitbox
 @onready var movement: Movement = %Movement
-@onready var contact_damage: ContactDamage = %ContactDamage
+@onready var impact_attack: ImpactAttack = %ImpactAttack
 @onready var hit_stop: HitStop = %HitStop
 @onready var ability_controller: AbilityController = %AbilityController
 @onready var physics_position_interpolator: PhysicsPositionInterpolator = %PhysicsPositionInterpolator
 
 
 func _ready() -> void:
-	assert(hit_stop_profile != null, "hit_stop_profile must not be null.")
-
 	movement.setup(self)
-	contact_damage.setup(movement.get_speed)
+	impact_attack.setup(movement.get_speed)
 	physics_position_interpolator.setup(self)
 
 	var ability_context := AbilityContext.new(
@@ -28,10 +24,11 @@ func _ready() -> void:
 		hit_stop.cancel_deferred,
 		get_interpolated_global_position
 	)
+
 	ability_controller.setup(ability_context)
 
-	hitbox.hit_detected.connect(contact_damage.apply_hit)
-	contact_damage.hit_applied.connect(_on_contact_damage_hit_applied)
+	hitbox.hit_detected.connect(impact_attack.apply_hit)
+	impact_attack.hit_landed.connect(_on_hit_landed)
 	ability_controller.active_ability_activated.connect(active_ability_activated.emit)
 
 	_target_position = global_position
@@ -48,7 +45,6 @@ func _physics_process(delta: float) -> void:
 		delta
 	)
 	movement.move(delta)
-
 	physics_position_interpolator.record_position()
 
 
@@ -64,6 +60,5 @@ func get_interpolated_global_position() -> Vector2:
 	return physics_position_interpolator.get_interpolated_global_position()
 
 
-func _on_contact_damage_hit_applied(speed: float) -> void:
-	var hit_stop_duration := hit_stop_profile.get_duration(speed)
-	hit_stop.start(hit_stop_duration)
+func _on_hit_landed(hit_data: HitData) -> void:
+	hit_stop.start(hit_data.attacker_hit_stop_duration)

@@ -3,13 +3,12 @@
 [ext_resource type="Script" uid="uid://d16l13ekdc8on" path="res://target/target.gd" id="1_6nu6o"]
 [ext_resource type="Script" uid="uid://oijhpro7y304" path="res://target/target_visual.gd" id="2_itqbd"]
 [ext_resource type="Script" uid="uid://nntal8g3k5uq" path="res://components/hit_flash.gd" id="3_5m6mw"]
-[ext_resource type="Script" uid="uid://ce65r6ygj75pg" path="res://components/damage/hurtbox.gd" id="4_5m6mw"]
-[ext_resource type="Script" uid="uid://duxi53mhs2f2s" path="res://components/damage/health.gd" id="5_85njf"]
-[ext_resource type="Script" uid="uid://b2g1qg4fa2fja" path="res://components/damage/health_bar.gd" id="6_n0ue5"]
+[ext_resource type="Script" uid="uid://ce65r6ygj75pg" path="res://components/hit/hurtbox.gd" id="4_5m6mw"]
+[ext_resource type="Script" uid="uid://duxi53mhs2f2s" path="res://components/health/health.gd" id="5_85njf"]
+[ext_resource type="Script" uid="uid://b2g1qg4fa2fja" path="res://components/health/health_bar.gd" id="6_n0ue5"]
 [ext_resource type="AudioStream" uid="uid://cep0clot5ipgh" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="7_5m6mw"]
 [ext_resource type="AudioStream" uid="uid://db8mu621kucfp" path="res://assets/sfx/消滅/DSGNMisc_HIT-Fleeting Hit_HY_PC-002.wav" id="8_n0ue5"]
-[ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit_stop/hit_stop.gd" id="9_fash6"]
-[ext_resource type="Resource" uid="uid://rfrdmbvh10tm" path="res://target/target_hit_stop_profile.tres" id="10_iod3p"]
+[ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="9_fash6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
 radius = 40.0
@@ -17,7 +16,6 @@ radius = 40.0
 [node name="Target" type="Node2D" unique_id=1674259745]
 physics_interpolation_mode = 2
 script = ExtResource("1_6nu6o")
-hit_stop_profile = ExtResource("10_iod3p")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1265824670]
 unique_name_in_owner = true
@@ -35,6 +33,10 @@ script = ExtResource("4_5m6mw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=92362333]
 shape = SubResource("CircleShape2D_ua4af")
+
+[node name="HitStop" type="Node" parent="." unique_id=911343182]
+unique_name_in_owner = true
+script = ExtResource("9_fash6")
 
 [node name="Health" type="Node" parent="." unique_id=1605037547]
 unique_name_in_owner = true
@@ -57,7 +59,3 @@ unique_name_in_owner = true
 stream = ExtResource("8_n0ue5")
 volume_db = -2.0
 bus = &"SFX"
-
-[node name="HitStop" type="Node" parent="." unique_id=911343182]
-unique_name_in_owner = true
-script = ExtResource("9_fash6")

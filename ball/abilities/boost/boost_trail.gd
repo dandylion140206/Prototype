@@ -61,3 +61,10 @@ func _update_boost_trail(delta: float) -> void:
 		0.0,
 		lifetime_decrease_duration
 	)
+
+
+func stop_immediately() -> void:
+	_is_boost_trail_active = false
+	_boost_trail_time_remaining = 0.0
+	trail.set_point_lifetime(0.0)
+	trail.clear_trail()

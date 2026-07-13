@@ -13,16 +13,13 @@ var _get_speed: Callable
 
 func setup(get_speed: Callable) -> void:
 	assert(get_speed.is_valid(), "get_speed must be a valid Callable.")
-	assert(min_damage <= max_damage,"min_damage must be less than or equal to max_damage.")
+	assert(min_damage <= max_damage, "min_damage must be less than or equal to max_damage.")
 
 	_get_speed = get_speed
 
 
 func apply_hit(hurtbox: Hurtbox) -> void:
-	assert(
-		_get_speed.is_valid(),
-		"ContactDamage must be setup before apply_hit()."
-	)
+	assert(_get_speed.is_valid(), "ContactDamage must be setup before apply_hit().")
 
 	if hurtbox == null:
 		return

@@ -3,12 +3,11 @@
 [ext_resource type="Script" uid="uid://g3hjyqdduhw0" path="res://ball/ball.gd" id="1_6plaf"]
 [ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://components/movement.gd" id="3_6xd6y"]
 [ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="3_biv8x"]
-[ext_resource type="Resource" uid="uid://cuiytnj5pmta1" path="res://ball/ball_hit_stop_profile.tres" id="3_melhi"]
-[ext_resource type="Script" uid="uid://baeqwfpgl2bo3" path="res://components/damage/hitbox.gd" id="4_vf1tv"]
+[ext_resource type="Script" uid="uid://baeqwfpgl2bo3" path="res://components/hit/hitbox.gd" id="4_vf1tv"]
+[ext_resource type="Script" uid="uid://dev2b81tccxlv" path="res://components/hit/impact_attack.gd" id="5_vf1tv"]
 [ext_resource type="Script" uid="uid://bn7xq3fsmvk0r" path="res://components/physics_position_interpolator.gd" id="7_melhi"]
-[ext_resource type="Script" uid="uid://oe380rp2tbea" path="res://components/damage/contact_damage.gd" id="7_w6tmd"]
 [ext_resource type="Script" uid="uid://gxrfd04hun14" path="res://ball/abilities/ability_controller.gd" id="9_melhi"]
-[ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit_stop/hit_stop.gd" id="10_orjm5"]
+[ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="10_orjm5"]
 [ext_resource type="PackedScene" uid="uid://cherfu7ivdcyx" path="res://ball/abilities/boost/boost.tscn" id="10_w6tmd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
@@ -18,7 +17,6 @@ radius = 20.0
 physics_interpolation_mode = 1
 z_index = 10
 script = ExtResource("1_6plaf")
-hit_stop_profile = ExtResource("3_melhi")
 
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
 script = ExtResource("3_biv8x")
@@ -37,9 +35,9 @@ shape = SubResource("CircleShape2D_ua4af")
 unique_name_in_owner = true
 script = ExtResource("3_6xd6y")
 
-[node name="ContactDamage" type="Node" parent="." unique_id=1609352213]
+[node name="ImpactAttack" type="Node" parent="." unique_id=1609352213]
 unique_name_in_owner = true
-script = ExtResource("7_w6tmd")
+script = ExtResource("5_vf1tv")
 
 [node name="HitStop" type="Node" parent="." unique_id=1979259650]
 unique_name_in_owner = true

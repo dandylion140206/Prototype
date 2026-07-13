@@ -18,7 +18,7 @@ func setup(context: AbilityContext) -> void:
 
 	_boost_trail.setup(
 		_context.body,
-		_context.get_interpolated_position
+		_context.get_interpolated_global_position
 	)
 
 

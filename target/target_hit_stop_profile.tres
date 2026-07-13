@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="HitStopProfile" format=3 uid="uid://rfrdmbvh10tm"]
-
-[ext_resource type="Script" uid="uid://cr0mnohb23681" path="res://components/hit_stop/hit_stop_profile.gd" id="1_01d02"]
-
-[resource]
-script = ExtResource("1_01d02")
-metadata/_custom_type_script = "uid://cr0mnohb23681"
