@@ -28,6 +28,8 @@ shader_parameter/pattern_center = Vector2(960, 540)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ua4af"]
 shader = ExtResource("13_5xyti")
 shader_parameter/color_levels = 8
+shader_parameter/dither_enabled = true
+shader_parameter/dither_strength = 1.0
 
 [node name="Main" type="Node2D" unique_id=764362608]
 physics_interpolation_mode = 2
@@ -87,12 +89,10 @@ layer = 200
 script = ExtResource("14_s758e")
 
 [node name="FloatingPanel" type="PanelContainer" parent="EffectUI" unique_id=1118150779]
-custom_minimum_size = Vector2(400, 0)
-custom_maximum_size = Vector2(-1, 900)
 offset_left = 24.0
 offset_top = 24.0
-offset_right = 424.0
-offset_bottom = 64.0
+offset_right = 524.0
+offset_bottom = 924.0
 script = ExtResource("15_4hmqs")
 
 [node name="VBox" type="VBoxContainer" parent="EffectUI/FloatingPanel" unique_id=2122444212]
@@ -128,6 +128,7 @@ horizontal_scroll_mode = 0
 
 [node name="Content" type="MarginContainer" parent="EffectUI/FloatingPanel/VBox/ScrollContainer" unique_id=469043818]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12

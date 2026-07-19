@@ -22,6 +22,27 @@ func _ready() -> void:
 		)
 	)
 
+	model.add_parameter(
+		EffectParameter.new(
+			&"dither_enabled",
+			"ディザリング",
+			EffectParameter.Kind.BOOLEAN,
+			true,
+		)
+	)
+
+	model.add_parameter(
+		EffectParameter.new(
+			&"dither_strength",
+			"ディザー強度",
+			EffectParameter.Kind.FLOAT,
+			1.0,
+			0.0,
+			1.0,
+			0.05,
+		)
+	)
+
 	model.parameter_changed.connect(_on_parameter_changed)
 	model.enabled_changed.connect(_on_enabled_changed)
 

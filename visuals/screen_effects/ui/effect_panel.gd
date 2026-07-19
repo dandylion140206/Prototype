@@ -44,14 +44,17 @@ func _create_number_editor(
 	parameter: EffectParameter,
 	use_integer: bool,
 ) -> void:
-	var row := HBoxContainer.new()
+	var parameter_container := VBoxContainer.new()
+	var header_row := HBoxContainer.new()
 	var label := Label.new()
 	var spin_box := SpinBox.new()
+	var slider := HSlider.new()
 	var line_edit := spin_box.get_line_edit()
 
 	label.text = parameter.display_name
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
+	spin_box.custom_minimum_size.x = 96.0
 	spin_box.min_value = parameter.min_value
 	spin_box.max_value = parameter.max_value
 	spin_box.step = parameter.step
@@ -62,15 +65,40 @@ func _create_number_editor(
 		func(_text: String) -> void:
 			line_edit.release_focus()
 	)
+
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.min_value = parameter.min_value
+	slider.max_value = parameter.max_value
+	slider.step = parameter.step
+	slider.value = spin_box.value
+
 	spin_box.value_changed.connect(
 		func(value: float) -> void:
-			var result: Variant = int(value) if use_integer else value
-			model.set_value(parameter.id, result)
+			slider.set_value_no_signal(value)
+			_set_number_value(model, parameter.id, value, use_integer)
 	)
 
-	row.add_child(label)
-	row.add_child(spin_box)
-	add_child(row)
+	slider.value_changed.connect(
+		func(value: float) -> void:
+			spin_box.set_value_no_signal(value)
+			_set_number_value(model, parameter.id, value, use_integer)
+	)
+
+	header_row.add_child(label)
+	header_row.add_child(spin_box)
+	parameter_container.add_child(header_row)
+	parameter_container.add_child(slider)
+	add_child(parameter_container)
+
+
+func _set_number_value(
+	model: EffectModel,
+	id: StringName,
+	value: float,
+	use_integer: bool,
+) -> void:
+	var result: Variant = int(value) if use_integer else value
+	model.set_value(id, result)
 
 
 func _create_boolean_editor(
