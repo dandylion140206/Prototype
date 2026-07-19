@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://be6knta7t0vif" path="res://main/target_spawner.gd" id="6_kfbq2"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
+[ext_resource type="Script" uid="uid://chmtu4qrugmd3" path="res://visuals/screen_effects/color_quantization.gd" id="12_73k8k"]
+[ext_resource type="Shader" uid="uid://cwadrf65yyjk3" path="res://visuals/screen_effects/color_quantization.gdshader" id="13_5xyti"]
+[ext_resource type="Script" uid="uid://cykdovtivy5sr" path="res://visuals/screen_effects/ui/effect_panel.gd" id="14_n3o0a"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -19,6 +22,10 @@ shader_parameter/light_color = Color(0.2136, 0.2136, 0.24, 1)
 shader_parameter/cell_size = 84.0
 shader_parameter/edge_softness = 4.0000000596048
 shader_parameter/pattern_center = Vector2(960, 540)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ua4af"]
+shader = ExtResource("13_5xyti")
+shader_parameter/color_levels = 8
 
 [node name="Main" type="Node2D" unique_id=764362608]
 physics_interpolation_mode = 2
@@ -59,3 +66,28 @@ unique_name_in_owner = true
 script = ExtResource("9_grrlh")
 min_shake_speed = 0.0
 trauma_at_max_speed = 0.8
+
+[node name="ColorQuantizationEffect" type="CanvasLayer" parent="." unique_id=1992153845]
+layer = 100
+script = ExtResource("12_73k8k")
+
+[node name="EffectRect" type="ColorRect" parent="ColorQuantizationEffect" unique_id=970782549]
+material = SubResource("ShaderMaterial_ua4af")
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="EffectUI" type="CanvasLayer" parent="." unique_id=529615813]
+layer = 200
+
+[node name="Panel" type="PanelContainer" parent="EffectUI" unique_id=1008869725]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="EffectUI/Panel" unique_id=934203281]
+layout_mode = 2
+
+[node name="EffectPanel" type="VBoxContainer" parent="EffectUI/Panel/MarginContainer" unique_id=1531086623]
+layout_mode = 2
+script = ExtResource("14_n3o0a")
+effect_path = NodePath("../../../../ColorQuantizationEffect")
