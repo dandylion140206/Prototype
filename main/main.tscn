@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://be6knta7t0vif" path="res://main/target_spawner.gd" id="6_kfbq2"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
+[ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_wip/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
 [ext_resource type="Script" uid="uid://chmtu4qrugmd3" path="res://visuals/screen_effects/color_quantization.gd" id="12_73k8k"]
 [ext_resource type="Shader" uid="uid://cwadrf65yyjk3" path="res://visuals/screen_effects/color_quantization.gdshader" id="13_5xyti"]
 [ext_resource type="Script" uid="uid://cykdovtivy5sr" path="res://visuals/screen_effects/ui/effect_panel.gd" id="14_n3o0a"]
@@ -52,6 +53,10 @@ script = ExtResource("2_ipbj0")
 
 [node name="InputController" type="Node" parent="." unique_id=953981804]
 script = ExtResource("3_grrlh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=815715909]
+texture = ExtResource("10_s758e")
+offset = Vector2(960, 540)
 
 [node name="TargetSpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
@@ -145,3 +150,5 @@ theme_override_constants/margin_bottom = 12
 layout_mode = 2
 script = ExtResource("14_n3o0a")
 effect_path = NodePath("../../../../../../ColorQuantizationEffect")
+
+[connection signal="panel_visibility_changed" from="EffectUI" to="Cursor" method="set_os_cursor_visible"]
