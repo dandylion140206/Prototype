@@ -2,8 +2,8 @@ class_name ColorQuantizationEffect
 extends CanvasLayer
 
 enum QuantizationMode {
-	RGB_UNIFORM,
-	RGB_PER_CHANNEL,
+	SHARED,
+	PER_CHANNEL,
 }
 
 enum ColorSpace {
@@ -20,7 +20,7 @@ enum DitherMode {
 
 @onready var effect_rect: ColorRect = $EffectRect
 
-var model := EffectModel.new("色量子化")
+var model := EffectModel.new("Color Quantization")
 var _material: ShaderMaterial
 
 
@@ -40,122 +40,109 @@ func get_effect_model() -> EffectModel:
 
 
 func _add_quantization_parameters() -> void:
-	model.add_parameter(
-		EffectParameter.new(
-			&"quantization_mode",
-			"量子化モード",
-			EffectParameter.Kind.ENUM,
-			QuantizationMode.RGB_UNIFORM,
-			0.0,
-			1.0,
-			1.0,
-			["RGB共通", "RGB個別"],
-		)
+	var quantization_mode := EffectParameter.new(
+		&"quantization_mode",
+		"RGB Level Mode",
+		EffectParameter.Kind.ENUM,
+		QuantizationMode.SHARED,
 	)
+	quantization_mode.set_options(
+		["Shared", "Per Channel"]
+	)
+	model.add_parameter(quantization_mode)
 
-	model.add_parameter(
-		EffectParameter.new(
-			&"color_space",
-			"色空間",
-			EffectParameter.Kind.ENUM,
-			ColorSpace.SRGB,
-			0.0,
-			1.0,
-			1.0,
-			["sRGB", "Linear"],
-		)
+	var color_space := EffectParameter.new(
+		&"color_space",
+		"Color Space",
+		EffectParameter.Kind.ENUM,
+		ColorSpace.SRGB,
 	)
+	color_space.set_options(
+		["sRGB", "Linear"]
+	)
+	model.add_parameter(color_space)
 
-	model.add_parameter(
-		EffectParameter.new(
-			&"color_levels",
-			"色段階",
-			EffectParameter.Kind.INTEGER,
-			8,
-			2,
-			32,
-			1,
-			[],
-			&"quantization_mode",
-			[QuantizationMode.RGB_UNIFORM],
-		)
+	var color_levels := EffectParameter.new(
+		&"color_levels",
+		"Color Levels",
+		EffectParameter.Kind.INTEGER,
+		8,
 	)
+	color_levels.set_range(2, 32, 1)
+	color_levels.set_visibility_condition(
+		&"quantization_mode",
+		[QuantizationMode.SHARED],
+	)
+	model.add_parameter(color_levels)
 
 	for data in [
-		[&"red_levels", "R段階"],
-		[&"green_levels", "G段階"],
-		[&"blue_levels", "B段階"],
+		[&"red_levels", "Red Levels"],
+		[&"green_levels", "Green Levels"],
+		[&"blue_levels", "Blue Levels"],
 	]:
-		model.add_parameter(
-			EffectParameter.new(
-				data[0],
-				data[1],
-				EffectParameter.Kind.INTEGER,
-				8,
-				2,
-				32,
-				1,
-				[],
-				&"quantization_mode",
-				[QuantizationMode.RGB_PER_CHANNEL],
-			)
+		var parameter := EffectParameter.new(
+			data[0],
+			data[1],
+			EffectParameter.Kind.INTEGER,
+			8,
 		)
+		parameter.set_range(2, 32, 1)
+		parameter.set_visibility_condition(
+			&"quantization_mode",
+			[QuantizationMode.PER_CHANNEL],
+		)
+		model.add_parameter(parameter)
 
 
 func _add_dither_parameters() -> void:
-	model.add_parameter(
-		EffectParameter.new(
-			&"dither_enabled",
-			"ディザリング",
-			EffectParameter.Kind.BOOLEAN,
-			true,
-		)
+	var dither_enabled := EffectParameter.new(
+		&"dither_enabled",
+		"Dithering",
+		EffectParameter.Kind.BOOLEAN,
+		true,
 	)
+	model.add_parameter(dither_enabled)
 
-	model.add_parameter(
-		EffectParameter.new(
-			&"dither_mode",
-			"方式",
-			EffectParameter.Kind.ENUM,
-			DitherMode.BAYER_4X4,
-			0.0,
-			3.0,
-			1.0,
-			["Bayer 2×2", "Bayer 4×4", "Bayer 8×8", "IGN"],
-			&"dither_enabled",
-			[true],
-		)
+	var dither_mode := EffectParameter.new(
+		&"dither_mode",
+		"Dither Mode",
+		EffectParameter.Kind.ENUM,
+		DitherMode.BAYER_4X4,
 	)
+	dither_mode.set_options(
+		["Bayer 2×2", "Bayer 4×4", "Bayer 8×8", "IGN"]
+	)
+	dither_mode.set_visibility_condition(
+		&"dither_enabled",
+		[true],
+	)
+	model.add_parameter(dither_mode)
 
-	model.add_parameter(
-		EffectParameter.new(
-			&"dither_strength",
-			"ディザー強度",
-			EffectParameter.Kind.FLOAT,
-			1.0,
-			0.0,
-			1.0,
-			0.05,
-			[],
-			&"dither_enabled",
-			[true],
-		)
+	var dither_strength := EffectParameter.new(
+		&"dither_strength",
+		"Dither Strength",
+		EffectParameter.Kind.FLOAT,
+		1.0,
 	)
+	dither_strength.set_range(0.0, 1.0, 0.05)
+	dither_strength.set_visibility_condition(
+		&"dither_enabled",
+		[true],
+	)
+	model.add_parameter(dither_strength)
 
-	model.add_parameter(
-		EffectParameter.new(
-			&"dither_scale",
-			"パターンスケール",
-			EffectParameter.Kind.INTEGER,
-			1,
-			1,
-			8,
-			1,
-			[],
-			&"dither_enabled",
-			[true],
-		)
+	var dither_scale := EffectParameter.new(
+		&"dither_scale",
+		"Dither Scale",
+		EffectParameter.Kind.INTEGER,
+		1,
 	)
+	dither_scale.set_range(1, 8, 1)
+	dither_scale.set_visibility_condition(
+		&"dither_enabled",
+		[true],
+	)
+	model.add_parameter(dither_scale)
 
 
 func _apply_initial_values() -> void:

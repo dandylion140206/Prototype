@@ -4,8 +4,8 @@ extends PanelContainer
 var _is_dragging := false
 var _drag_offset := Vector2.ZERO
 
-@onready var _drag_area: Control = $VBox/Header/DragArea
-@onready var _close_button: Button = $VBox/Header/CloseButton
+@onready var _drag_area: Control = %DragArea
+@onready var _close_button: Button = %CloseButton
 
 
 func _ready() -> void:

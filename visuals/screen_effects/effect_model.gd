@@ -32,6 +32,10 @@ func add_parameter(parameter: EffectParameter) -> void:
 		push_warning("Duplicate effect parameter: %s" % parameter.id)
 		return
 
+	parameter.default_value = parameter.normalize_value(
+		parameter.default_value
+	)
+
 	parameters.append(parameter)
 	_parameters_by_id[parameter.id] = parameter
 	_values[parameter.id] = parameter.default_value
