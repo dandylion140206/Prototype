@@ -1,26 +1,27 @@
 class_name ScreenEffectStack
-extends Node
-
-@export var base_layer := 100
-@export var effects: Array[ScreenEffect] = []
+extends CanvasLayer
 
 
 func _ready() -> void:
-	for index in effects.size():
-		var effect := effects[index]
-
-		assert(effect != null, "Screen effect must not be null at index %s" % index)
-		assert(effect.model != null, "Screen effect model must be initialized: %s" % effect.name)
-
-		effect.layer = base_layer + index
+	for effect_pass in _get_effect_passes():
+		assert(effect_pass.state != null, "Screen effect state must be initialized: %s" % effect_pass.name)
 
 
-func get_models() -> Array[ScreenEffectModel]:
-	var models: Array[ScreenEffectModel] = []
+func get_states() -> Array[ScreenEffectState]:
+	var states: Array[ScreenEffectState] = []
 
-	for effect in effects:
-		assert(effect != null, "Screen effect must not be null")
-		assert(effect.model != null, "Screen effect model must be initialized")
-		models.append(effect.model)
+	for effect_pass in _get_effect_passes():
+		assert(effect_pass.state != null, "Screen effect state must be initialized: %s" % effect_pass.name)
+		states.append(effect_pass.state)
 
-	return models
+	return states
+
+
+func _get_effect_passes() -> Array[ScreenEffectPass]:
+	var effect_passes: Array[ScreenEffectPass] = []
+
+	for child in get_children():
+		assert(child is ScreenEffectPass, "ScreenEffectStack children must be ScreenEffectPass nodes")
+		effect_passes.append(child as ScreenEffectPass)
+
+	return effect_passes

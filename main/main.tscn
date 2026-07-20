@@ -12,12 +12,8 @@
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
 [ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_wip/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
-[ext_resource type="Script" uid="uid://b44i6npvs2em" path="res://visuals/screen_effects/screen_effect_stack.gd" id="13_4hmqs"]
-[ext_resource type="Script" uid="uid://ciggilxwcg2ok" path="res://visuals/screen_effects/screen_effect.gd" id="14_piupu"]
-[ext_resource type="Script" uid="uid://c77cnlqgw2st4" path="res://visuals/screen_effects/ui/floating_panel.gd" id="15_4hmqs"]
-[ext_resource type="Resource" uid="uid://ddafwlfmjjw3y" path="res://visuals/screen_effects/definitions/color_quantization_definition.tres" id="15_piupu"]
-[ext_resource type="Script" uid="uid://7vq3txq4o0lf" path="res://visuals/screen_effects/ui/screen_effect_debug_controller.gd" id="16_4hmqs"]
-[ext_resource type="Script" uid="uid://bb1um1gklsjer" path="res://visuals/screen_effects/ui/screen_effect_debug_ui.gd" id="17_4hmqs"]
+[ext_resource type="PackedScene" path="res://visuals/screen_effects/screen_effect_stack.tscn" id="13_4hmqs"]
+[ext_resource type="PackedScene" path="res://visuals/screen_effects/debug/screen_effect_debugger.tscn" id="16_4hmqs"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -71,84 +67,9 @@ script = ExtResource("9_grrlh")
 min_shake_speed = 0.0
 trauma_at_max_speed = 0.8
 
-[node name="ScreenEffectStack" type="Node" parent="." unique_id=1074589344 node_paths=PackedStringArray("effects")]
-script = ExtResource("13_4hmqs")
-effects = [NodePath("ColorQuantization")]
+[node name="ScreenEffectStack" parent="." unique_id=1074589344 instance=ExtResource("13_4hmqs")]
 
-[node name="ColorQuantization" type="CanvasLayer" parent="ScreenEffectStack" unique_id=1992153845]
-layer = 100
-script = ExtResource("14_piupu")
-definition = ExtResource("15_piupu")
-
-[node name="EffectRect" type="ColorRect" parent="ScreenEffectStack/ColorQuantization" unique_id=970782549]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="ScreenEffectDebugController" type="Node" parent="." unique_id=765001636 node_paths=PackedStringArray("screen_effect_stack")]
-script = ExtResource("16_4hmqs")
+[node name="ScreenEffectDebugger" parent="." unique_id=765001636 node_paths=PackedStringArray("screen_effect_stack") instance=ExtResource("16_4hmqs")]
 screen_effect_stack = NodePath("../ScreenEffectStack")
 
-[node name="ScreenEffectDebugUI" type="CanvasLayer" parent="ScreenEffectDebugController" unique_id=529615813]
-layer = 200
-script = ExtResource("17_4hmqs")
-
-[node name="FloatingPanel" type="PanelContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI" unique_id=1118150779]
-offset_left = 24.0
-offset_top = 24.0
-offset_right = 524.0
-offset_bottom = 924.0
-script = ExtResource("15_4hmqs")
-
-[node name="VBox" type="VBoxContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel" unique_id=2122444212]
-layout_mode = 2
-
-[node name="HeaderColor" type="PanelContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox" unique_id=1818229297]
-layout_mode = 2
-
-[node name="Header" type="HBoxContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox/HeaderColor" unique_id=1682124448]
-custom_minimum_size = Vector2(0, 34)
-layout_mode = 2
-
-[node name="DragArea" type="MarginContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox/HeaderColor/Header" unique_id=1750938536]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 0
-mouse_default_cursor_shape = 13
-
-[node name="Title" type="Label" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox/HeaderColor/Header/DragArea" unique_id=1594629902]
-layout_mode = 2
-size_flags_vertical = 1
-text = "Screen Effects"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CloseButton" type="Button" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox/HeaderColor/Header" unique_id=1737123267]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 36)
-layout_mode = 2
-size_flags_horizontal = 8
-text = "×"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox" unique_id=1621866759]
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="Content" type="MarginContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox/ScrollContainer" unique_id=469043818]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="EffectList" type="VBoxContainer" parent="ScreenEffectDebugController/ScreenEffectDebugUI/FloatingPanel/VBox/ScrollContainer/Content" unique_id=1470538329]
-unique_name_in_owner = true
-layout_mode = 2
-
-[connection signal="panel_visibility_changed" from="ScreenEffectDebugController/ScreenEffectDebugUI" to="Cursor" method="set_os_cursor_visible"]
+[connection signal="panel_visibility_changed" from="ScreenEffectDebugger" to="Cursor" method="set_os_cursor_visible"]

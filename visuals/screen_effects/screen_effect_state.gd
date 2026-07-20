@@ -1,4 +1,4 @@
-class_name ScreenEffectModel
+class_name ScreenEffectState
 extends RefCounted
 
 signal parameter_changed(id: StringName, value: Variant)
@@ -15,7 +15,7 @@ var enabled := true:
 		enabled = value
 		enabled_changed.emit(enabled)
 
-var _editability_rules: Array[ScreenEffectParameterEditabilityRule] = []
+var _activation_rules: Array[ScreenEffectParameterActivationRule] = []
 var _parameters_by_id: Dictionary[StringName, ScreenEffectParameterDefinition] = {}
 var _values: Dictionary[StringName, Variant] = {}
 
@@ -26,8 +26,8 @@ func _init(definition: ScreenEffectDefinition) -> void:
 
 	display_name = definition.display_name
 	enabled = definition.enabled_by_default
-	parameters = ScreenEffectParameterDefinitionFactory.create_all(definition.shader)
-	_editability_rules = definition.editability_rules.duplicate()
+	parameters = ScreenEffectParameterReader.read_all(definition.shader)
+	_activation_rules = definition.activation_rules.duplicate()
 
 	var parameter_ids: Dictionary[StringName, bool] = {}
 
@@ -66,16 +66,16 @@ func set_value(parameter_id: StringName, value: Variant) -> void:
 	parameter_changed.emit(parameter_id, normalized_value)
 
 
-func is_parameter_editable(parameter_id: StringName) -> bool:
+func is_parameter_active(parameter_id: StringName) -> bool:
 	assert(has_parameter(parameter_id), "Unknown effect parameter: %s" % parameter_id)
 
-	for rule in _editability_rules:
+	for rule in _activation_rules:
 		if not rule.target_parameters.has(parameter_id):
 			continue
 
 		var condition_value: Variant = get_value(rule.condition_parameter)
 
-		if not rule.is_editable(condition_value):
+		if not rule.is_active(condition_value):
 			return false
 
 	return true

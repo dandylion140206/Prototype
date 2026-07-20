@@ -1,15 +1,15 @@
-class_name ScreenEffectParameterDefinitionFactory
+class_name ScreenEffectParameterReader
 extends RefCounted
 
 
-static func create_all(shader: Shader) -> Array[ScreenEffectParameterDefinition]:
+static func read_all(shader: Shader) -> Array[ScreenEffectParameterDefinition]:
 	assert(shader != null, "Shader must not be null")
 
 	var shader_rid := shader.get_rid()
 	var parameters: Array[ScreenEffectParameterDefinition] = []
 
 	for uniform_data: Dictionary in shader.get_shader_uniform_list():
-		var parameter := _create_parameter(uniform_data, shader_rid)
+		var parameter := _read_parameter(uniform_data, shader_rid)
 
 		if parameter != null:
 			parameters.append(parameter)
@@ -17,7 +17,7 @@ static func create_all(shader: Shader) -> Array[ScreenEffectParameterDefinition]
 	return parameters
 
 
-static func _create_parameter(
+static func _read_parameter(
 	uniform_data: Dictionary,
 	shader_rid: RID,
 ) -> ScreenEffectParameterDefinition:

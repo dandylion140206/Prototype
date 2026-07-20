@@ -1,11 +1,11 @@
-class_name ScreenEffect
-extends CanvasLayer
+class_name ScreenEffectPass
+extends Control
 
 @export var definition: ScreenEffectDefinition
 
-var model: ScreenEffectModel
+var state: ScreenEffectState
 
-@onready var _effect_rect: ColorRect = $EffectRect
+@onready var _full_screen_rect: ColorRect = $FullScreenRect
 
 var _material: ShaderMaterial
 
@@ -13,20 +13,20 @@ var _material: ShaderMaterial
 func _ready() -> void:
 	assert(definition != null, "ScreenEffectDefinition must not be null")
 	assert(definition.shader != null, "Screen effect shader must not be null")
-	assert(_effect_rect != null, "EffectRect must not be null")
+	assert(_full_screen_rect != null, "FullScreenRect must not be null")
 
 	_material = ShaderMaterial.new()
 	_material.shader = definition.shader
-	_effect_rect.material = _material
+	_full_screen_rect.material = _material
 
-	model = ScreenEffectModel.new(definition)
-	model.parameter_changed.connect(_on_parameter_changed)
-	model.enabled_changed.connect(_on_enabled_changed)
+	state = ScreenEffectState.new(definition)
+	state.parameter_changed.connect(_on_parameter_changed)
+	state.enabled_changed.connect(_on_enabled_changed)
 
-	for parameter in model.parameters:
-		_apply_parameter(parameter.id, model.get_value(parameter.id))
+	for parameter in state.parameters:
+		_apply_parameter(parameter.id, state.get_value(parameter.id))
 
-	_on_enabled_changed(model.enabled)
+	_on_enabled_changed(state.enabled)
 
 
 func _on_parameter_changed(id: StringName, value: Variant) -> void:
@@ -34,7 +34,7 @@ func _on_parameter_changed(id: StringName, value: Variant) -> void:
 
 
 func _on_enabled_changed(enabled: bool) -> void:
-	_effect_rect.visible = enabled
+	visible = enabled
 
 
 func _apply_parameter(id: StringName, value: Variant) -> void:

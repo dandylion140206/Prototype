@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://visuals/screen_effects/screen_effect_stack.gd" id="1_stack"]
+[ext_resource type="PackedScene" path="res://visuals/screen_effects/screen_effect_pass.tscn" id="2_pass"]
+[ext_resource type="Resource" path="res://visuals/screen_effects/effects/color_quantization/color_quantization.tres" id="3_definition"]
+
+[node name="ScreenEffectStack" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_stack")
+
+[node name="ColorQuantization" parent="." instance=ExtResource("2_pass")]
+definition = ExtResource("3_definition")

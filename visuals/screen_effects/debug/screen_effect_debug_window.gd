@@ -1,4 +1,4 @@
-class_name FloatingEffectPanel
+class_name ScreenEffectDebugWindow
 extends PanelContainer
 
 var _is_dragging := false

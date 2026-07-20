@@ -1,0 +1,63 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://visuals/screen_effects/debug/screen_effect_debugger.gd" id="1_debugger"]
+[ext_resource type="Script" path="res://visuals/screen_effects/debug/screen_effect_debug_window.gd" id="2_window"]
+
+[node name="ScreenEffectDebugger" type="CanvasLayer"]
+layer = 200
+script = ExtResource("1_debugger")
+
+[node name="ScreenEffectDebugWindow" type="PanelContainer" parent="."]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 524.0
+offset_bottom = 924.0
+script = ExtResource("2_window")
+
+[node name="VBox" type="VBoxContainer" parent="ScreenEffectDebugWindow"]
+layout_mode = 2
+
+[node name="HeaderColor" type="PanelContainer" parent="ScreenEffectDebugWindow/VBox"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="ScreenEffectDebugWindow/VBox/HeaderColor"]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+
+[node name="DragArea" type="MarginContainer" parent="ScreenEffectDebugWindow/VBox/HeaderColor/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+mouse_default_cursor_shape = 13
+
+[node name="Title" type="Label" parent="ScreenEffectDebugWindow/VBox/HeaderColor/Header/DragArea"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Screen Effects"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="ScreenEffectDebugWindow/VBox/HeaderColor/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "×"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ScreenEffectDebugWindow/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Content" type="MarginContainer" parent="ScreenEffectDebugWindow/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="EffectList" type="VBoxContainer" parent="ScreenEffectDebugWindow/VBox/ScrollContainer/Content"]
+unique_name_in_owner = true
+layout_mode = 2
