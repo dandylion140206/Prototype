@@ -8,9 +8,7 @@ signal panel_visibility_changed(is_visible: bool)
 
 func _ready() -> void:
 	_floating_panel.hide()
-	_floating_panel.visibility_changed.connect(
-		_on_floating_panel_visibility_changed
-	)
+	_floating_panel.visibility_changed.connect(_on_floating_panel_visibility_changed)
 	_emit_panel_visibility()
 
 

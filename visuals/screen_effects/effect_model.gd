@@ -5,7 +5,7 @@ signal parameter_changed(id: StringName, value: Variant)
 signal enabled_changed(enabled: bool)
 
 var display_name: String
-var parameters: Array[EffectParameter] = []
+var parameters: Array[EffectParameterDefinition] = []
 
 var enabled := true:
 	set(value):
@@ -15,58 +15,58 @@ var enabled := true:
 		enabled = value
 		enabled_changed.emit(enabled)
 
-var _parameters_by_id: Dictionary[StringName, EffectParameter] = {}
+var _enable_rules: Array[EffectParameterEnableRule] = []
+var _parameters_by_id: Dictionary[StringName, EffectParameterDefinition] = {}
+
 var _values: Dictionary[StringName, Variant] = {}
 
 
-func _init(model_display_name: String = "") -> void:
-	display_name = model_display_name
+func _init(definition: ScreenEffectDefinition) -> void:
+	assert(definition != null, "ScreenEffectDefinition must not be null",)
+	assert(definition.shader != null, "Screen effect shader must not be null")
 
+	display_name = definition.display_name
+	enabled = definition.enabled_by_default
+	parameters = ShaderParameterDefinitionFactory.create_all(definition.shader)
+	_enable_rules = definition.enable_rules.duplicate()
 
-func add_parameter(parameter: EffectParameter) -> void:
-	if parameter.id == &"":
-		push_warning("Effect parameter ID must not be empty.")
-		return
+	var parameter_ids: Dictionary[StringName, bool] = {}
 
-	if _parameters_by_id.has(parameter.id):
-		push_warning("Duplicate effect parameter: %s" % parameter.id)
-		return
+	for parameter in parameters:
+		assert(not parameter_ids.has(parameter.id), "Duplicate effect parameter: %s" % parameter.id)
 
-	parameter.default_value = parameter.normalize_value(
-		parameter.default_value
-	)
+		parameter_ids[parameter.id] = true
+		_parameters_by_id[parameter.id] = parameter
+		_values[parameter.id] = parameter.default_value
 
-	parameters.append(parameter)
-	_parameters_by_id[parameter.id] = parameter
-	_values[parameter.id] = parameter.default_value
+	definition.validate(parameter_ids)
 
 
 func has_parameter(parameter_id: StringName) -> bool:
 	return _parameters_by_id.has(parameter_id)
 
 
-func get_parameter(parameter_id: StringName) -> EffectParameter:
-	if not _parameters_by_id.has(parameter_id):
-		push_warning("Unknown effect parameter: %s" % parameter_id)
-		return null
+func get_parameter(
+	parameter_id: StringName,
+) -> EffectParameterDefinition:
+	assert(_parameters_by_id.has(parameter_id), "Unknown effect parameter: %s" % parameter_id)
 
 	return _parameters_by_id[parameter_id]
 
 
 func get_value(parameter_id: StringName) -> Variant:
-	if not _values.has(parameter_id):
-		push_warning("Unknown effect parameter: %s" % parameter_id)
-		return null
+	assert(_values.has(parameter_id), "Unknown effect parameter: %s" % parameter_id)
 
 	return _values[parameter_id]
 
 
-func set_value(parameter_id: StringName, value: Variant) -> void:
+func set_value(
+	parameter_id: StringName,
+	value: Variant,
+) -> void:
 	var parameter := get_parameter(parameter_id)
-	if parameter == null:
-		return
+	var normalized_value:Variant = parameter.normalize_value(value)
 
-	var normalized_value: Variant = parameter.normalize_value(value)
 	if _values[parameter_id] == normalized_value:
 		return
 
@@ -74,34 +74,16 @@ func set_value(parameter_id: StringName, value: Variant) -> void:
 	parameter_changed.emit(parameter_id, normalized_value)
 
 
-func reset_parameter(parameter_id: StringName) -> void:
-	var parameter := get_parameter(parameter_id)
-	if parameter == null:
-		return
+func is_parameter_enabled(parameter_id: StringName) -> bool:
+	assert(has_parameter(parameter_id), "Unknown effect parameter: %s" % parameter_id)
 
-	set_value(parameter_id, parameter.default_value)
+	for rule in _enable_rules:
+		if not rule.target_parameters.has(parameter_id):
+			continue
 
+		var condition_value: Variant = get_value(rule.condition_parameter)
 
-func reset_all_parameters() -> void:
-	for parameter in parameters:
-		reset_parameter(parameter.id)
+		if not rule.is_enabled(condition_value):
+			return false
 
-
-func is_parameter_visible(parameter_id: StringName) -> bool:
-	var parameter := get_parameter(parameter_id)
-	if parameter == null:
-		return false
-
-	if parameter.visibility_parameter == &"":
-		return true
-
-	if not _values.has(parameter.visibility_parameter):
-		push_warning(
-			"Unknown visibility parameter '%s' referenced by '%s'."
-			% [parameter.visibility_parameter, parameter.id]
-		)
-		return false
-
-	return parameter.is_visible_for(
-		_values[parameter.visibility_parameter]
-	)
+	return true

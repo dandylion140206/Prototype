@@ -4,16 +4,18 @@ render_mode unshaded;
 uniform sampler2D screen_texture
 	: hint_screen_texture, repeat_disable, filter_nearest;
 
-uniform int quantization_mode = 0;
-uniform int color_space = 0;
-
+uniform int quantization_mode
+	: hint_enum("Shared", "Per Channel") = 0;
+uniform int color_space
+	: hint_enum("sRGB", "Linear") = 0;
 uniform int color_levels : hint_range(2, 32, 1) = 8;
 uniform int red_levels : hint_range(2, 32, 1) = 8;
 uniform int green_levels : hint_range(2, 32, 1) = 8;
 uniform int blue_levels : hint_range(2, 32, 1) = 8;
 
 uniform bool dither_enabled = true;
-uniform int dither_mode = 1;
+uniform int dither_mode
+	: hint_enum("Bayer 2x2", "Bayer 4x4", "Bayer 8x8", "IGN") = 1;
 uniform float dither_strength : hint_range(0.0, 1.0, 0.05) = 1.0;
 uniform int dither_scale : hint_range(1, 8, 1) = 1;
 

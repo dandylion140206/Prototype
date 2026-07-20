@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="ScreenEffectDefinition" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://visuals/screen_effects/definitions/screen_effect_definition.gd" id="1_definition"]
+[ext_resource type="Script" path="res://visuals/screen_effects/definitions/effect_parameter_enable_rule.gd" id="2_rule"]
+[ext_resource type="Shader" path="res://visuals/screen_effects/color_quantization.gdshader" id="3_shader"]
+
+[sub_resource type="Resource" id="EffectParameterEnableRule_shared"]
+script = ExtResource("2_rule")
+condition_parameter = &"quantization_mode"
+enabled_values = Array[Variant]([0])
+target_parameters = Array[StringName]([&"color_levels"])
+
+[sub_resource type="Resource" id="EffectParameterEnableRule_per_channel"]
+script = ExtResource("2_rule")
+condition_parameter = &"quantization_mode"
+enabled_values = Array[Variant]([1])
+target_parameters = Array[StringName]([&"red_levels", &"green_levels", &"blue_levels"])
+
+[sub_resource type="Resource" id="EffectParameterEnableRule_dither"]
+script = ExtResource("2_rule")
+condition_parameter = &"dither_enabled"
+enabled_values = Array[Variant]([true])
+target_parameters = Array[StringName]([&"dither_mode", &"dither_strength", &"dither_scale"])
+
+[resource]
+script = ExtResource("1_definition")
+display_name = "Color Quantization"
+shader = ExtResource("3_shader")
+enabled_by_default = true
+enable_rules = Array[ExtResource("2_rule")]([SubResource("EffectParameterEnableRule_shared"), SubResource("EffectParameterEnableRule_per_channel"), SubResource("EffectParameterEnableRule_dither")])

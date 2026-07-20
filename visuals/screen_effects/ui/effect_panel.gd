@@ -1,198 +1,227 @@
 class_name EffectPanel
 extends VBoxContainer
 
-@export var effect_path: NodePath
-
 var _model: EffectModel
+var _enabled_checkbox: CheckBox
+var _parameter_rows: Dictionary[StringName, Control] = {}
 var _parameter_editors: Dictionary[StringName, Control] = {}
 
 
-func _ready() -> void:
-	var effect := get_node(effect_path)
-	var model: EffectModel = effect.get_effect_model()
-	setup(model)
-
-
 func setup(model: EffectModel) -> void:
+	assert(model != null, "EffectModel must not be null")
+
 	_disconnect_model()
 	_clear_editors()
 
 	_model = model
 
-	var enabled_checkbox := CheckBox.new()
-	enabled_checkbox.text = model.display_name
-	enabled_checkbox.button_pressed = model.enabled
-	enabled_checkbox.toggled.connect(
-		func(enabled: bool) -> void:
-			model.enabled = enabled
-	)
-	add_child(enabled_checkbox)
+	_create_enabled_editor()
 
-	for parameter in model.parameters:
+	for parameter in _model.parameters:
 		_create_parameter_editor(parameter)
 
 	_model.parameter_changed.connect(_on_model_parameter_changed)
-	_update_parameter_visibility()
+	_model.enabled_changed.connect(_on_model_enabled_changed)
+
+	_update_parameter_enabled_states()
 
 
-func _create_parameter_editor(parameter: EffectParameter) -> void:
-	var editor: Control
+func _create_enabled_editor() -> void:
+	_enabled_checkbox = CheckBox.new()
+	_enabled_checkbox.text = _model.display_name
+	_enabled_checkbox.set_pressed_no_signal(_model.enabled)
+	_enabled_checkbox.toggled.connect(_on_enabled_checkbox_toggled)
 
+	add_child(_enabled_checkbox)
+
+
+func _create_parameter_editor(parameter: EffectParameterDefinition) -> void:
 	match parameter.kind:
-		EffectParameter.Kind.INTEGER:
-			editor = _create_number_editor(parameter, true)
+		EffectParameterDefinition.Kind.INTEGER:
+			_create_number_editor(parameter, true)
 
-		EffectParameter.Kind.FLOAT:
-			editor = _create_number_editor(parameter, false)
+		EffectParameterDefinition.Kind.FLOAT:
+			_create_number_editor(parameter, false)
 
-		EffectParameter.Kind.BOOLEAN:
-			editor = _create_boolean_editor(parameter)
+		EffectParameterDefinition.Kind.BOOLEAN:
+			_create_boolean_editor(parameter)
 
-		EffectParameter.Kind.ENUM:
-			editor = _create_enum_editor(parameter)
+		EffectParameterDefinition.Kind.ENUM:
+			_create_enum_editor(parameter)
 
-	if editor == null:
-		push_warning("Unsupported effect parameter kind: %s" % parameter.kind)
-		return
-
-	_parameter_editors[parameter.id] = editor
+		_:
+			assert(false, "Unsupported effect parameter kind: %s" % parameter.kind)
 
 
-func _create_number_editor(
-	parameter: EffectParameter,
-	use_integer: bool,
-) -> Control:
-	var parameter_container := VBoxContainer.new()
-	var header_row := HBoxContainer.new()
+func _create_number_editor(parameter: EffectParameterDefinition, use_integer: bool) -> void:
+	var row := HBoxContainer.new()
 	var label := Label.new()
 	var spin_box := SpinBox.new()
-	var slider := HSlider.new()
-	var line_edit := spin_box.get_line_edit()
-
-	parameter_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	header_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	label.text = parameter.display_name
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	spin_box.custom_minimum_size.x = 96.0
 	spin_box.min_value = parameter.min_value
 	spin_box.max_value = parameter.max_value
 	spin_box.step = parameter.step
-	spin_box.value = float(_model.get_value(parameter.id))
+	spin_box.allow_greater = false
+	spin_box.allow_lesser = false
+	spin_box.rounded = use_integer
+	spin_box.set_value_no_signal(float(_model.get_value(parameter.id)))
+	spin_box.value_changed.connect(_on_number_value_changed.bind(parameter.id))
 
-	line_edit.alignment = HORIZONTAL_ALIGNMENT_CENTER
-	line_edit.text_submitted.connect(
-		func(_text: String) -> void:
-			line_edit.release_focus()
-	)
+	row.add_child(label)
+	row.add_child(spin_box)
+	add_child(row)
 
-	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	slider.min_value = parameter.min_value
-	slider.max_value = parameter.max_value
-	slider.step = parameter.step
-	slider.value = spin_box.value
-
-	spin_box.value_changed.connect(
-		func(value: float) -> void:
-			slider.set_value_no_signal(value)
-			_set_number_value(parameter.id, value, use_integer)
-	)
-
-	slider.value_changed.connect(
-		func(value: float) -> void:
-			spin_box.set_value_no_signal(value)
-			_set_number_value(parameter.id, value, use_integer)
-	)
-
-	header_row.add_child(label)
-	header_row.add_child(spin_box)
-
-	parameter_container.add_child(header_row)
-	parameter_container.add_child(slider)
-
-	add_child(parameter_container)
-	return parameter_container
+	_parameter_rows[parameter.id] = row
+	_parameter_editors[parameter.id] = spin_box
 
 
-func _set_number_value(
-	parameter_id: StringName,
-	value: float,
-	use_integer: bool,
-) -> void:
-	var model_value: Variant = value
-
-	if use_integer:
-		model_value = int(value)
-
-	_model.set_value(parameter_id, model_value)
-
-
-func _create_boolean_editor(parameter: EffectParameter) -> Control:
+func _create_boolean_editor(parameter: EffectParameterDefinition) -> void:
 	var checkbox := CheckBox.new()
+
 	checkbox.text = parameter.display_name
-	checkbox.button_pressed = bool(_model.get_value(parameter.id))
-	checkbox.toggled.connect(
-		func(value: bool) -> void:
-			_model.set_value(parameter.id, value)
-	)
+	checkbox.set_pressed_no_signal(bool(_model.get_value(parameter.id)))
+	checkbox.toggled.connect(_on_boolean_toggled.bind(parameter.id))
 
 	add_child(checkbox)
-	return checkbox
+
+	_parameter_rows[parameter.id] = checkbox
+	_parameter_editors[parameter.id] = checkbox
 
 
-func _create_enum_editor(parameter: EffectParameter) -> Control:
+func _create_enum_editor(parameter: EffectParameterDefinition) -> void:
 	var row := HBoxContainer.new()
 	var label := Label.new()
 	var option_button := OptionButton.new()
 
-	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
 	label.text = parameter.display_name
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	option_button.custom_minimum_size.x = 160.0
-
 	for option in parameter.options:
-		option_button.add_item(str(option))
+		option_button.add_item(option)
 
-	option_button.select(int(_model.get_value(parameter.id)))
-	option_button.item_selected.connect(
-		func(index: int) -> void:
-			_model.set_value(parameter.id, index)
-	)
+	_select_enum_value(option_button, parameter, int(_model.get_value(parameter.id)))
+	option_button.item_selected.connect(_on_enum_item_selected.bind(parameter.id))
 
 	row.add_child(label)
 	row.add_child(option_button)
-
 	add_child(row)
-	return row
+
+	_parameter_rows[parameter.id] = row
+	_parameter_editors[parameter.id] = option_button
 
 
-func _on_model_parameter_changed(
-	_id: StringName,
-	_value: Variant,
-) -> void:
-	_update_parameter_visibility()
+func _on_enabled_checkbox_toggled(enabled: bool) -> void:
+	assert(_model != null, "EffectModel must not be null")
+	_model.enabled = enabled
 
 
-func _update_parameter_visibility() -> void:
-	if _model == null:
+func _on_number_value_changed(value: float, parameter_id: StringName) -> void:
+	assert(_model != null, "EffectModel must not be null")
+	_model.set_value(parameter_id, value)
+
+
+func _on_boolean_toggled(value: bool, parameter_id: StringName) -> void:
+	assert(_model != null, "EffectModel must not be null")
+	_model.set_value(parameter_id, value)
+
+
+func _on_enum_item_selected(index: int, parameter_id: StringName) -> void:
+	assert(_model != null, "EffectModel must not be null")
+
+	var parameter := _model.get_parameter(parameter_id)
+
+	assert(
+		index >= 0 and index < parameter.option_values.size(),
+		"Invalid enum option index: %s" % index,
+	)
+
+	_model.set_value(parameter_id, parameter.option_values[index])
+
+
+func _on_model_enabled_changed(enabled: bool) -> void:
+	if _enabled_checkbox == null:
 		return
 
+	_enabled_checkbox.set_pressed_no_signal(enabled)
+
+
+func _on_model_parameter_changed(id: StringName, value: Variant) -> void:
+	_update_editor_value(id, value)
+	_update_parameter_enabled_states()
+
+
+func _update_editor_value(id: StringName, value: Variant) -> void:
+	assert(_parameter_editors.has(id), "Parameter editor not found: %s" % id)
+
+	var parameter := _model.get_parameter(id)
+	var editor := _parameter_editors[id]
+
+	match parameter.kind:
+		EffectParameterDefinition.Kind.INTEGER, EffectParameterDefinition.Kind.FLOAT:
+			assert(editor is SpinBox, "Numeric editor must be SpinBox: %s" % id)
+			(editor as SpinBox).set_value_no_signal(float(value))
+
+		EffectParameterDefinition.Kind.BOOLEAN:
+			assert(editor is CheckBox, "Boolean editor must be CheckBox: %s" % id)
+			(editor as CheckBox).set_pressed_no_signal(bool(value))
+
+		EffectParameterDefinition.Kind.ENUM:
+			assert(editor is OptionButton, "Enum editor must be OptionButton: %s" % id)
+			_select_enum_value(editor as OptionButton, parameter, int(value))
+
+		_:
+			assert(false, "Unsupported effect parameter kind: %s" % parameter.kind)
+
+
+func _select_enum_value(
+	option_button: OptionButton,
+	parameter: EffectParameterDefinition,
+	value: int,
+) -> void:
+	var option_index := parameter.get_option_index(value)
+
+	assert(
+		option_index >= 0,
+		"Enum value '%s' was not found: %s" % [value, parameter.id],
+	)
+
+	option_button.select(option_index)
+
+
+func _update_parameter_enabled_states() -> void:
+	assert(_model != null, "EffectModel must not be null")
+
 	for parameter in _model.parameters:
-		var editor := _parameter_editors.get(parameter.id) as Control
-		if editor == null:
-			continue
+		assert(_parameter_rows.has(parameter.id), "Parameter row not found: %s" % parameter.id)
+		assert(_parameter_editors.has(parameter.id), "Parameter editor not found: %s" % parameter.id)
 
-		if parameter.visibility_parameter == &"":
-			editor.show()
-			continue
+		var enabled := _model.is_parameter_enabled(parameter.id)
+		var row := _parameter_rows[parameter.id]
+		var editor := _parameter_editors[parameter.id]
 
-		var condition_value:Variant = _model.get_value(
-			parameter.visibility_parameter
-		)
-		editor.visible = parameter.visibility_values.has(condition_value)
+		_set_editor_enabled(editor, enabled)
+		_set_row_enabled_appearance(row, enabled)
+
+
+func _set_editor_enabled(editor: Control, enabled: bool) -> void:
+	if editor is BaseButton:
+		(editor as BaseButton).disabled = not enabled
+		return
+
+	if editor is SpinBox:
+		(editor as SpinBox).editable = enabled
+		return
+
+	assert(false, "Unsupported parameter editor: %s" % editor.get_class())
+
+
+func _set_row_enabled_appearance(row: Control, enabled: bool) -> void:
+	var color := row.modulate
+	color.a = 1.0 if enabled else 0.5
+	row.modulate = color
 
 
 func _disconnect_model() -> void:
@@ -202,8 +231,15 @@ func _disconnect_model() -> void:
 	if _model.parameter_changed.is_connected(_on_model_parameter_changed):
 		_model.parameter_changed.disconnect(_on_model_parameter_changed)
 
+	if _model.enabled_changed.is_connected(_on_model_enabled_changed):
+		_model.enabled_changed.disconnect(_on_model_enabled_changed)
+
+	_model = null
+
 
 func _clear_editors() -> void:
+	_enabled_checkbox = null
+	_parameter_rows.clear()
 	_parameter_editors.clear()
 
 	for child in get_children():
