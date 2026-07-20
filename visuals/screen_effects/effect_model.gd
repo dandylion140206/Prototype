@@ -17,12 +17,11 @@ var enabled := true:
 
 var _enable_rules: Array[EffectParameterEnableRule] = []
 var _parameters_by_id: Dictionary[StringName, EffectParameterDefinition] = {}
-
 var _values: Dictionary[StringName, Variant] = {}
 
 
 func _init(definition: ScreenEffectDefinition) -> void:
-	assert(definition != null, "ScreenEffectDefinition must not be null",)
+	assert(definition != null, "ScreenEffectDefinition must not be null")
 	assert(definition.shader != null, "Screen effect shader must not be null")
 
 	display_name = definition.display_name
@@ -46,26 +45,19 @@ func has_parameter(parameter_id: StringName) -> bool:
 	return _parameters_by_id.has(parameter_id)
 
 
-func get_parameter(
-	parameter_id: StringName,
-) -> EffectParameterDefinition:
+func get_parameter(parameter_id: StringName) -> EffectParameterDefinition:
 	assert(_parameters_by_id.has(parameter_id), "Unknown effect parameter: %s" % parameter_id)
-
 	return _parameters_by_id[parameter_id]
 
 
 func get_value(parameter_id: StringName) -> Variant:
 	assert(_values.has(parameter_id), "Unknown effect parameter: %s" % parameter_id)
-
 	return _values[parameter_id]
 
 
-func set_value(
-	parameter_id: StringName,
-	value: Variant,
-) -> void:
+func set_value(parameter_id: StringName, value: Variant) -> void:
 	var parameter := get_parameter(parameter_id)
-	var normalized_value:Variant = parameter.normalize_value(value)
+	var normalized_value: Variant = parameter.normalize_value(value)
 
 	if _values[parameter_id] == normalized_value:
 		return

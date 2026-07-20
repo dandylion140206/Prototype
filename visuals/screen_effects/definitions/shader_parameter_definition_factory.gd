@@ -5,16 +5,11 @@ extends RefCounted
 static func create_all(shader: Shader) -> Array[EffectParameterDefinition]:
 	assert(shader != null, "Shader must not be null")
 
-	var material := ShaderMaterial.new()
-	material.shader = shader
-
+	var shader_rid := shader.get_rid()
 	var parameters: Array[EffectParameterDefinition] = []
 
-	for uniform_data in shader.get_shader_uniform_list():
-		var parameter := _create_parameter(
-			uniform_data,
-			material,
-		)
+	for uniform_data: Dictionary in shader.get_shader_uniform_list():
+		var parameter := _create_parameter(uniform_data, shader_rid)
 
 		if parameter != null:
 			parameters.append(parameter)
@@ -24,26 +19,21 @@ static func create_all(shader: Shader) -> Array[EffectParameterDefinition]:
 
 static func _create_parameter(
 	uniform_data: Dictionary,
-	material: ShaderMaterial,
+	shader_rid: RID,
 ) -> EffectParameterDefinition:
 	if not uniform_data.has("name") or not uniform_data.has("type"):
 		return null
 
 	var parameter_id := StringName(uniform_data["name"])
-	var type: int = uniform_data["type"]
-	var hint: int = uniform_data.get("hint", PROPERTY_HINT_NONE)
-	var hint_string := String(
-		uniform_data.get("hint_string", "")
-	)
+	var uniform_type := int(uniform_data["type"])
+	var hint := int(uniform_data.get("hint", PROPERTY_HINT_NONE))
+	var hint_string := String(uniform_data.get("hint_string", ""))
 
 	var parameter := EffectParameterDefinition.new()
 	parameter.id = parameter_id
 	parameter.display_name = String(parameter_id).capitalize()
-	parameter.default_value = material.get_shader_parameter(
-		parameter_id
-	)
 
-	match type:
+	match uniform_type:
 		TYPE_BOOL:
 			parameter.kind = EffectParameterDefinition.Kind.BOOLEAN
 
@@ -63,15 +53,19 @@ static func _create_parameter(
 			return null
 
 		_:
-			push_warning(
-				"Unsupported shader parameter type '%s': %s"
-				% [type, parameter_id]
-			)
+			push_warning("Unsupported shader parameter type '%s': %s" % [uniform_type, parameter_id])
 			return null
 
-	parameter.default_value = parameter.normalize_value(
-		parameter.default_value
-	)
+	parameter.default_value = RenderingServer.shader_get_parameter_default(shader_rid, parameter_id)
+	assert(parameter.default_value != null, "Shader parameter default value is null: %s" % parameter_id)
+
+	parameter.default_value = parameter.normalize_value(parameter.default_value)
+
+	if parameter.kind == EffectParameterDefinition.Kind.ENUM:
+		assert(
+			parameter.option_values.has(int(parameter.default_value)),
+			"Enum default value is not included in options: %s" % parameter.id,
+		)
 
 	return parameter
 
@@ -82,49 +76,28 @@ static func _apply_range_hint(
 	hint_string: String,
 ) -> void:
 	assert(
-		hint == PROPERTY_HINT_RANGE,
-		"Numeric shader parameter requires hint_range: %s"
-		% parameter.id,
-	)
+		hint == PROPERTY_HINT_RANGE, "Numeric shader parameter requires hint_range: %s" % parameter.id)
 
 	var range_parts := hint_string.split(",")
-	assert(
-		range_parts.size() >= 2,
-		"Invalid hint_range: %s" % parameter.id,
-	)
+	assert(range_parts.size() >= 2, "Invalid hint_range: %s" % parameter.id)
 
 	parameter.min_value = range_parts[0].to_float()
 	parameter.max_value = range_parts[1].to_float()
 
 	if range_parts.size() >= 3:
 		parameter.step = range_parts[2].to_float()
+	elif parameter.kind == EffectParameterDefinition.Kind.INTEGER:
+		parameter.step = 1.0
 	else:
-		parameter.step = (
-			1.0
-			if parameter.kind == EffectParameterDefinition.Kind.INTEGER
-			else 0.01
-		)
+		parameter.step = 0.01
 
-	assert(
-		parameter.min_value <= parameter.max_value,
-		"Invalid parameter range: %s" % parameter.id,
-	)
-	assert(
-		parameter.step > 0.0,
-		"Parameter step must be greater than zero: %s"
-		% parameter.id,
-	)
+	assert(parameter.min_value <= parameter.max_value, "Invalid parameter range: %s" % parameter.id)
+	assert(parameter.step > 0.0, "Parameter step must be greater than zero: %s" % parameter.id)
 
 
-static func _apply_enum_hint(
-	parameter: EffectParameterDefinition,
-	hint_string: String,
-) -> void:
+static func _apply_enum_hint(parameter: EffectParameterDefinition, hint_string: String) -> void:
 	var option_entries := hint_string.split(",")
-	assert(
-		not option_entries.is_empty(),
-		"Enum options must not be empty: %s" % parameter.id,
-	)
+	assert(not option_entries.is_empty(), "Enum options must not be empty: %s" % parameter.id)
 
 	for index in option_entries.size():
 		var entry := option_entries[index].strip_edges()
@@ -133,16 +106,6 @@ static func _apply_enum_hint(
 		parameter.options.append(value_parts[0].strip_edges())
 
 		if value_parts.size() == 2:
-			parameter.option_values.append(
-				value_parts[1].to_int()
-			)
+			parameter.option_values.append(value_parts[1].to_int())
 		else:
 			parameter.option_values.append(index)
-
-	assert(
-		parameter.option_values.has(
-			int(parameter.default_value)
-		),
-		"Enum default value is not included in options: %s"
-		% parameter.id,
-	)
