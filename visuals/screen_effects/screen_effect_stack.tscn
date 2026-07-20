@@ -12,14 +12,14 @@
 [node name="ScreenEffectStack" type="Node" unique_id=91190207]
 script = ExtResource("1_stack")
 
-[node name="WorldEffectStage" type="CanvasLayer" parent="."]
+[node name="WorldEffectStage" type="CanvasLayer" parent="." unique_id=29855004]
 layer = 50
 
-[node name="Pixelation" parent="WorldEffectStage" instance=ExtResource("2_pass")]
+[node name="Pixelation" parent="WorldEffectStage" unique_id=1883136116 instance=ExtResource("2_pass")]
 layout_mode = 3
 definition = ExtResource("8_definition")
 
-[node name="CompositeEffectStage" type="CanvasLayer" parent="."]
+[node name="CompositeEffectStage" type="CanvasLayer" parent="." unique_id=10025874]
 layer = 150
 
 [node name="ColorGrading" parent="CompositeEffectStage" unique_id=565494613 instance=ExtResource("2_pass")]
@@ -30,13 +30,13 @@ definition = ExtResource("7_definition")
 layout_mode = 3
 definition = ExtResource("5_definition")
 
-[node name="Glow" parent="CompositeEffectStage" unique_id=700692922 instance=ExtResource("2_pass")]
-layout_mode = 3
-definition = ExtResource("6_definition")
-
 [node name="ColorQuantization" parent="CompositeEffectStage" unique_id=1668903275 instance=ExtResource("2_pass")]
 layout_mode = 3
 definition = ExtResource("3_definition")
+
+[node name="Glow" parent="CompositeEffectStage" unique_id=700692922 instance=ExtResource("2_pass")]
+layout_mode = 3
+definition = ExtResource("6_definition")
 
 [node name="ShadowMask" parent="CompositeEffectStage" unique_id=2106660147 instance=ExtResource("2_pass")]
 layout_mode = 3

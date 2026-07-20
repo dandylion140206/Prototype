@@ -84,19 +84,13 @@ func _create_number_editor(
 	spin_box.allow_greater = false
 	spin_box.allow_lesser = false
 	spin_box.rounded = use_integer
-	spin_box.set_value_no_signal(value)
-	spin_box.value_changed.connect(_on_number_value_changed.bind(parameter.id))
 
-	slider.min_value = parameter.min_value
-	slider.max_value = parameter.max_value
-	slider.step = parameter.step
-	slider.allow_greater = false
-	slider.allow_lesser = false
-	slider.rounded = use_integer
+	spin_box.share(slider)
 	slider.scrollable = false
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	slider.set_value_no_signal(value)
-	slider.value_changed.connect(_on_number_value_changed.bind(parameter.id))
+
+	spin_box.set_value_no_signal(value)
+	spin_box.value_changed.connect(_on_number_value_changed.bind(parameter.id))
 
 	header.add_child(label)
 	header.add_child(spin_box)
@@ -221,10 +215,8 @@ func _update_editor_value(id: StringName, value: Variant) -> void:
 	match parameter.kind:
 		ScreenEffectParameterDefinition.Kind.INTEGER, ScreenEffectParameterDefinition.Kind.FLOAT:
 			assert(editor is SpinBox, "Numeric editor must be SpinBox: %s" % id)
-			assert(_parameter_sliders.has(id), "Parameter slider not found: %s" % id)
 
 			(editor as SpinBox).set_value_no_signal(float(value))
-			_parameter_sliders[id].set_value_no_signal(float(value))
 
 		ScreenEffectParameterDefinition.Kind.BOOLEAN:
 			assert(editor is CheckBox, "Boolean editor must be CheckBox: %s" % id)

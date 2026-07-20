@@ -2,9 +2,9 @@ shader_type canvas_item;
 render_mode unshaded;
 
 uniform sampler2D screen_texture
-	: hint_screen_texture, repeat_disable, filter_linear;
+	: hint_screen_texture, source_color, repeat_disable, filter_linear;
 
-uniform float threshold : hint_range(0.0, 1.0, 0.01) = 0.75;
+uniform float threshold : hint_range(0.0, 8.0, 0.05) = 1.0;
 uniform float strength : hint_range(0.0, 2.0, 0.05) = 0.5;
 uniform float radius : hint_range(0.0, 16.0, 0.5) = 4.0;
 
@@ -12,7 +12,7 @@ uniform float radius : hint_range(0.0, 16.0, 0.5) = 4.0;
 vec3 get_highlight_color(vec2 uv) {
 	vec3 color = texture(screen_texture, clamp(uv, vec2(0.0), vec2(1.0))).rgb;
 	float brightness = max(color.r, max(color.g, color.b));
-	float highlight = smoothstep(threshold, 1.0, brightness);
+	float highlight = smoothstep(threshold, threshold + 1.0, brightness);
 
 	return color * highlight;
 }

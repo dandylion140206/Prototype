@@ -121,28 +121,40 @@ theme_override_constants/separation = 24
 
 [node name="ResetAllDialog" type="ConfirmationDialog" parent="." unique_id=1048836396]
 unique_name_in_owner = true
+oversampling_override = 1.0
 title = "Reset All Screen Effects"
+size = Vector2i(375, 100)
 ok_button_text = "Reset"
 dialog_text = "Reset all screen effects to their default values?"
 
 [node name="DeletePresetDialog" type="ConfirmationDialog" parent="." unique_id=665441236]
 unique_name_in_owner = true
+oversampling_override = 1.0
 title = "Delete Screen Effect Preset"
+size = Vector2i(226, 100)
 ok_button_text = "Delete"
 dialog_text = "Delete the selected preset?"
 
 [node name="DiscardChangesDialog" type="ConfirmationDialog" parent="." unique_id=1111807385]
 unique_name_in_owner = true
+oversampling_override = 1.0
 title = "Discard Unsaved Changes"
+size = Vector2i(410, 100)
 ok_button_text = "Discard"
 dialog_text = "Discard unsaved changes and load another preset?"
 
 [node name="SaveAsPresetDialog" type="ConfirmationDialog" parent="." unique_id=1608726521]
 unique_name_in_owner = true
+oversampling_override = 1.0
 title = "Save Screen Effect Preset"
+size = Vector2i(296, 100)
 ok_button_text = "Save"
 
 [node name="PresetNameInput" type="LineEdit" parent="SaveAsPresetDialog" unique_id=604293834]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 288.0
+offset_bottom = 51.0
 placeholder_text = "Preset name"
