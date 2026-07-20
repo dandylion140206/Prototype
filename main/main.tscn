@@ -12,8 +12,8 @@
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
 [ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_wip/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
-[ext_resource type="PackedScene" path="res://visuals/screen_effects/screen_effect_stack.tscn" id="13_4hmqs"]
-[ext_resource type="PackedScene" path="res://visuals/screen_effects/debug/screen_effect_debugger.tscn" id="16_4hmqs"]
+[ext_resource type="PackedScene" uid="uid://biqf80oy0ponb" path="res://visuals/screen_effects/screen_effect_stack.tscn" id="13_4hmqs"]
+[ext_resource type="PackedScene" uid="uid://cosu16374nyna" path="res://visuals/screen_effects/debug/screen_effect_debugger.tscn" id="16_4hmqs"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -39,6 +39,7 @@ script = ExtResource("2_ipbj0")
 script = ExtResource("3_grrlh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=815715909]
+visible = false
 texture = ExtResource("10_s758e")
 offset = Vector2(960, 540)
 

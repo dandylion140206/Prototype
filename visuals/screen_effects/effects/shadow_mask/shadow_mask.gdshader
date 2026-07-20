@@ -5,7 +5,7 @@ uniform sampler2D screen_texture
 	: hint_screen_texture, repeat_disable, filter_nearest;
 
 uniform int mask_type
-	: hint_enum("Dot Aligned", "Dot Staggered", "Slot Aligned", "Slot Staggered (Rows)", "Slot Staggered (Columns)") = 3;
+	: hint_enum("Dot Aligned", "Dot Staggered", "Slot Aligned", "Slot Staggered (Columns)") = 1;
 uniform int mask_scale : hint_range(1, 32, 1) = 2;
 uniform float mask_strength : hint_range(0.0, 1.0, 0.05) = 0.5;
 uniform float mask_brightness : hint_range(0.0, 3.0, 0.05) = 1.0;
@@ -40,8 +40,10 @@ float get_rgb_index(float column) {
 
 vec3 get_dot_mask(vec2 position, float scale) {
 	float row = floor(position.y / scale);
-	float row_offset = mask_type == 1 && mod(row, 2.0) > 0.5 ? scale * 0.5 : 0.0;
+	float is_staggered_row = mask_type == 1 && mod(row, 2.0) > 0.5 ? 1.0 : 0.0;
+	float row_offset = is_staggered_row * scale * 0.5;
 	float column = floor((position.x - row_offset) / scale);
+	float color_column = column - is_staggered_row;
 	vec2 local_position = vec2(
 		mod(position.x - row_offset, scale),
 		mod(position.y, scale)
@@ -50,7 +52,7 @@ vec3 get_dot_mask(vec2 position, float scale) {
 	float radius = dot_size * 0.5;
 	float is_lit = step(length(centered_position), radius);
 
-	return get_phosphor_color(get_rgb_index(column)) * is_lit;
+	return get_phosphor_color(get_rgb_index(color_column)) * is_lit;
 }
 
 
@@ -70,27 +72,17 @@ vec3 get_slot_mask(vec2 position, float scale) {
 	float height = SLOT_HEIGHT * scale;
 	float pitch_x = (SLOT_WIDTH + SLOT_GAP_X) * scale;
 	float pitch_y = (SLOT_HEIGHT + SLOT_GAP_Y) * scale;
+	float triad_width = pitch_x * 3.0;
+	float triad = floor(position.x / triad_width);
 	float column = floor(position.x / pitch_x);
 	float column_offset = (
-		mask_type == 4 && mod(column, 2.0) > 0.5
+		mask_type == 3 && mod(triad, 2.0) > 0.5
 		? pitch_y * 0.5
 		: 0.0
 	);
-	float row = floor((position.y - column_offset) / pitch_y);
-	float row_offset = (
-		mask_type == 3 && mod(row, 2.0) > 0.5
-		? pitch_x * 0.5
-		: 0.0
-	);
-
-	column = floor((position.x - row_offset) / pitch_x);
-	if (mask_type == 4) {
-		column_offset = mod(column, 2.0) > 0.5 ? pitch_y * 0.5 : 0.0;
-		row = floor((position.y - column_offset) / pitch_y);
-	}
 
 	vec2 local_position = vec2(
-		mod(position.x - row_offset, pitch_x) - width * 0.5,
+		mod(position.x, pitch_x) - width * 0.5,
 		mod(position.y - column_offset, pitch_y) - height * 0.5
 	);
 	float corner_radius = min(width, height) * SLOT_CORNER_RADIUS;

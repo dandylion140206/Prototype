@@ -141,7 +141,6 @@ dialog_text = "Discard unsaved changes and load another preset?"
 unique_name_in_owner = true
 title = "Save Screen Effect Preset"
 ok_button_text = "Save"
-dialog_text = "Preset name"
 
 [node name="PresetNameInput" type="LineEdit" parent="SaveAsPresetDialog" unique_id=604293834]
 unique_name_in_owner = true

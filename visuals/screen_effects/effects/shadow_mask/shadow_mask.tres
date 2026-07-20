@@ -16,4 +16,3 @@ id = &"shadow_mask"
 display_name = "Shadow Mask"
 shader = ExtResource("3_shader")
 activation_rules = Array[ExtResource("2_rule")]([SubResource("ActivationRule_dot")])
-metadata/_custom_type_script = "res://visuals/screen_effects/screen_effect_definition.gd"

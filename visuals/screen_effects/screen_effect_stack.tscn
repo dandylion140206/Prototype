@@ -1,16 +1,23 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://biqf80oy0ponb"]
 
-[ext_resource type="Script" path="res://visuals/screen_effects/screen_effect_stack.gd" id="1_stack"]
+[ext_resource type="Script" uid="uid://b44i6npvs2em" path="res://visuals/screen_effects/screen_effect_stack.gd" id="1_stack"]
 [ext_resource type="PackedScene" path="res://visuals/screen_effects/screen_effect_pass.tscn" id="2_pass"]
-[ext_resource type="Resource" path="res://visuals/screen_effects/effects/color_quantization/color_quantization.tres" id="3_definition"]
-[ext_resource type="Resource" path="res://visuals/screen_effects/effects/shadow_mask/shadow_mask.tres" id="4_definition"]
+[ext_resource type="Resource" uid="uid://ddafwlfmjjw3y" path="res://visuals/screen_effects/effects/color_quantization/color_quantization.tres" id="3_definition"]
+[ext_resource type="Resource" uid="uid://c1u2wxbe6cpgs" path="res://visuals/screen_effects/effects/shadow_mask/shadow_mask.tres" id="4_definition"]
+[ext_resource type="Resource" path="res://visuals/screen_effects/effects/chromatic_aberration/chromatic_aberration.tres" id="5_definition"]
 
-[node name="ScreenEffectStack" type="CanvasLayer"]
+[node name="ScreenEffectStack" type="CanvasLayer" unique_id=91190207]
 layer = 100
 script = ExtResource("1_stack")
 
-[node name="ColorQuantization" parent="." instance=ExtResource("2_pass")]
+[node name="ChromaticAberration" parent="." unique_id=1764068135 instance=ExtResource("2_pass")]
+layout_mode = 3
+definition = ExtResource("5_definition")
+
+[node name="ColorQuantization" parent="." unique_id=1668903275 instance=ExtResource("2_pass")]
+layout_mode = 3
 definition = ExtResource("3_definition")
 
-[node name="ShadowMask" parent="." instance=ExtResource("2_pass")]
+[node name="ShadowMask" parent="." unique_id=2106660147 instance=ExtResource("2_pass")]
+layout_mode = 3
 definition = ExtResource("4_definition")
