@@ -8,6 +8,8 @@
 [ext_resource type="AudioStream" uid="uid://cep0clot5ipgh" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="7_5m6mw"]
 [ext_resource type="AudioStream" uid="uid://db8mu621kucfp" path="res://assets/sfx/消滅/DSGNMisc_HIT-Fleeting Hit_HY_PC-002.wav" id="8_n0ue5"]
 [ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="9_fash6"]
+[ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://components/movement.gd" id="10_movement"]
+[ext_resource type="Script" uid="uid://bd66x8jiypeuf" path="res://game/target/target_movement.gd" id="11_target_movement"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
 radius = 42.0
@@ -41,6 +43,21 @@ script = ExtResource("9_fash6")
 [node name="Health" type="Node" parent="." unique_id=1605037547]
 unique_name_in_owner = true
 script = ExtResource("5_85njf")
+
+[node name="Movement" type="Node" parent="." unique_id=1726403921]
+unique_name_in_owner = true
+script = ExtResource("10_movement")
+target_speed = 100.0
+acceleration = 100.0
+max_speed = 400.0
+
+[node name="TargetMovement" type="Node" parent="." unique_id=1726403922]
+unique_name_in_owner = true
+script = ExtResource("11_target_movement")
+wait_duration = 2.0
+wander_strength = 20.0
+wander_speed = 2.0
+arrival_distance = 2.0
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=1243515773]
 unique_name_in_owner = true

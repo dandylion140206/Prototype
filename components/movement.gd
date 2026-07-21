@@ -1,9 +1,9 @@
 class_name Movement
 extends Node
 
-@export_range(1000.0, 10000.0, 100.0) var target_speed: float = 6000.0
-@export_range(1000.0, 20000.0, 100.0) var acceleration: float = 10000.0
-@export_range(1000.0, 20000.0, 100.0) var max_speed: float = 7000.0
+@export_range(100.0, 10000.0, 100.0) var target_speed: float = 6000.0
+@export_range(100.0, 20000.0, 100.0) var acceleration: float = 10000.0
+@export_range(100.0, 20000.0, 100.0) var max_speed: float = 7000.0
 
 var _body: Node2D
 var _velocity := Vector2.ZERO
