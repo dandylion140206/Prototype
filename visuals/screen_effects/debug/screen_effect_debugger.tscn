@@ -8,9 +8,9 @@ layer = 200
 script = ExtResource("1_debugger")
 
 [node name="ScreenEffectDebugWindow" type="PanelContainer" parent="." unique_id=1220811096]
-offset_left = 60.0
+offset_left = 1340.0
 offset_top = 60.0
-offset_right = 560.0
+offset_right = 1840.0006
 offset_bottom = 1020.0
 script = ExtResource("2_window")
 

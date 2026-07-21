@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://biqf80oy0ponb" path="res://visuals/screen_effects/screen_effect_stack.tscn" id="13_4hmqs"]
 [ext_resource type="PackedScene" uid="uid://cosu16374nyna" path="res://visuals/screen_effects/debug/screen_effect_debugger.tscn" id="16_4hmqs"]
 [ext_resource type="Script" uid="uid://cbbvic5xvuvry" path="res://components/health/target_health_bar_layer.gd" id="17_health_bars"]
+[ext_resource type="Script" uid="uid://bpiihelli555x" path="res://debug/performance/performance_overlay.gd" id="18_performance"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -40,6 +41,7 @@ script = ExtResource("2_ipbj0")
 script = ExtResource("3_grrlh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=815715909]
+visible = false
 texture = ExtResource("10_s758e")
 offset = Vector2(960, 540)
 
@@ -80,5 +82,23 @@ script = ExtResource("17_health_bars")
 
 [node name="ScreenEffectDebugger" parent="." unique_id=765001636 node_paths=PackedStringArray("screen_effect_stack") instance=ExtResource("16_4hmqs")]
 screen_effect_stack = NodePath("../ScreenEffectStack")
+
+[node name="PerformanceOverlay" type="CanvasLayer" parent="." unique_id=21771265]
+layer = 250
+script = ExtResource("18_performance")
+
+[node name="Background" type="ColorRect" parent="PerformanceOverlay" unique_id=2131034917]
+offset_right = 250.0
+offset_bottom = 180.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Label" type="Label" parent="PerformanceOverlay" unique_id=713652654]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 220.0
+offset_bottom = 120.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 
 [connection signal="panel_visibility_changed" from="ScreenEffectDebugger" to="Cursor" method="set_os_cursor_visible"]
