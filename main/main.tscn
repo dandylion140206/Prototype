@@ -49,8 +49,8 @@ offset = Vector2(960, 540)
 y_sort_enabled = true
 script = ExtResource("6_kfbq2")
 target_scene = ExtResource("5_3wy1v")
-spawn_weight_top = 0.0
-spawn_weight_bottom = 0.0
+spawn_spread_radius = 100.0
+top_bottom_center_exclusion_ratio = 0.7
 goal_area_radius = Vector2(100, 300)
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
