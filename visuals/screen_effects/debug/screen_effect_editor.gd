@@ -66,6 +66,11 @@ func _on_enum_item_selected(index: int, parameter_id: StringName) -> void:
 	_state.set_value(parameter_id, parameter.option_values[index])
 
 
+func _on_color_changed(value: Color, parameter_id: StringName) -> void:
+	assert(_state != null, "ScreenEffectState must not be null")
+	_state.set_value(parameter_id, value)
+
+
 func _on_state_enabled_changed(enabled: bool) -> void:
 	if _enabled_checkbox == null:
 		return
@@ -109,6 +114,9 @@ func _create_parameter_editor(parameter: ScreenEffectParameterDefinition) -> voi
 
 		ScreenEffectParameterDefinition.Kind.ENUM:
 			_create_enum_editor(parameter)
+
+		ScreenEffectParameterDefinition.Kind.COLOR:
+			_create_color_editor(parameter)
 
 		_:
 			assert(false, "Unsupported effect parameter kind: %s" % parameter.kind)
@@ -204,6 +212,30 @@ func _create_enum_editor(parameter: ScreenEffectParameterDefinition) -> void:
 	_parameter_rows[parameter.id] = row
 	_parameter_editors[parameter.id] = option_button
 	_parameter_reset_buttons[parameter.id] = reset_button
+
+
+func _create_color_editor(parameter: ScreenEffectParameterDefinition) -> void:
+	var row := HBoxContainer.new()
+	var label := Label.new()
+	var color_button := ColorPickerButton.new()
+	var reset_button := _create_reset_button("Reset %s" % parameter.display_name)
+
+	label.text = parameter.display_name
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	color_button.color = Color(_state.get_value(parameter.id))
+	color_button.custom_minimum_size = Vector2(96.0, 0.0)
+	color_button.get_picker().edit_alpha = true
+	color_button.color_changed.connect(_on_color_changed.bind(parameter.id))
+	reset_button.pressed.connect(_on_parameter_reset_pressed.bind(parameter.id))
+
+	row.add_child(label)
+	row.add_child(color_button)
+	row.add_child(reset_button)
+	add_child(row)
+
+	_parameter_rows[parameter.id] = row
+	_parameter_editors[parameter.id] = color_button
+	_parameter_reset_buttons[parameter.id] = reset_button
 func _update_editor_value(id: StringName, value: Variant) -> void:
 	assert(_parameter_editors.has(id), "Parameter editor not found: %s" % id)
 
@@ -223,6 +255,10 @@ func _update_editor_value(id: StringName, value: Variant) -> void:
 		ScreenEffectParameterDefinition.Kind.ENUM:
 			assert(editor is OptionButton, "Enum editor must be OptionButton: %s" % id)
 			_select_enum_value(editor as OptionButton, parameter, int(value))
+
+		ScreenEffectParameterDefinition.Kind.COLOR:
+			assert(editor is ColorPickerButton, "Color editor must be ColorPickerButton: %s" % id)
+			(editor as ColorPickerButton).color = Color(value)
 
 		_:
 			assert(false, "Unsupported effect parameter kind: %s" % parameter.kind)

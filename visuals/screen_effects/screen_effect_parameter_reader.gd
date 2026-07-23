@@ -56,6 +56,12 @@ static func _read_parameter(
 		TYPE_OBJECT:
 			return null
 
+		TYPE_VECTOR2:
+			return null
+
+		TYPE_COLOR:
+			parameter.kind = ScreenEffectParameterDefinition.Kind.COLOR
+
 		_:
 			push_warning("Unsupported shader parameter type '%s': %s" % [uniform_type, parameter_id])
 			return null

@@ -6,6 +6,7 @@ enum Kind {
 	FLOAT,
 	BOOLEAN,
 	ENUM,
+	COLOR,
 }
 
 var id: StringName
@@ -43,6 +44,14 @@ func normalize_value(value: Variant) -> Variant:
 				return enum_value
 
 			push_warning("Invalid enum value '%s' for '%s'." % [enum_value, id])
+			return default_value
+
+		Kind.COLOR:
+			if value is Color:
+				return value
+			if value is Vector4:
+				return Color(value.x, value.y, value.z, value.w)
+			push_warning("Invalid color value for '%s'." % id)
 			return default_value
 
 	assert(false, "Unsupported effect parameter kind: %s" % kind)
