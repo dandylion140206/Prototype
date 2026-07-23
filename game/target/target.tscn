@@ -26,6 +26,7 @@ radius = 42.0
 [node name="HitFlash" type="Node" parent="Visual" unique_id=493912912]
 unique_name_in_owner = true
 script = ExtResource("3_5m6mw")
+flash_modulate = Color(2.333684, 2.333684, 2.333684, 1)
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1372649879]
 unique_name_in_owner = true

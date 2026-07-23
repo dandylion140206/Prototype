@@ -18,7 +18,7 @@ var enabled: bool = true:
 		enabled_changed.emit(enabled)
 
 var _preset_store: ScreenEffectPresetStore
-var _active_preset_name: String = "Default"
+var _active_preset_name: String = ScreenEffectPresetStore.DEFAULT_PRESET_NAME
 var _saved_settings: Dictionary = {}
 var _is_preset_dirty: bool = false
 var _is_applying_settings: bool = false
@@ -36,8 +36,11 @@ func _ready() -> void:
 	_preset_store = ScreenEffectPresetStore.new()
 	_active_preset_name = _preset_store.get_active_preset_name()
 
-	if _active_preset_name != "Default" and not _preset_store.has_preset(_active_preset_name):
-		_active_preset_name = "Default"
+	if (
+		_active_preset_name != ScreenEffectPresetStore.DEFAULT_PRESET_NAME
+		and not _preset_store.has_preset(_active_preset_name)
+	):
+		_active_preset_name = ScreenEffectPresetStore.DEFAULT_PRESET_NAME
 
 	_apply_preset(_active_preset_name)
 
@@ -58,7 +61,7 @@ func get_states() -> Array[ScreenEffectState]:
 func get_preset_names() -> Array[String]:
 	assert(_preset_store != null, "ScreenEffectPresetStore must be initialized")
 
-	var preset_names: Array[String] = ["Default"]
+	var preset_names: Array[String] = [ScreenEffectPresetStore.DEFAULT_PRESET_NAME]
 	preset_names.append_array(_preset_store.get_preset_names())
 
 	return preset_names
@@ -75,15 +78,18 @@ func is_preset_dirty() -> bool:
 func select_preset(preset_name: String) -> Error:
 	assert(_preset_store != null, "ScreenEffectPresetStore must be initialized")
 
-	if preset_name != "Default" and not _preset_store.has_preset(preset_name):
+	if (
+		preset_name != ScreenEffectPresetStore.DEFAULT_PRESET_NAME
+		and not _preset_store.has_preset(preset_name)
+	):
 		return ERR_DOES_NOT_EXIST
 
-	_active_preset_name = preset_name
-	var error := _preset_store.set_active_preset_name(_active_preset_name)
+	var error := _preset_store.set_active_preset_name(preset_name)
 
 	if error != OK:
 		return error
 
+	_active_preset_name = preset_name
 	_apply_preset(_active_preset_name)
 	preset_changed.emit(_active_preset_name)
 
@@ -91,7 +97,7 @@ func select_preset(preset_name: String) -> Error:
 
 
 func save_active_preset() -> Error:
-	if _active_preset_name == "Default":
+	if _active_preset_name == ScreenEffectPresetStore.DEFAULT_PRESET_NAME:
 		return ERR_UNAVAILABLE
 
 	return _save_preset(_active_preset_name)
@@ -103,17 +109,20 @@ func save_as_preset(preset_name: String) -> Error:
 	if not ScreenEffectPresetStore.is_valid_preset_name(preset_name):
 		return ERR_INVALID_PARAMETER
 
-	_active_preset_name = preset_name.strip_edges()
-	var error := _save_preset(_active_preset_name)
+	var normalized_preset_name := preset_name.strip_edges()
+	var error := _save_preset(normalized_preset_name)
 
-	if error == OK:
-		preset_changed.emit(_active_preset_name)
+	if error != OK:
+		return error
 
-	return error
+	_active_preset_name = normalized_preset_name
+	preset_changed.emit(_active_preset_name)
+
+	return OK
 
 
 func delete_active_preset() -> Error:
-	if _active_preset_name == "Default":
+	if _active_preset_name == ScreenEffectPresetStore.DEFAULT_PRESET_NAME:
 		return ERR_UNAVAILABLE
 
 	var error := _preset_store.delete_preset(_active_preset_name)
@@ -121,7 +130,7 @@ func delete_active_preset() -> Error:
 	if error != OK:
 		return error
 
-	_active_preset_name = "Default"
+	_active_preset_name = ScreenEffectPresetStore.DEFAULT_PRESET_NAME
 	_apply_preset(_active_preset_name)
 	preset_changed.emit(_active_preset_name)
 
@@ -218,7 +227,7 @@ func _apply_preset(preset_name: String) -> void:
 	for state in get_states():
 		state.reset()
 
-	if preset_name != "Default":
+	if preset_name != ScreenEffectPresetStore.DEFAULT_PRESET_NAME:
 		_apply_settings(_preset_store.load_preset(preset_name))
 
 	_is_applying_settings = false

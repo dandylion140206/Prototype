@@ -9,4 +9,4 @@ id = &"chromatic_aberration"
 display_name = "Chromatic Aberration"
 shader = ExtResource("2_shader")
 enabled_by_default = false
-metadata/_custom_type_script = "res://visuals/screen_effects/screen_effect_definition.gd"
+metadata/_custom_type_script = "uid://o2diwtsvvjoy"

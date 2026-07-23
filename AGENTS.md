@@ -11,7 +11,8 @@
 作業前に以下のファイルを参照すること。
 
 - 設計: `docs/DESIGN.md`
-- コードスタイル: `docs/CODE_STYLE.md`
+- コード関連: `docs/CODE_STYLE.md`
+- プロジェクト構造: `docx/ARCHITECTURE.md`
 
 ## 基本方針
 
@@ -45,6 +46,7 @@ Godotに関する仕様や推奨事項については、[Godot Docs](https://doc
 - Signalによる接続
 - 外部から利用される公開API
 - 関連するResource
+- プロジェクト設定
 - 再利用可能な既存実装
 
 ## 検証

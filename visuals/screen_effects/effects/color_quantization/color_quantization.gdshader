@@ -124,7 +124,8 @@ vec3 srgb_to_linear_color(vec3 color) {
 
 void fragment() {
 	vec4 screen_color = texture(screen_texture, SCREEN_UV);
-	vec3 working_color = screen_color.rgb;
+	vec3 hdr_excess = max(screen_color.rgb - vec3(1.0), vec3(0.0));
+	vec3 working_color = min(screen_color.rgb, vec3(1.0));
 
 	if (color_space == 0) {
 		working_color = linear_to_srgb_color(working_color);
@@ -161,5 +162,5 @@ void fragment() {
 		working_color = srgb_to_linear_color(working_color);
 	}
 
-	COLOR = vec4(working_color, screen_color.a);
+	COLOR = vec4(working_color + hdr_excess, screen_color.a);
 }

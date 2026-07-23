@@ -207,6 +207,6 @@ func _refresh_preset_controls() -> void:
 
 	_preset_selector.select(active_index)
 
-	var is_default_preset := active_preset_name == "Default"
+	var is_default_preset := active_preset_name == ScreenEffectPresetStore.DEFAULT_PRESET_NAME
 	_save_button.disabled = is_default_preset
 	_delete_button.disabled = is_default_preset
