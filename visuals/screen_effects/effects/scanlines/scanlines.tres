@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ScreenEffectDefinition" format=3]
+
+[ext_resource type="Script" path="res://visuals/screen_effects/screen_effect_definition.gd" id="1_definition"]
+[ext_resource type="Shader" path="res://visuals/screen_effects/effects/scanlines/scanlines.gdshader" id="2_shader"]
+
+[resource]
+script = ExtResource("1_definition")
+id = &"scanlines"
+display_name = "Scanlines"
+shader = ExtResource("2_shader")
+metadata/_custom_type_script = "uid://o2diwtsvvjoy"

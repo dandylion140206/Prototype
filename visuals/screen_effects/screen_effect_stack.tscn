@@ -9,6 +9,7 @@
 [ext_resource type="Resource" path="res://visuals/screen_effects/effects/color_grading/color_grading.tres" id="7_definition"]
 [ext_resource type="Resource" path="res://visuals/screen_effects/effects/pixelation/pixelation.tres" id="8_definition"]
 [ext_resource type="Resource" path="res://visuals/screen_effects/effects/vignette/vignette.tres" id="9_definition"]
+[ext_resource type="Resource" path="res://visuals/screen_effects/effects/scanlines/scanlines.tres" id="10_definition"]
 
 [node name="ScreenEffectStack" type="Node" unique_id=91190207]
 script = ExtResource("1_stack")
@@ -43,6 +44,10 @@ definition = ExtResource("6_definition")
 layout_mode = 3
 definition = ExtResource("4_definition")
 
-[node name="Vignette" parent="CompositeEffectStage" instance=ExtResource("2_pass")]
+[node name="Scanlines" parent="CompositeEffectStage" unique_id=900055696 instance=ExtResource("2_pass")]
+layout_mode = 3
+definition = ExtResource("10_definition")
+
+[node name="Vignette" parent="CompositeEffectStage" unique_id=533262802 instance=ExtResource("2_pass")]
 layout_mode = 3
 definition = ExtResource("9_definition")

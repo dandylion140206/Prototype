@@ -12,8 +12,8 @@
 
 - 設計: `docs/DESIGN.md`
 - GDScript関連: `docs/GDSCRIPT.md`
-- Shader関連: `docx/SHADER.md`
-- プロジェクト構造: `docx/ARCHITECTURE.md`
+- Shader関連: `docs/SHADER.md`
+- プロジェクト構造: `docs/ARCHITECTURE.md`
 
 ## 基本方針
 
