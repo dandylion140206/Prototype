@@ -33,7 +33,7 @@ script = ExtResource("3_c2dil")
 
 [node name="Trail" type="Line2D" parent="BoostTrail" unique_id=547840986]
 physics_interpolation_mode = 2
-width = 40.0
+width = 42.0
 width_curve = SubResource("Curve_25t5i")
 gradient = SubResource("Gradient_ubwg0")
 joint_mode = 2

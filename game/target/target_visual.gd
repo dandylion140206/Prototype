@@ -1,7 +1,7 @@
 class_name TargetVisual
 extends Node2D
 
-@export_range(1.0, 500.0, 1.0) var radius: float = 40.0
+@export_range(1.0, 500.0, 1.0) var radius: float = 36.0
 @export var full_health_color: Color = Color(0.2, 0.7, 1.0, 1.0)
 @export var low_health_color: Color = Color(1.0, 0.3, 0.3, 1.0)
 

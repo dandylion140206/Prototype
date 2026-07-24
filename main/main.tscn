@@ -12,15 +12,14 @@
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
 [ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_wip/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
-[ext_resource type="PackedScene" uid="uid://biqf80oy0ponb" path="res://visuals/screen_effects/screen_effect_stack.tscn" id="13_n3o0a"]
-[ext_resource type="PackedScene" uid="uid://cosu16374nyna" path="res://visuals/screen_effects/debug/screen_effect_debugger.tscn" id="16_4hmqs"]
+[ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="13_n3o0a"]
 [ext_resource type="Script" uid="uid://cbbvic5xvuvry" path="res://components/health/target_health_bar_layer.gd" id="17_health_bars"]
 [ext_resource type="Script" uid="uid://bpiihelli555x" path="res://debug/performance/performance_overlay.gd" id="18_performance"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
-shader_parameter/dark_color = Color(0.188825, 0.18689999, 0.21, 1)
-shader_parameter/light_color = Color(0.2136, 0.2136, 0.24, 1)
+shader_parameter/dark_color = Color(0.26075834, 0.2581, 0.29, 1)
+shader_parameter/light_color = Color(0.31149998, 0.31149998, 0.35, 1)
 shader_parameter/cell_size = 84.0
 shader_parameter/edge_softness = 4.0000000596048
 shader_parameter/pattern_center = Vector2(960, 540)
@@ -41,6 +40,7 @@ script = ExtResource("2_ipbj0")
 script = ExtResource("3_grrlh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=815715909]
+visible = false
 texture = ExtResource("10_s758e")
 offset = Vector2(960, 540)
 
@@ -72,7 +72,7 @@ script = ExtResource("9_grrlh")
 min_shake_speed = 0.0
 trauma_at_max_speed = 0.8
 
-[node name="ScreenEffectStack" parent="." unique_id=91190207 instance=ExtResource("13_n3o0a")]
+[node name="PostProcessing" parent="." unique_id=91190207 instance=ExtResource("13_n3o0a")]
 
 [node name="WorldUI" type="CanvasLayer" parent="." unique_id=304478551]
 layer = 100
@@ -81,9 +81,6 @@ follow_viewport_enabled = true
 [node name="TargetHealthBarLayer" type="Node2D" parent="WorldUI" unique_id=1874207393]
 unique_name_in_owner = true
 script = ExtResource("17_health_bars")
-
-[node name="ScreenEffectDebugger" parent="." unique_id=765001636 node_paths=PackedStringArray("screen_effect_stack") instance=ExtResource("16_4hmqs")]
-screen_effect_stack = NodePath("../ScreenEffectStack")
 
 [node name="PerformanceOverlay" type="CanvasLayer" parent="." unique_id=21771265]
 layer = 250
@@ -102,5 +99,3 @@ offset_right = 220.0
 offset_bottom = 120.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
-
-[connection signal="panel_visibility_changed" from="ScreenEffectDebugger" to="Cursor" method="set_os_cursor_visible"]

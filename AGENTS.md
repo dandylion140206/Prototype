@@ -30,7 +30,7 @@ Godotに関する仕様や推奨事項については、[Godot Docs](https://doc
 - エラーが多発
 - 方針が定められておらず、判断に迷う
 
-## 注意
+## 注意事項
 
 - 実装に関係ない部分の構造、命名などを勝手に変更しない。
 - `.godot/` 以下のファイルを手動で編集しない。ただし、Godotによるインポートや検証で自動的に生成、更新されることは許容する。
@@ -59,10 +59,13 @@ Godotに関する仕様や推奨事項については、[Godot Docs](https://doc
 - Shader にコンパイルエラーがないか
 - 変更対象の Scene を読み込み、実行したときに期待どおり動作するか
 
-Godotの実装を変更した場合は、プロジェクトルートで次を実行する。
+プロジェクトの実装を変更した場合は、プロジェクトルートで次を実行する。
 
-```bash
-godot --headless --path . --import
+```powershell
+cmd.exe /d /c 'set "APPDATA=%TEMP%\codex-godot-validation\Roaming" && set "LOCALAPPDATA=%TEMP%\codex-godot-validation\Local" && call godot.cmd --headless --path . --import'
 ```
 
-実行できなかった検証項目や、解消できずに残った警告、エラーは作業結果で明示する。
+作業中に発生したエラー・警告は、作業後に以下に従って報告する。
+
+- 解決済みの問題: 原因と行った変更・対策を記載する
+- 未解決の問題: 判明している原因、試した対策、残っている問題を記載する。
