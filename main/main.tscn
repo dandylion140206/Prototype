@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://02fcye2pf3k3" path="res://main/input_controller.gd" id="3_grrlh"]
 [ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="4_n6juq"]
 [ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="5_enemy"]
-[ext_resource type="Script" uid="uid://wrq8hntvs0e0" path="res://main/enemy_spawner.gd" id="6_enemy_spawner"]
+[ext_resource type="Script" uid="uid://wrq8hntvs0e0" path="res://main/test/enemy_spawner.gd" id="6_enemy_spawner"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
 [ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_wip/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
@@ -48,7 +48,6 @@ offset = Vector2(960, 540)
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
-position = Vector2(1820, 540)
 script = ExtResource("6_enemy_spawner")
 enemy_scene = ExtResource("5_enemy")
 spawn_interval = 0.2

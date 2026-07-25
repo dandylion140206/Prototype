@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dbn8y6h02ic87"]
+
+[ext_resource type="Script" uid="uid://bg5hv0qlj5rpu" path="res://_wip/benchmarks/benchmark_runner.gd" id="1_b48em"]
+[ext_resource type="Script" uid="uid://dnx37n48pia7w" path="res://_wip/benchmarks/measured_enemy_crowd_solver.gd" id="1_gedos"]
+[ext_resource type="Script" uid="uid://04l3fl8s6uhd" path="res://_wip/benchmarks/measured_enemy_hard_core_solver.gd" id="3_lbxo6"]
+[ext_resource type="Script" uid="uid://do4wyu8w1xoq8" path="res://_wip/benchmarks/benchmark_spawner.gd" id="4_367xt"]
+[ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="5_lbxo6"]
+
+[node name="Benchmark" type="Node2D" unique_id=93492958]
+script = ExtResource("1_b48em")
+
+[node name="EnemyCrowdSolver" type="Node" parent="." unique_id=1755739998]
+unique_name_in_owner = true
+script = ExtResource("1_gedos")
+metadata/_custom_type_script = "uid://dnx37n48pia7w"
+
+[node name="EnemyHardCoreSolver" type="Node" parent="." unique_id=27412955]
+unique_name_in_owner = true
+script = ExtResource("3_lbxo6")
+metadata/_custom_type_script = "uid://04l3fl8s6uhd"
+
+[node name="BenchmarkSpawner" type="Node2D" parent="." unique_id=295840182]
+unique_name_in_owner = true
+script = ExtResource("4_367xt")
+enemy_scene = ExtResource("5_lbxo6")
+destination = Vector2(960, 540)
+metadata/_custom_type_script = "uid://do4wyu8w1xoq8"

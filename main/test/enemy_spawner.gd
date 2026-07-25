@@ -3,10 +3,19 @@ extends Node2D
 
 signal enemy_spawned(enemy: Enemy)
 
+enum SpawnMode {
+	INSIDE_AREA,
+	AREA_PERIMETER,
+}
+
+@export_group("Spawn")
 @export var enemy_scene: PackedScene
 @export_range(0.01, 5.0, 0.01) var spawn_interval: float = 0.5
-@export_range(0.0, 10000.0, 1.0) var spawn_radius: float = 200.0
-@export var destination: Vector2 = Vector2(100.0, 540.0)
+@export var spawn_mode: SpawnMode = SpawnMode.AREA_PERIMETER
+@export var spawn_area: Rect2 = Rect2(50.0, 50.0, 1820.0, 1000.0)
+
+@export_group("Destination")
+@export var destination_position: Vector2 = Vector2(960.0, 540.0)
 @export var destination_target: Node2D
 
 var _random: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -40,7 +49,7 @@ func _spawn_enemy() -> void:
 
 	spawn_parent.add_child(enemy)
 	enemy.global_position = _get_spawn_position()
-	enemy.set_destination(destination)
+	enemy.set_destination(destination_position)
 
 	if destination_target != null and is_instance_valid(destination_target):
 		enemy.set_destination_target(destination_target)
@@ -49,8 +58,22 @@ func _spawn_enemy() -> void:
 
 
 func _get_spawn_position() -> Vector2:
-	var angle := _random.randf_range(0.0, TAU)
-	var distance := sqrt(_random.randf()) * spawn_radius
-	var offset := Vector2.from_angle(angle) * distance
+	var area := spawn_area.abs()
 
-	return global_position + offset
+	if spawn_mode == SpawnMode.INSIDE_AREA:
+		return Vector2(
+			_random.randf_range(area.position.x, area.end.x),
+			_random.randf_range(area.position.y, area.end.y)
+		)
+
+	match _random.randi_range(0, 3):
+		0:
+			return Vector2(_random.randf_range(area.position.x, area.end.x), area.position.y)
+		1:
+			return Vector2(area.end.x, _random.randf_range(area.position.y, area.end.y))
+		2:
+			return Vector2(_random.randf_range(area.position.x, area.end.x), area.end.y)
+		3:
+			return Vector2(area.position.x, _random.randf_range(area.position.y, area.end.y))
+
+	return area.get_center()
