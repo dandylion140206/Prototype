@@ -10,7 +10,7 @@ enum SpawnMode {
 
 @export_group("Spawn")
 @export var enemy_scene: PackedScene
-@export_range(0.01, 5.0, 0.01) var spawn_interval: float = 0.5
+@export_range(0.01, 3.0, 0.01) var spawn_interval: float = 0.5
 @export var spawn_mode: SpawnMode = SpawnMode.AREA_PERIMETER
 
 @export_group("Circle Spawn")

@@ -5,6 +5,14 @@ extends Node
 const WORLD_EFFECT_LAYER: int = 50
 const COMPOSITE_EFFECT_LAYER: int = 150
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		_apply_enabled_state()
+
 @export var world_effects: Array[PostProcessEffect] = []:
 	set(value):
 		world_effects = value
@@ -53,7 +61,8 @@ func rebuild_effects() -> void:
 		composite_effects,
 		registered_effects,
 	)
-
+	
+	_apply_enabled_state()
 
 func _on_effect_changed(binding: EffectBinding) -> void:
 	if not _effect_bindings.has(binding):
@@ -202,6 +211,12 @@ func _clear_generated_layers(is_immediate: bool = false) -> void:
 			canvas_layer.queue_free()
 
 	_generated_layers.clear()
+
+
+func _apply_enabled_state() -> void:
+	for canvas_layer in _generated_layers:
+		if is_instance_valid(canvas_layer):
+			canvas_layer.visible = enabled
 
 
 class EffectBinding:
