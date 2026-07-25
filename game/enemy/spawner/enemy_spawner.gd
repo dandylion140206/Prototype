@@ -4,7 +4,7 @@ extends Node2D
 signal enemy_spawned(enemy: Enemy)
 
 enum SpawnMode {
-	INSIDE_AREA,
+	INSIDE_CIRCLE,
 	AREA_PERIMETER,
 }
 
@@ -12,7 +12,13 @@ enum SpawnMode {
 @export var enemy_scene: PackedScene
 @export_range(0.01, 5.0, 0.01) var spawn_interval: float = 0.5
 @export var spawn_mode: SpawnMode = SpawnMode.AREA_PERIMETER
-@export var spawn_area: Rect2 = Rect2(50.0, 50.0, 1820.0, 1000.0)
+
+@export_group("Circle Spawn")
+@export var spawn_center: Vector2 = Vector2(960.0, 540.0)
+@export_range(0.0, 1000.0, 1.0) var spawn_radius: float = 100.0
+
+@export_group("Perimeter Spawn")
+@export var spawn_area_size: Vector2 = Vector2(1820.0, 1000.0)
 
 @export_group("Destination")
 @export var destination_position: Vector2 = Vector2(960.0, 540.0)
@@ -58,13 +64,13 @@ func _spawn_enemy() -> void:
 
 
 func _get_spawn_position() -> Vector2:
-	var area := spawn_area.abs()
+	if spawn_mode == SpawnMode.INSIDE_CIRCLE:
+		var angle := _random.randf_range(0.0, TAU)
+		var distance := sqrt(_random.randf()) * spawn_radius
 
-	if spawn_mode == SpawnMode.INSIDE_AREA:
-		return Vector2(
-			_random.randf_range(area.position.x, area.end.x),
-			_random.randf_range(area.position.y, area.end.y)
-		)
+		return spawn_center + Vector2.from_angle(angle) * distance
+
+	var area := _get_spawn_area()
 
 	match _random.randi_range(0, 3):
 		0:
@@ -77,3 +83,12 @@ func _get_spawn_position() -> Vector2:
 			return Vector2(area.position.x, _random.randf_range(area.position.y, area.end.y))
 
 	return area.get_center()
+
+
+func _get_spawn_area() -> Rect2:
+	var viewport_rect := get_viewport().get_visible_rect()
+	var screen_center := viewport_rect.get_center()
+	var world_center := get_viewport().get_canvas_transform().affine_inverse() * screen_center
+	var area_size := spawn_area_size.abs()
+
+	return Rect2(world_center - area_size * 0.5, area_size)

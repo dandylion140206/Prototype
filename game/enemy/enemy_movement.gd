@@ -3,13 +3,15 @@ extends Node
 
 @export_range(0.0, 10000.0, 1.0) var acceleration: float = 100.0
 @export_range(0.0, 10000.0, 1.0) var max_speed: float = 400.0
+@export_range(0.01, 100.0, 0.01, "or_greater") var mass: float = 1.0
+@export var is_immovable: bool = false
 @export_range(0.0, 100000.0, 1.0) var separation_weight: float = 600.0
 @export_range(0.0, 1000.0, 1.0) var separation_radius: float = 100.0
 @export_range(0.0, 100000.0, 1.0) var max_separation_acceleration: float = 900.0
 @export_range(0.0, 1000.0, 0.1) var crowd_damping: float = 12.0
 @export_range(0.0, 100000.0, 1.0) var max_crowd_damping_acceleration: float = 1200.0
-@export_range(0.0, 1000.0, 1.0) var hard_core_radius: float = 24.0
-@export_range(1, 8, 1) var hard_core_iterations: int = 3
+@export_range(0.0, 1000.0, 1.0) var overlap_radius: float = 24.0
+@export_range(1, 8, 1) var overlap_iterations: int = 3
 @export_range(0.0, 10000.0, 1.0) var max_knockback_speed: float = 1500.0
 @export_range(0.0, 100000.0, 1.0) var knockback_deceleration: float = 6000.0
 @export_range(0.0, 1000.0, 1.0) var knockback_stop_speed: float = 10.0
@@ -76,13 +78,24 @@ func stop() -> void:
 
 
 func add_knockback(knockback_velocity: Vector2) -> void:
+	var applied_velocity := knockback_velocity * get_inverse_mass()
+	if applied_velocity.is_zero_approx():
+		return
+
 	_pending_knockback_velocity = (
-		_pending_knockback_velocity + knockback_velocity
+		_pending_knockback_velocity + applied_velocity
 	).limit_length(max_knockback_speed)
 
 
 func set_crowd_acceleration(crowd_acceleration: Vector2) -> void:
 	_crowd_acceleration = crowd_acceleration
+
+
+func get_inverse_mass() -> float:
+	if is_immovable:
+		return 0.0
+
+	return 1.0 / maxf(mass, 0.0001)
 
 
 func get_normal_velocity() -> Vector2:

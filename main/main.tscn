@@ -8,15 +8,15 @@
 [ext_resource type="Script" uid="uid://02fcye2pf3k3" path="res://main/input_controller.gd" id="3_grrlh"]
 [ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="4_n6juq"]
 [ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="5_enemy"]
-[ext_resource type="Script" uid="uid://wrq8hntvs0e0" path="res://main/test/enemy_spawner.gd" id="6_enemy_spawner"]
+[ext_resource type="Script" uid="uid://wrq8hntvs0e0" path="res://game/enemy/spawner/enemy_spawner.gd" id="6_enemy_spawner"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
+[ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://game/enemy/crowd/enemy_crowd_system.tscn" id="9_n3o0a"]
 [ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_wip/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
 [ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="13_n3o0a"]
+[ext_resource type="Script" uid="uid://blw028u5wmg2t" path="res://debug/overlay/debug_overlay_layer.gd" id="16_n3o0a"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="17_health_bars"]
-[ext_resource type="Script" uid="uid://bpiihelli555x" path="res://debug/performance/performance_overlay.gd" id="18_performance"]
-[ext_resource type="Script" uid="uid://dd4rfyj1ig4s" path="res://main/enemy_crowd_solver.gd" id="19_enemy_crowd_solver"]
-[ext_resource type="Script" uid="uid://bfhd7864uhy7l" path="res://main/enemy_hard_core_solver.gd" id="20_enemy_hard_core_solver"]
+[ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="17_s758e"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -42,7 +42,6 @@ script = ExtResource("2_ipbj0")
 script = ExtResource("3_grrlh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=815715909]
-visible = false
 texture = ExtResource("10_s758e")
 offset = Vector2(960, 540)
 
@@ -51,19 +50,16 @@ y_sort_enabled = true
 script = ExtResource("6_enemy_spawner")
 enemy_scene = ExtResource("5_enemy")
 spawn_interval = 0.2
+spawn_mode = 0
+spawn_center = Vector2(100, 540)
+destination_position = Vector2(1700, 540)
 
-[node name="EnemyCrowdSolver" type="Node" parent="." unique_id=664721088]
-unique_name_in_owner = true
-process_physics_priority = -100
-script = ExtResource("19_enemy_crowd_solver")
-
-[node name="EnemyHardCoreSolver" type="Node" parent="." unique_id=664721089]
-process_physics_priority = 100
-script = ExtResource("20_enemy_hard_core_solver")
+[node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
 
 [node name="Cursor" parent="." unique_id=413606096 instance=ExtResource("3_c2dye")]
+z_index = 1
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1383456107]
 offset = Vector2(960, 540)
@@ -91,20 +87,20 @@ follow_viewport_enabled = true
 unique_name_in_owner = true
 script = ExtResource("17_health_bars")
 
-[node name="PerformanceOverlay" type="CanvasLayer" parent="." unique_id=21771265]
+[node name="DebugOverlay" type="CanvasLayer" parent="." unique_id=21771265]
 layer = 250
-script = ExtResource("18_performance")
+script = ExtResource("16_n3o0a")
 
-[node name="Background" type="ColorRect" parent="PerformanceOverlay" unique_id=2131034917]
-offset_right = 250.0
-offset_bottom = 180.0
+[node name="PanelContainer" type="VBoxContainer" parent="DebugOverlay" unique_id=940181128]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="ColorRect" parent="DebugOverlay/PanelContainer" unique_id=2131034917]
+layout_mode = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="Label" type="Label" parent="PerformanceOverlay" unique_id=713652654]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 220.0
-offset_bottom = 120.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+[node name="PerformanceOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=770936730]
+layout_mode = 2
+script = ExtResource("17_s758e")
+metadata/_custom_type_script = "uid://dh7s5qmqhmn7v"

@@ -72,6 +72,7 @@ script = ExtResource("11_steering")
 [node name="Movement" type="Node" parent="." unique_id=896627334]
 unique_name_in_owner = true
 script = ExtResource("9_movement")
+max_knockback_speed = 1000.0
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=2143628740]
 unique_name_in_owner = true
