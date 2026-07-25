@@ -49,19 +49,28 @@ func stop_movement() -> void:
 	_enemy_movement.stop()
 
 
-func receive_collision_push(push_velocity: Vector2) -> void:
-	if _is_dying:
-		return
-
-	_enemy_movement.add_knockback(push_velocity)
-
-
 func get_current_health() -> float:
 	return _health.get_current_health()
 
 
 func get_max_health() -> float:
 	return _health.max_health
+
+
+func set_crowd_acceleration(crowd_acceleration: Vector2) -> void:
+	_enemy_movement.set_crowd_acceleration(crowd_acceleration)
+
+
+func get_normal_velocity() -> Vector2:
+	return _enemy_movement.get_normal_velocity()
+
+
+func get_external_knockback_velocity() -> Vector2:
+	return _enemy_movement.get_external_knockback_velocity()
+
+
+func get_enemy_movement() -> EnemyMovement:
+	return _enemy_movement
 
 
 func _on_hit_received(hit_data: HitData) -> void:
@@ -98,6 +107,7 @@ func _on_died() -> void:
 		return
 
 	_is_dying = true
+	remove_from_group("enemy")
 	_enemy_movement.stop()
 	_body_collision_shape.set_deferred("disabled", true)
 	_hurtbox.set_enabled(false)

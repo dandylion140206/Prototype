@@ -17,8 +17,8 @@ radius = 36.0
 radius = 36.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=136872646 groups=["enemy"]]
-collision_layer = 4
-collision_mask = 4
+collision_layer = 0
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_enemy")
 
@@ -29,6 +29,8 @@ script = ExtResource("2_visual")
 [node name="HitEffect" type="Node" parent="Visual" unique_id=1079053635]
 unique_name_in_owner = true
 script = ExtResource("3_hit_effect")
+scale_pull = 1.0
+tween_scale_duration = 1.0
 
 [node name="BodyCollisionShape" type="CollisionShape2D" parent="." unique_id=1291357898]
 unique_name_in_owner = true

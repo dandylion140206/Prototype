@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="13_n3o0a"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="17_health_bars"]
 [ext_resource type="Script" uid="uid://bpiihelli555x" path="res://debug/performance/performance_overlay.gd" id="18_performance"]
+[ext_resource type="Script" uid="uid://dd4rfyj1ig4s" path="res://main/enemy_crowd_solver.gd" id="19_enemy_crowd_solver"]
+[ext_resource type="Script" uid="uid://bfhd7864uhy7l" path="res://main/enemy_hard_core_solver.gd" id="20_enemy_hard_core_solver"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -49,6 +51,16 @@ y_sort_enabled = true
 position = Vector2(1820, 540)
 script = ExtResource("6_enemy_spawner")
 enemy_scene = ExtResource("5_enemy")
+spawn_interval = 0.2
+
+[node name="EnemyCrowdSolver" type="Node" parent="." unique_id=664721088]
+unique_name_in_owner = true
+process_physics_priority = -100
+script = ExtResource("19_enemy_crowd_solver")
+
+[node name="EnemyHardCoreSolver" type="Node" parent="." unique_id=664721089]
+process_physics_priority = 100
+script = ExtResource("20_enemy_hard_core_solver")
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
 

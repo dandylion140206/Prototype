@@ -4,7 +4,7 @@ extends Node2D
 signal enemy_spawned(enemy: Enemy)
 
 @export var enemy_scene: PackedScene
-@export_range(0.01, 60.0, 0.01) var spawn_interval: float = 0.5
+@export_range(0.01, 5.0, 0.01) var spawn_interval: float = 0.5
 @export_range(0.0, 10000.0, 1.0) var spawn_radius: float = 200.0
 @export var destination: Vector2 = Vector2(100.0, 540.0)
 @export var destination_target: Node2D
@@ -54,4 +54,3 @@ func _get_spawn_position() -> Vector2:
 	var offset := Vector2.from_angle(angle) * distance
 
 	return global_position + offset
-
