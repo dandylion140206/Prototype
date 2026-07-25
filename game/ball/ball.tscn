@@ -25,7 +25,6 @@ metadata/_custom_type_script = "uid://b3mrwkpsh0eno"
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1563584028]
 unique_name_in_owner = true
-visible = false
 collision_mask = 2
 script = ExtResource("4_vf1tv")
 
@@ -46,6 +45,7 @@ script = ExtResource("10_orjm5")
 
 [node name="AbilityController" type="Node2D" parent="." unique_id=1095826231]
 unique_name_in_owner = true
+physics_interpolation_mode = 1
 script = ExtResource("9_melhi")
 initial_active_ability_scene = ExtResource("10_w6tmd")
 

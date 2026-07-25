@@ -78,10 +78,7 @@ func setup(camera: Camera2D) -> void:
 
 
 func add_trauma(amount: float) -> void:
-	assert(
-		_camera != null,
-		"CameraShake must be setup before add_trauma()."
-	)
+	assert(_camera != null, "CameraShake must be setup before add_trauma().")
 	assert(amount >= 0.0, "amount must not be negative.")
 
 	_trauma = clampf(_trauma + amount, 0.0, 1.0)

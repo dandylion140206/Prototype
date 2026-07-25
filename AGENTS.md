@@ -65,6 +65,9 @@ Godotに関する仕様や推奨事項については、[Godot Docs](https://doc
 cmd.exe /d /c 'set "APPDATA=%TEMP%\codex-godot-validation\Roaming" && set "LOCALAPPDATA=%TEMP%\codex-godot-validation\Local" && call godot.cmd --headless --path . --import'
 ```
 
+> [!WARNING]
+> PowerShell の外側の単一引用符を二重引用符へ変更したり、`\"` でエスケープしたりしてはならない。
+
 作業中に発生したエラー・警告は、作業後に以下に従って報告する。
 
 - 解決済みの問題: 原因と行った変更・対策を記載する

@@ -1,4 +1,4 @@
-class_name TargetVisual
+class_name EnemyVisual
 extends Node2D
 
 @export_range(1.0, 500.0, 1.0) var radius: float = 36.0
@@ -11,7 +11,6 @@ var _health_ratio: float = 1.0
 func _draw() -> void:
 	var damage_ratio := 1.0 - _health_ratio
 	var color := full_health_color.lerp(low_health_color, damage_ratio)
-
 	draw_circle(Vector2.ZERO, radius, color)
 
 
@@ -22,3 +21,4 @@ func update_health(current_health: float, max_health: float) -> void:
 		_health_ratio = clampf(current_health / max_health, 0.0, 1.0)
 
 	queue_redraw()
+

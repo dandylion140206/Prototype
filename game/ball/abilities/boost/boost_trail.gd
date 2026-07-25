@@ -21,10 +21,7 @@ func setup(
 	get_interpolated_global_position: Callable
 ) -> void:
 	assert(source != null, "source must not be null.")
-	assert(
-		get_interpolated_global_position.is_valid(),
-		"get_interpolated_global_position must be valid."
-	)
+	assert(get_interpolated_global_position.is_valid(), "get_interpolated_global_position must be valid.")
 	assert(_trail != null, "Trail child node must not be null.")
 
 	_trail.setup(source, get_interpolated_global_position)

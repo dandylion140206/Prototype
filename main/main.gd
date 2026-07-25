@@ -5,8 +5,8 @@ extends Node2D
 @onready var _camera: Camera2D = $Camera2D
 @onready var _camera_shake: CameraShake = %CameraShake
 @onready var _impact_camera_shake: ImpactCameraShake = %ImpactCameraShake
-@onready var _target_spawner: TargetSpawner = $TargetSpawner
-@onready var _target_health_bar_layer: TargetHealthBarLayer = %TargetHealthBarLayer
+@onready var _enemy_spawner: EnemySpawner = $EnemySpawner
+@onready var _enemy_health_bar_layer: EnemyHealthBarLayer = %EnemyHealthBarLayer
 
 func _ready() -> void:
 	_camera_shake.setup(_camera)
@@ -16,10 +16,7 @@ func _ready() -> void:
 	_input_controller.active_ability_requested.connect(
 		_ball.request_active_ability
 	)
-	_target_spawner.target_spawned.connect(_target_health_bar_layer.add_target)
-
-	for target in _target_spawner.targets:
-		_target_health_bar_layer.add_target(target)
+	_enemy_spawner.enemy_spawned.connect(_enemy_health_bar_layer.add_enemy)
 
 	_ball.set_target_position(get_global_mouse_position())
 

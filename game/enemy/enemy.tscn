@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://bswtqb2xtbf20"]
+
+[ext_resource type="Script" uid="uid://c1blppbwj3h6t" path="res://game/enemy/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://dn3oyokvk2t61" path="res://game/enemy/enemy_visual.gd" id="2_visual"]
+[ext_resource type="Script" uid="uid://635wbjaqdrck" path="res://components/hit_effect.gd" id="3_hit_effect"]
+[ext_resource type="Script" uid="uid://ce65r6ygj75pg" path="res://components/hit/hurtbox.gd" id="4_hurtbox"]
+[ext_resource type="Script" uid="uid://duxi53mhs2f2s" path="res://components/health/health.gd" id="5_health"]
+[ext_resource type="AudioStream" uid="uid://cep0clot5ipgh" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="6_hit_sound"]
+[ext_resource type="AudioStream" uid="uid://db8mu621kucfp" path="res://assets/sfx/消滅/DSGNMisc_HIT-Fleeting Hit_HY_PC-002.wav" id="7_death_sound"]
+[ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="8_hit_stop"]
+[ext_resource type="Script" uid="uid://3xs256tnqovt" path="res://game/enemy/enemy_movement.gd" id="9_movement"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 36.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
+radius = 36.0
+
+[node name="Enemy" type="CharacterBody2D" unique_id=136872646 groups=["enemy"]]
+collision_layer = 4
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("1_enemy")
+
+[node name="Visual" type="Node2D" parent="." unique_id=971936920]
+unique_name_in_owner = true
+script = ExtResource("2_visual")
+
+[node name="HitEffect" type="Node" parent="Visual" unique_id=1079053635]
+unique_name_in_owner = true
+script = ExtResource("3_hit_effect")
+
+[node name="BodyCollisionShape" type="CollisionShape2D" parent="." unique_id=1291357898]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_body")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=509559158]
+unique_name_in_owner = true
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("4_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=756895953]
+shape = SubResource("CircleShape2D_hurtbox")
+
+[node name="Health" type="Node" parent="." unique_id=10592492]
+unique_name_in_owner = true
+script = ExtResource("5_health")
+
+[node name="HitStop" type="Node" parent="." unique_id=52012667]
+unique_name_in_owner = true
+script = ExtResource("8_hit_stop")
+
+[node name="EnemyMovement" type="Node" parent="." unique_id=896627334]
+unique_name_in_owner = true
+script = ExtResource("9_movement")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=2143628740]
+unique_name_in_owner = true
+stream = ExtResource("6_hit_sound")
+bus = &"SFX"
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=725563217]
+unique_name_in_owner = true
+stream = ExtResource("7_death_sound")
+volume_db = -2.0
+bus = &"SFX"

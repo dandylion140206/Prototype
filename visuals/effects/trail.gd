@@ -104,9 +104,7 @@ func _validate_interpolated_position_getter() -> void:
 	)
 
 	if not _get_interpolated_position.is_valid():
-		push_error(
-			"get_interpolated_position must be valid when source_position_mode is INTERPOLATED_POSITION."
-		)
+		push_error("get_interpolated_position must be valid when source_position_mode is INTERPOLATED_POSITION.")
 
 
 func _get_source_global_position() -> Vector2:

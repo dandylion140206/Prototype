@@ -7,13 +7,13 @@
 [ext_resource type="Script" uid="uid://brlgnkqw8xfsb" path="res://components/background/checkerboard_background.gd" id="3_fwcvl"]
 [ext_resource type="Script" uid="uid://02fcye2pf3k3" path="res://main/input_controller.gd" id="3_grrlh"]
 [ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="4_n6juq"]
-[ext_resource type="PackedScene" uid="uid://bhkvgq3g5yshc" path="res://game/target/target.tscn" id="5_3wy1v"]
-[ext_resource type="Script" uid="uid://be6knta7t0vif" path="res://main/target_spawner.gd" id="6_kfbq2"]
+[ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="5_enemy"]
+[ext_resource type="Script" uid="uid://wrq8hntvs0e0" path="res://main/enemy_spawner.gd" id="6_enemy_spawner"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
 [ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_wip/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
 [ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="13_n3o0a"]
-[ext_resource type="Script" uid="uid://cbbvic5xvuvry" path="res://components/health/target_health_bar_layer.gd" id="17_health_bars"]
+[ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="17_health_bars"]
 [ext_resource type="Script" uid="uid://bpiihelli555x" path="res://debug/performance/performance_overlay.gd" id="18_performance"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
@@ -44,13 +44,11 @@ visible = false
 texture = ExtResource("10_s758e")
 offset = Vector2(960, 540)
 
-[node name="TargetSpawner" type="Node2D" parent="." unique_id=713743795]
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
-script = ExtResource("6_kfbq2")
-target_scene = ExtResource("5_3wy1v")
-spawn_spread_radius = 100.0
-top_bottom_center_exclusion_ratio = 0.7
-goal_area_radius = Vector2(100, 300)
+position = Vector2(1820, 540)
+script = ExtResource("6_enemy_spawner")
+enemy_scene = ExtResource("5_enemy")
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
 
@@ -78,7 +76,7 @@ trauma_at_max_speed = 0.8
 layer = 100
 follow_viewport_enabled = true
 
-[node name="TargetHealthBarLayer" type="Node2D" parent="WorldUI" unique_id=1874207393]
+[node name="EnemyHealthBarLayer" type="Node2D" parent="WorldUI" unique_id=1874207393]
 unique_name_in_owner = true
 script = ExtResource("17_health_bars")
 
