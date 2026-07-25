@@ -7,19 +7,23 @@ signal died
 var _is_dying: bool = false
 
 @onready var _visual: EnemyVisual = %Visual
-@onready var _hit_effect: HitEffect = %HitEffect
+@onready var _hit_flash: HitFlash = %HitFlash
+@onready var _hit_scale_reaction: HitScaleReaction = %HitScaleReaction
 @onready var _body_collision_shape: CollisionShape2D = %BodyCollisionShape
 @onready var _hurtbox: Hurtbox = %Hurtbox
 @onready var _hit_stop: HitStop = %HitStop
 @onready var _health: Health = %Health
-@onready var _enemy_movement: EnemyMovement = %EnemyMovement
+@onready var _enemy_destination: EnemyDestination = %Destination
+@onready var _enemy_steering: EnemySteering = %Steering
+@onready var _enemy_movement: EnemyMovement = %Movement
 @onready var _hit_sound: AudioStreamPlayer2D = %HitSound
 @onready var _death_sound: AudioStreamPlayer2D = %DeathSound
 
 
 func _ready() -> void:
-	_hit_effect.setup(_visual)
-	_enemy_movement.setup(self, _hit_stop)
+	_hit_flash.setup(_visual)
+	_hit_scale_reaction.setup(_visual)
+	_enemy_movement.setup(self, _hit_stop, _enemy_destination, _enemy_steering)
 
 	_hurtbox.hit_received.connect(_on_hit_received)
 	_health.damaged.connect(_on_damaged)
@@ -30,19 +34,24 @@ func _ready() -> void:
 
 
 func set_destination(destination: Vector2) -> void:
-	_enemy_movement.set_destination(destination)
+	_enemy_destination.set_destination(destination)
+	_enemy_movement.start()
 
 
 func set_destination_target(destination_target: Node2D) -> void:
-	_enemy_movement.set_destination_target(destination_target)
+	_enemy_destination.set_destination_target(destination_target)
+	_enemy_movement.start()
 
 
 func clear_destination_target() -> void:
-	_enemy_movement.clear_destination_target()
+	_enemy_destination.clear_destination_target()
+	if not _enemy_destination.has_destination():
+		_enemy_movement.stop()
 
 
 func clear_destination() -> void:
-	_enemy_movement.clear_destination()
+	_enemy_destination.clear_destination()
+	_enemy_movement.stop()
 
 
 func stop_movement() -> void:
@@ -93,7 +102,8 @@ func _on_damaged(
 	if _is_dying:
 		return
 
-	_hit_effect.play()
+	_hit_flash.play()
+	_hit_scale_reaction.play()
 	_play_sound_from_start(_hit_sound)
 
 

@@ -10,6 +10,14 @@ enum Direction {
 
 const EFFECT_SHADER: Shader = preload("./chromatic_aberration.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export var direction: Direction = Direction.HORIZONTAL:
 	set(value):
 		if direction == value:

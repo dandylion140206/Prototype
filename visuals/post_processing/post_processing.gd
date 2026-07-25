@@ -66,7 +66,7 @@ func _on_effect_changed(binding: EffectBinding) -> void:
 	):
 		return
 
-	_set_binding_enabled(binding, binding.effect.enabled)
+	_set_binding_enabled(binding, binding.effect.is_enabled())
 	_apply_shader_parameters(binding.effect, binding.material)
 
 
@@ -151,7 +151,7 @@ func _create_effect_nodes(
 	binding.changed_callback = _on_effect_changed.bind(binding)
 	_effect_bindings.append(binding)
 
-	_set_binding_enabled(binding, effect.enabled)
+	_set_binding_enabled(binding, effect.is_enabled())
 	_apply_shader_parameters(effect, material)
 	effect.changed.connect(binding.changed_callback, CONNECT_DEFERRED)
 

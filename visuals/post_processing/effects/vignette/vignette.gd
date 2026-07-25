@@ -9,6 +9,14 @@ enum ShapeMode {
 
 const EFFECT_SHADER: Shader = preload("./vignette.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export_range(0.0, 1.0, 0.01) var strength: float = 0.18:
 	set(value):
 		if is_equal_approx(strength, value):

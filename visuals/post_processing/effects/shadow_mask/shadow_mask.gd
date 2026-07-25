@@ -9,6 +9,14 @@ enum MaskStyle {
 
 const EFFECT_SHADER: Shader = preload("./shadow_mask.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export var mask_style: MaskStyle = MaskStyle.STRETCHED_VGA:
 	set(value):
 		if mask_style == value:

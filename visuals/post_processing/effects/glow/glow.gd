@@ -4,6 +4,14 @@ extends PostProcessEffect
 
 const EFFECT_SHADER: Shader = preload("./glow.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export_range(0.0, 8.0, 0.05) var threshold: float = 1.0:
 	set(value):
 		if is_equal_approx(threshold, value):

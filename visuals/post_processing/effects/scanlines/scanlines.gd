@@ -4,6 +4,14 @@ extends PostProcessEffect
 
 const EFFECT_SHADER: Shader = preload("./scanlines.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export_range(1.0, 1080.0, 1.0) var line_count: float = 240.0:
 	set(value):
 		if is_equal_approx(line_count, value):

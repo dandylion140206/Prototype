@@ -4,6 +4,14 @@ extends PostProcessEffect
 
 const EFFECT_SHADER: Shader = preload("./pixelation.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export_range(1, 32, 1) var pixel_size: int = 4:
 	set(value):
 		if pixel_size == value:

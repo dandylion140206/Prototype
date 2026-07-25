@@ -78,7 +78,7 @@ func _apply_new_overlap_hits() -> Array[HitData]:
 		if _is_contacting(hurtbox):
 			continue
 
-		var hit_data := _apply_hit(hurtbox, Vector2.ZERO)
+		var hit_data := _apply_hit(hurtbox, global_position)
 		if hit_data != null:
 			hit_data_list.append(hit_data)
 
@@ -100,18 +100,23 @@ func _move_and_apply_swept_hits(planned_motion: Vector2) -> Array[HitData]:
 			return []
 
 		var first_hurtboxes: Array[Hurtbox] = sweep_result["hurtboxes"]
+		var unsafe_fraction: float = sweep_result["unsafe_fraction"]
+		var contact_position := global_position + planned_motion * clampf(
+			unsafe_fraction,
+			0.0,
+			1.0
+		)
 		var hit_data_list: Array[HitData] = []
 		for hurtbox in first_hurtboxes:
 			if _is_contacting(hurtbox):
 				continue
 
-			var hit_data := _apply_hit(hurtbox, planned_motion.normalized())
+			var hit_data := _apply_hit(hurtbox, contact_position)
 			if hit_data != null:
 				hit_data_list.append(hit_data)
 
 		if not hit_data_list.is_empty():
-			var unsafe_fraction: float = sweep_result["unsafe_fraction"]
-			global_position += planned_motion * clampf(unsafe_fraction, 0.0, 1.0)
+			global_position = contact_position
 			return hit_data_list
 
 		for hurtbox in first_hurtboxes:
@@ -121,13 +126,11 @@ func _move_and_apply_swept_hits(planned_motion: Vector2) -> Array[HitData]:
 	return []
 
 
-func _apply_hit(hurtbox: Hurtbox, movement_direction: Vector2) -> HitData:
+func _apply_hit(hurtbox: Hurtbox, impact_position: Vector2) -> HitData:
 	if hurtbox == null or hurtbox.is_queued_for_deletion():
 		return null
 
-	var direction := movement_direction
-	if direction.is_zero_approx():
-		direction = (hurtbox.global_position - global_position).normalized()
+	var direction := (hurtbox.global_position - impact_position).normalized()
 
 	return _impact_attack.apply_hit(hurtbox, direction)
 

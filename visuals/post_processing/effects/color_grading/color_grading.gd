@@ -4,6 +4,14 @@ extends PostProcessEffect
 
 const EFFECT_SHADER: Shader = preload("./color_grading.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export_range(-1.0, 1.0, 0.01) var brightness: float = 0.0:
 	set(value):
 		if is_equal_approx(brightness, value):

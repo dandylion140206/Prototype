@@ -21,6 +21,14 @@ enum DitherMode {
 
 const EFFECT_SHADER: Shader = preload("./color_quantization.gdshader")
 
+@export var enabled: bool = true:
+	set(value):
+		if enabled == value:
+			return
+
+		enabled = value
+		notify_change()
+
 @export var quantization_mode: QuantizationMode = QuantizationMode.SHARED:
 	set(value):
 		if quantization_mode == value:
