@@ -5,6 +5,7 @@ signal hit_landed(hit_data: HitData)
 signal active_ability_activated
 
 var _target_position: Vector2 = Vector2.ZERO
+var _contacting_hurtbox_ids: Dictionary[int, bool] = {}
 
 @onready var _hitbox: Hitbox = %Hitbox
 @onready var _movement: Movement = %Movement
@@ -18,7 +19,7 @@ var _target_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	_movement.setup(self)
-	_impact_attack.setup(_movement.get_speed)
+	_impact_attack.setup(_movement.get_speed, self)
 	_physics_position_interpolator.setup(self)
 
 	var ability_context := AbilityContext.new(
@@ -30,8 +31,6 @@ func _ready() -> void:
 
 	_ability_controller.setup(ability_context)
 
-	_hitbox.hit_detected.connect(_impact_attack.apply_hit)
-	_impact_attack.hit_landed.connect(_on_hit_landed)
 	_ability_controller.active_ability_activated.connect(active_ability_activated.emit)
 
 	_target_position = global_position
@@ -47,7 +46,17 @@ func _physics_process(delta: float) -> void:
 		_target_position,
 		delta
 	)
-	_movement.move(delta)
+	var planned_motion := _movement.get_velocity() * delta
+	var landed_hit_data := _apply_new_overlap_hits()
+	if landed_hit_data.is_empty():
+		landed_hit_data = _move_and_apply_swept_hits(planned_motion)
+
+	_update_contacting_hurtboxes()
+	if not landed_hit_data.is_empty():
+		_hit_stop.start(landed_hit_data.front().attacker_hit_stop_duration)
+		for hit_data in landed_hit_data:
+			hit_landed.emit(hit_data)
+
 	_physics_position_interpolator.record_position()
 
 
@@ -63,6 +72,73 @@ func get_interpolated_global_position() -> Vector2:
 	return _physics_position_interpolator.get_interpolated_global_position()
 
 
-func _on_hit_landed(hit_data: HitData) -> void:
-	_hit_stop.start(hit_data.attacker_hit_stop_duration)
-	hit_landed.emit(hit_data)
+func _apply_new_overlap_hits() -> Array[HitData]:
+	var hit_data_list: Array[HitData] = []
+	for hurtbox in _hitbox.get_overlapping_hurtboxes():
+		if _is_contacting(hurtbox):
+			continue
+
+		var hit_data := _apply_hit(hurtbox, Vector2.ZERO)
+		if hit_data != null:
+			hit_data_list.append(hit_data)
+
+	return hit_data_list
+
+
+func _move_and_apply_swept_hits(planned_motion: Vector2) -> Array[HitData]:
+	if planned_motion.is_zero_approx():
+		return []
+
+	var excluded_hurtboxes: Array[Hurtbox] = []
+	while true:
+		var sweep_result := _hitbox.find_first_hurtboxes(
+			planned_motion,
+			excluded_hurtboxes
+		)
+		if sweep_result.is_empty():
+			global_position += planned_motion
+			return []
+
+		var first_hurtboxes: Array[Hurtbox] = sweep_result["hurtboxes"]
+		var hit_data_list: Array[HitData] = []
+		for hurtbox in first_hurtboxes:
+			if _is_contacting(hurtbox):
+				continue
+
+			var hit_data := _apply_hit(hurtbox, planned_motion.normalized())
+			if hit_data != null:
+				hit_data_list.append(hit_data)
+
+		if not hit_data_list.is_empty():
+			var unsafe_fraction: float = sweep_result["unsafe_fraction"]
+			global_position += planned_motion * clampf(unsafe_fraction, 0.0, 1.0)
+			return hit_data_list
+
+		for hurtbox in first_hurtboxes:
+			if not excluded_hurtboxes.has(hurtbox):
+				excluded_hurtboxes.append(hurtbox)
+
+	return []
+
+
+func _apply_hit(hurtbox: Hurtbox, movement_direction: Vector2) -> HitData:
+	if hurtbox == null or hurtbox.is_queued_for_deletion():
+		return null
+
+	var direction := movement_direction
+	if direction.is_zero_approx():
+		direction = (hurtbox.global_position - global_position).normalized()
+
+	return _impact_attack.apply_hit(hurtbox, direction)
+
+
+func _update_contacting_hurtboxes() -> void:
+	var current_contact_ids: Dictionary[int, bool] = {}
+	for hurtbox in _hitbox.get_overlapping_hurtboxes():
+		current_contact_ids[hurtbox.get_instance_id()] = true
+
+	_contacting_hurtbox_ids = current_contact_ids
+
+
+func _is_contacting(hurtbox: Hurtbox) -> bool:
+	return _contacting_hurtbox_ids.has(hurtbox.get_instance_id())

@@ -49,6 +49,13 @@ func stop_movement() -> void:
 	_enemy_movement.stop()
 
 
+func receive_collision_push(push_velocity: Vector2) -> void:
+	if _is_dying:
+		return
+
+	_enemy_movement.add_knockback(push_velocity)
+
+
 func get_current_health() -> float:
 	return _health.get_current_health()
 
@@ -62,6 +69,10 @@ func _on_hit_received(hit_data: HitData) -> void:
 		return
 
 	_health.damage(hit_data.damage)
+	if _is_dying:
+		return
+
+	_enemy_movement.add_knockback(hit_data.knockback_velocity)
 	_hit_stop.start(hit_data.target_hit_stop_duration)
 
 
@@ -101,4 +112,3 @@ func _on_died() -> void:
 func _play_sound_from_start(sound: AudioStreamPlayer2D) -> void:
 	sound.stop()
 	sound.play()
-

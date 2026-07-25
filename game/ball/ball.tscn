@@ -31,6 +31,14 @@ script = ExtResource("4_vf1tv")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1822812094]
 shape = SubResource("CircleShape2D_ua4af")
 
+[node name="ShapeCast2D" type="ShapeCast2D" parent="Hitbox" unique_id=912828512]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_ua4af")
+max_results = 64
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
+
 [node name="Movement" type="Node" parent="." unique_id=607524805]
 unique_name_in_owner = true
 script = ExtResource("3_6xd6y")
