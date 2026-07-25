@@ -3,9 +3,11 @@ extends Area2D
 
 signal hit_received(hit_data: HitData)
 
-@export_range(0.0, 10.0, 0.01, "suffix:s") var rehit_cooldown: float = 0.1
+@export_range(0.0, 3.0, 0.01) var rehit_cooldown: float = 0.15
 
 var _last_hit_time_by_source_id: Dictionary[int, float] = {}
+
+@onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 func receive_hit(hit_data: HitData) -> bool:
@@ -32,6 +34,7 @@ func can_receive_hit(hit_data: HitData) -> bool:
 func set_enabled(enabled: bool) -> void:
 	set_deferred("monitoring", enabled)
 	set_deferred("monitorable", enabled)
+	_collision_shape.set_deferred("disabled", not enabled)
 
 
 func _get_current_time() -> float:

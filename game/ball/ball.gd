@@ -31,7 +31,9 @@ func _ready() -> void:
 
 	_ability_controller.setup(ability_context)
 
-	_ability_controller.active_ability_activated.connect(active_ability_activated.emit)
+	_ability_controller.active_ability_activated.connect(
+		active_ability_activated.emit
+	)
 
 	_target_position = global_position
 
@@ -46,14 +48,27 @@ func _physics_process(delta: float) -> void:
 		_target_position,
 		delta
 	)
+
 	var planned_motion := _movement.get_velocity() * delta
-	var landed_hit_data := _apply_new_overlap_hits()
-	if landed_hit_data.is_empty():
-		landed_hit_data = _move_and_apply_swept_hits(planned_motion)
+	var overlapping_hurtboxes := _hitbox.get_overlapping_hurtboxes()
+	var landed_hit_data := _apply_new_overlap_hits(
+		overlapping_hurtboxes
+	)
+
+	landed_hit_data.append_array(
+		_move_and_apply_swept_hits(
+			planned_motion,
+			overlapping_hurtboxes
+		)
+	)
 
 	_update_contacting_hurtboxes()
+
 	if not landed_hit_data.is_empty():
-		_hit_stop.start(landed_hit_data.front().attacker_hit_stop_duration)
+		_hit_stop.start(
+			landed_hit_data.front().attacker_hit_stop_duration
+		)
+
 		for hit_data in landed_hit_data:
 			hit_landed.emit(hit_data)
 
@@ -72,9 +87,12 @@ func get_interpolated_global_position() -> Vector2:
 	return _physics_position_interpolator.get_interpolated_global_position()
 
 
-func _apply_new_overlap_hits() -> Array[HitData]:
+func _apply_new_overlap_hits(
+	hurtboxes: Array[Hurtbox]
+) -> Array[HitData]:
 	var hit_data_list: Array[HitData] = []
-	for hurtbox in _hitbox.get_overlapping_hurtboxes():
+
+	for hurtbox in hurtboxes:
 		if _is_contacting(hurtbox):
 			continue
 
@@ -85,19 +103,26 @@ func _apply_new_overlap_hits() -> Array[HitData]:
 	return hit_data_list
 
 
-func _move_and_apply_swept_hits(planned_motion: Vector2) -> Array[HitData]:
+func _move_and_apply_swept_hits(
+	planned_motion: Vector2,
+	initial_exclusions: Array[Hurtbox]
+) -> Array[HitData]:
+	var hit_data_list: Array[HitData] = []
+
 	if planned_motion.is_zero_approx():
-		return []
+		return hit_data_list
 
 	var excluded_hurtboxes: Array[Hurtbox] = []
+	excluded_hurtboxes.append_array(initial_exclusions)
+
 	while true:
 		var sweep_result := _hitbox.find_first_hurtboxes(
 			planned_motion,
 			excluded_hurtboxes
 		)
+
 		if sweep_result.is_empty():
-			global_position += planned_motion
-			return []
+			break
 
 		var first_hurtboxes: Array[Hurtbox] = sweep_result["hurtboxes"]
 		var unsafe_fraction: float = sweep_result["unsafe_fraction"]
@@ -106,37 +131,41 @@ func _move_and_apply_swept_hits(planned_motion: Vector2) -> Array[HitData]:
 			0.0,
 			1.0
 		)
-		var hit_data_list: Array[HitData] = []
-		for hurtbox in first_hurtboxes:
-			if _is_contacting(hurtbox):
-				continue
-
-			var hit_data := _apply_hit(hurtbox, contact_position)
-			if hit_data != null:
-				hit_data_list.append(hit_data)
-
-		if not hit_data_list.is_empty():
-			global_position = contact_position
-			return hit_data_list
 
 		for hurtbox in first_hurtboxes:
+			if not _is_contacting(hurtbox):
+				var hit_data := _apply_hit(
+					hurtbox,
+					contact_position
+				)
+
+				if hit_data != null:
+					hit_data_list.append(hit_data)
+
 			if not excluded_hurtboxes.has(hurtbox):
 				excluded_hurtboxes.append(hurtbox)
 
-	return []
+	global_position += planned_motion
+	return hit_data_list
 
 
-func _apply_hit(hurtbox: Hurtbox, impact_position: Vector2) -> HitData:
+func _apply_hit(
+	hurtbox: Hurtbox,
+	impact_position: Vector2
+) -> HitData:
 	if hurtbox == null or hurtbox.is_queued_for_deletion():
 		return null
 
-	var direction := (hurtbox.global_position - impact_position).normalized()
+	var direction := (
+		hurtbox.global_position - impact_position
+	).normalized()
 
 	return _impact_attack.apply_hit(hurtbox, direction)
 
 
 func _update_contacting_hurtboxes() -> void:
 	var current_contact_ids: Dictionary[int, bool] = {}
+
 	for hurtbox in _hitbox.get_overlapping_hurtboxes():
 		current_contact_ids[hurtbox.get_instance_id()] = true
 
@@ -144,4 +173,6 @@ func _update_contacting_hurtboxes() -> void:
 
 
 func _is_contacting(hurtbox: Hurtbox) -> bool:
-	return _contacting_hurtbox_ids.has(hurtbox.get_instance_id())
+	return _contacting_hurtbox_ids.has(
+		hurtbox.get_instance_id()
+	)

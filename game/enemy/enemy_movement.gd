@@ -1,19 +1,19 @@
 class_name EnemyMovement
 extends Node
 
-@export_range(0.0, 10000.0, 1.0) var acceleration: float = 100.0
-@export_range(0.0, 10000.0, 1.0) var max_speed: float = 400.0
+@export_range(0.0, 1000.0, 1.0) var acceleration: float = 100.0
+@export_range(0.0, 5000.0, 1.0) var max_speed: float = 400.0
 @export_range(0.01, 100.0, 0.01, "or_greater") var mass: float = 1.0
 @export var is_immovable: bool = false
-@export_range(0.0, 100000.0, 1.0) var separation_weight: float = 600.0
+@export_range(0.0, 10000.0, 1.0) var separation_weight: float = 600.0
 @export_range(0.0, 1000.0, 1.0) var separation_radius: float = 100.0
-@export_range(0.0, 100000.0, 1.0) var max_separation_acceleration: float = 900.0
-@export_range(0.0, 1000.0, 0.1) var crowd_damping: float = 12.0
-@export_range(0.0, 100000.0, 1.0) var max_crowd_damping_acceleration: float = 1200.0
-@export_range(0.0, 1000.0, 1.0) var overlap_radius: float = 24.0
+@export_range(0.0, 10000.0, 1.0) var max_separation_acceleration: float = 900.0
+@export_range(0.0, 100.0, 0.1) var crowd_damping: float = 12.0
+@export_range(0.0, 10000.0, 1.0) var max_crowd_damping_acceleration: float = 1200.0
+@export_range(0.0, 100.0, 1.0) var overlap_radius: float = 24.0
 @export_range(1, 8, 1) var overlap_iterations: int = 3
-@export_range(0.0, 10000.0, 1.0) var max_knockback_speed: float = 1500.0
-@export_range(0.0, 100000.0, 1.0) var knockback_deceleration: float = 6000.0
+@export_range(0.0, 5000.0, 10.0) var max_knockback_speed: float = 1500.0
+@export_range(0.0, 10000.0, 1.0) var knockback_deceleration: float = 6000.0
 @export_range(0.0, 1000.0, 1.0) var knockback_stop_speed: float = 10.0
 
 var _body: CharacterBody2D

@@ -1,7 +1,7 @@
 class_name EnemyVisual
 extends Node2D
 
-@export_range(1.0, 500.0, 1.0) var radius: float = 36.0
+@export_range(1.0, 500.0, 1.0) var radius: float = 40.0
 @export var full_health_color: Color = Color(0.2, 0.7, 1.0, 1.0)
 @export var low_health_color: Color = Color(1.0, 0.3, 0.3, 1.0)
 
@@ -21,4 +21,3 @@ func update_health(current_health: float, max_health: float) -> void:
 		_health_ratio = clampf(current_health / max_health, 0.0, 1.0)
 
 	queue_redraw()
-

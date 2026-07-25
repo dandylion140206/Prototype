@@ -13,11 +13,8 @@
 [ext_resource type="Script" uid="uid://bfkc3udymp28k" path="res://game/enemy/enemy_destination.gd" id="10_destination"]
 [ext_resource type="Script" uid="uid://gyuqeth4db5k" path="res://game/enemy/enemy_steering.gd" id="11_steering"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
-radius = 36.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
-radius = 36.0
+radius = 40.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=136872646 groups=["enemy"]]
 collision_layer = 0
@@ -39,10 +36,6 @@ unique_name_in_owner = true
 script = ExtResource("4_hit_scale_reaction")
 reaction_mode = 1
 tween_duration = 1.0
-
-[node name="BodyCollisionShape" type="CollisionShape2D" parent="." unique_id=1291357898]
-unique_name_in_owner = true
-shape = SubResource("CircleShape2D_body")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=509559158]
 unique_name_in_owner = true
@@ -72,7 +65,8 @@ script = ExtResource("11_steering")
 [node name="Movement" type="Node" parent="." unique_id=896627334]
 unique_name_in_owner = true
 script = ExtResource("9_movement")
-max_knockback_speed = 1000.0
+max_knockback_speed = 270.0
+knockback_deceleration = 2875.0
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=2143628740]
 unique_name_in_owner = true

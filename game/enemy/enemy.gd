@@ -9,7 +9,6 @@ var _is_dying: bool = false
 @onready var _visual: EnemyVisual = %Visual
 @onready var _hit_flash: HitFlash = %HitFlash
 @onready var _hit_scale_reaction: HitScaleReaction = %HitScaleReaction
-@onready var _body_collision_shape: CollisionShape2D = %BodyCollisionShape
 @onready var _hurtbox: Hurtbox = %Hurtbox
 @onready var _hit_stop: HitStop = %HitStop
 @onready var _health: Health = %Health
@@ -119,7 +118,6 @@ func _on_died() -> void:
 	_is_dying = true
 	remove_from_group("enemy")
 	_enemy_movement.stop()
-	_body_collision_shape.set_deferred("disabled", true)
 	_hurtbox.set_enabled(false)
 	_visual.visible = false
 	died.emit()

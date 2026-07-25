@@ -9,8 +9,8 @@ signal hit_landed(hit_data: HitData)
 @export_range(0.0, 1000.0, 1.0) var max_damage: float = 100.0
 
 @export_range(0.0, 20000.0, 100.0) var min_hit_stop_speed: float = 1000.0
-@export_range(0.0, 0.2, 0.001) var attacker_hit_stop_duration: float = 0.01
-@export_range(0.0, 0.2, 0.001) var target_hit_stop_duration: float = 0.01
+@export_range(0.0, 0.2, 0.001) var attacker_hit_stop_duration: float = 0.02
+@export_range(0.0, 0.2, 0.001) var target_hit_stop_duration: float = 0.02
 @export_range(0.0, 10000.0, 1.0) var base_knockback_speed: float = 300.0
 @export_range(0.0, 10.0, 0.01) var knockback_speed_scale: float = 0.15
 @export_range(0.0, 10000.0, 1.0) var max_knockback_speed: float = 1500.0
