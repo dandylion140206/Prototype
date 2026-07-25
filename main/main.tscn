@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://blw028u5wmg2t" path="res://debug/overlay/debug_overlay_layer.gd" id="16_n3o0a"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="17_health_bars"]
 [ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="17_s758e"]
+[ext_resource type="Script" uid="uid://bg2fefmnl0lai" path="res://debug/overlay/enemy_overlay_panel.gd" id="18_4hmqs"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -42,6 +43,7 @@ script = ExtResource("2_ipbj0")
 script = ExtResource("3_grrlh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=815715909]
+visible = false
 texture = ExtResource("10_s758e")
 offset = Vector2(960, 540)
 
@@ -104,3 +106,9 @@ color = Color(0, 0, 0, 0.6)
 layout_mode = 2
 script = ExtResource("17_s758e")
 metadata/_custom_type_script = "uid://dh7s5qmqhmn7v"
+
+[node name="EnemyOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=506056999 node_paths=PackedStringArray("enemy_crowd_system")]
+layout_mode = 2
+script = ExtResource("18_4hmqs")
+enemy_crowd_system = NodePath("../../../EnemyCrowdSystem")
+metadata/_custom_type_script = "uid://bg2fefmnl0lai"

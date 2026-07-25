@@ -33,8 +33,8 @@ func get_enemy_count() -> int:
 	return _registry.get_enemies().size()
 
 
-func get_active_enemy_count() -> int:
-	return _active_enemies.size()
+func get_crowd_pair_count() -> int:
+	return _crowd_solver.get_pair_count()
 
 
 func _collect_active_enemies() -> void:

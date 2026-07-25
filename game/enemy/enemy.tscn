@@ -32,13 +32,13 @@ script = ExtResource("2_visual")
 [node name="HitFlash" type="Node" parent="Visual" unique_id=1079053635]
 unique_name_in_owner = true
 script = ExtResource("3_hit_flash")
-flash_modulate = Color(2.217869, 2.217869, 2.217869, 1)
+flash_modulate = Color(1.7867532, 1.7867532, 1.7867532, 1)
 
 [node name="HitScaleReaction" type="Node" parent="Visual" unique_id=2051073635]
 unique_name_in_owner = true
 script = ExtResource("4_hit_scale_reaction")
 reaction_mode = 1
-tween_duration = 0.8
+tween_duration = 1.0
 
 [node name="BodyCollisionShape" type="CollisionShape2D" parent="." unique_id=1291357898]
 unique_name_in_owner = true
