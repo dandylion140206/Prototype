@@ -7,7 +7,8 @@ enum SpawnMode {
 }
 
 @export_group("Spawn")
-@export_range(0.01, 3.0, 0.01) var spawn_interval: float = 0.5
+@export_range(0.01, 3.0, 0.01) var spawn_interval: float = 0.3
+@export_range(0, 10000, 1) var max_enemy_count: int = 300
 @export var spawn_mode: SpawnMode = SpawnMode.AREA_PERIMETER
 
 @export_group("Circle Spawn")
@@ -21,6 +22,7 @@ enum SpawnMode {
 @export var destination_position: Vector2 = Vector2(960.0, 540.0)
 @export var destination_target: Node2D
 
+var _enemy_count: int = 0
 var _random: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
@@ -31,12 +33,19 @@ func _ready() -> void:
 	_spawn_loop()
 
 
+func get_enemy_count() -> int:
+	return _enemy_count
+
+
 func _spawn_loop() -> void:
 	while is_inside_tree():
 		await get_tree().create_timer(spawn_interval).timeout
 
 		if not is_inside_tree():
 			return
+
+		if _enemy_count >= max_enemy_count:
+			continue
 
 		_spawn_enemy()
 
@@ -46,12 +55,19 @@ func _spawn_enemy() -> void:
 	if enemy == null:
 		return
 
+	_enemy_count += 1
+	enemy.tree_exited.connect(_on_enemy_tree_exited, CONNECT_ONE_SHOT)
+
 	if is_instance_valid(destination_target):
 		enemy.set_destination_target(destination_target)
 	else:
 		enemy.set_destination(destination_position)
 
 	_notify_enemy_spawned(enemy)
+
+
+func _on_enemy_tree_exited() -> void:
+	_enemy_count = maxi(_enemy_count - 1, 0)
 
 
 func _get_spawn_position() -> Vector2:
@@ -103,10 +119,7 @@ func _get_spawn_position() -> Vector2:
 func _get_spawn_area() -> Rect2:
 	var viewport_rect := get_viewport().get_visible_rect()
 	var screen_center := viewport_rect.get_center()
-	var world_center := (
-		get_viewport().get_canvas_transform().affine_inverse()
-		* screen_center
-	)
+	var world_center := (get_viewport().get_canvas_transform().affine_inverse() * screen_center)
 	var area_size := spawn_area_size.abs()
 
 	return Rect2(

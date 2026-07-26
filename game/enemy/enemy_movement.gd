@@ -1,8 +1,8 @@
 class_name EnemyMovement
 extends Node
 
-@export_range(0.0, 1000.0, 1.0) var acceleration: float = 100.0
-@export_range(0.0, 5000.0, 1.0) var max_speed: float = 400.0
+@export_range(0.0, 1000.0, 10.0) var acceleration: float = 100.0
+@export_range(0.0, 1000.0, 10.0) var max_speed: float = 400.0
 
 var _body: Node2D
 var _hit_stop: HitStop
