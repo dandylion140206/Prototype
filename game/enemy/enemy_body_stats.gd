@@ -16,10 +16,6 @@ extends Resource
 @export_range(0.0, 100.0, 0.1) var crowd_damping: float = 12.0
 @export_range(0.0, 10000.0, 1.0) var max_crowd_damping_acceleration: float = 1200.0
 
-@export_group("Crowd Velocity")
-@export_range(0.0, 5000.0, 10.0) var max_crowd_speed: float = 300.0
-@export_range(0.0, 10000.0, 1.0) var crowd_deceleration: float = 1200.0
-
 @export_group("Overlap")
 @export_range(0.0, 100.0, 1.0) var overlap_radius: float = 24.0
 @export_range(1, 8, 1) var overlap_iterations: int = 3

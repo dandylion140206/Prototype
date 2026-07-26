@@ -30,12 +30,7 @@ func _ready() -> void:
 	_hit_scale_reaction.setup(_visual)
 	_knockback.setup(body_stats, _hit_stop)
 	_movement.setup(
-		self,
-		body_stats,
-		_hit_stop,
-		_destination,
-		_steering,
-		_knockback
+		self, _hit_stop, _destination, _steering, _knockback
 	)
 	_crowd_agent.setup(self, body_stats, _movement, _knockback)
 
