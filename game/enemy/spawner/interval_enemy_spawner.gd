@@ -7,11 +7,11 @@ enum SpawnMode {
 }
 
 @export_group("Spawn")
-@export_range(0.01, 5.0, 0.01) var spawn_interval: float = 0.5
+@export_range(0.01, 3.0, 0.01) var spawn_interval: float = 0.5
 @export var spawn_mode: SpawnMode = SpawnMode.AREA_PERIMETER
 
 @export_group("Circle Spawn")
-@export var spawn_center: Vector2 = Vector2(960.0, 540.0)
+@export var spawn_center: Vector2 = Vector2(100.0, 540.0)
 @export_range(0.0, 1000.0, 1.0) var spawn_radius: float = 100.0
 
 @export_group("Perimeter Spawn")

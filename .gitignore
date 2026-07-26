@@ -5,4 +5,5 @@ Thumbs.db
 .vscode/
 .idea/
 *.log
-export_presets.cfg
+
+_temp/
