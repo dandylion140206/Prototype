@@ -23,17 +23,11 @@ func update_velocity(
 	var to_target := target_position - current_position
 
 	if to_target.is_zero_approx():
-		_velocity = _velocity.move_toward(
-			Vector2.ZERO,
-			acceleration * delta
-		)
+		_velocity = _velocity.move_toward(Vector2.ZERO, acceleration * delta)
 		return
 
 	var target_velocity := to_target.normalized() * target_speed
-	var new_velocity := _velocity.move_toward(
-		target_velocity,
-		acceleration * delta
-	)
+	var new_velocity := _velocity.move_toward(target_velocity, acceleration * delta)
 
 	set_velocity(new_velocity)
 
@@ -52,6 +46,10 @@ func set_velocity(velocity: Vector2) -> void:
 
 func add_velocity(delta_velocity: Vector2) -> void:
 	set_velocity(_velocity + delta_velocity)
+
+
+func scale_velocity(multiplier: float) -> void:
+	set_velocity(_velocity * multiplier)
 
 
 func move(delta: float) -> void:

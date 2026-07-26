@@ -42,7 +42,7 @@ script = ExtResource("2_ipbj0")
 [node name="InputController" type="Node" parent="." unique_id=953981804]
 script = ExtResource("3_grrlh")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=815715909]
+[node name="テスト画像" type="Sprite2D" parent="." unique_id=815715909]
 visible = false
 texture = ExtResource("10_s758e")
 offset = Vector2(960, 540)
@@ -50,7 +50,7 @@ offset = Vector2(960, 540)
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_4hmqs")
-spawn_interval = 0.25
+spawn_interval = 0.13
 spawn_mode = 0
 destination_position = Vector2(1820, 540)
 enemy_scene = ExtResource("5_enemy")

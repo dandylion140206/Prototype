@@ -4,6 +4,8 @@ extends Node2D
 signal hit_landed(hit_data: HitData)
 signal active_ability_activated
 
+@export_range(0.9, 1.0, 0.002) var hit_speed_multiplier: float = 0.97
+
 var _target_position: Vector2 = Vector2.ZERO
 var _contacting_hurtbox_ids: Dictionary[int, bool] = {}
 
@@ -12,9 +14,7 @@ var _contacting_hurtbox_ids: Dictionary[int, bool] = {}
 @onready var _impact_attack: ImpactAttack = %ImpactAttack
 @onready var _hit_stop: HitStop = %HitStop
 @onready var _ability_controller: AbilityController = %AbilityController
-@onready var _physics_position_interpolator: PhysicsPositionInterpolator = (
-	%PhysicsPositionInterpolator
-)
+@onready var _physics_position_interpolator: PhysicsPositionInterpolator = %PhysicsPositionInterpolator
 
 
 func _ready() -> void:
@@ -30,10 +30,7 @@ func _ready() -> void:
 	)
 
 	_ability_controller.setup(ability_context)
-
-	_ability_controller.active_ability_activated.connect(
-		active_ability_activated.emit
-	)
+	_ability_controller.active_ability_activated.connect(active_ability_activated.emit)
 
 	_target_position = global_position
 
@@ -51,9 +48,7 @@ func _physics_process(delta: float) -> void:
 
 	var planned_motion := _movement.get_velocity() * delta
 	var overlapping_hurtboxes := _hitbox.get_overlapping_hurtboxes()
-	var landed_hit_data := _apply_new_overlap_hits(
-		overlapping_hurtboxes
-	)
+	var landed_hit_data := _apply_new_overlap_hits(overlapping_hurtboxes)
 
 	landed_hit_data.append_array(
 		_move_and_apply_swept_hits(
@@ -65,9 +60,9 @@ func _physics_process(delta: float) -> void:
 	_update_contacting_hurtboxes()
 
 	if not landed_hit_data.is_empty():
-		_hit_stop.start(
-			landed_hit_data.front().attacker_hit_stop_duration
-		)
+		_movement.scale_velocity(hit_speed_multiplier)
+
+		_hit_stop.start(landed_hit_data.front().attacker_hit_stop_duration)
 
 		for hit_data in landed_hit_data:
 			hit_landed.emit(hit_data)
@@ -87,9 +82,7 @@ func get_interpolated_global_position() -> Vector2:
 	return _physics_position_interpolator.get_interpolated_global_position()
 
 
-func _apply_new_overlap_hits(
-	hurtboxes: Array[Hurtbox]
-) -> Array[HitData]:
+func _apply_new_overlap_hits(hurtboxes: Array[Hurtbox]) -> Array[HitData]:
 	var hit_data_list: Array[HitData] = []
 
 	for hurtbox in hurtboxes:

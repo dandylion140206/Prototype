@@ -2,14 +2,14 @@ class_name EnemyKnockback
 extends Node
 
 @export_group("Impact")
-@export_range(0.0, 10000.0, 1.0) var base_speed: float = 300.0
-@export_range(0.0, 10.0, 0.01) var impact_speed_scale: float = 0.15
-@export_range(0.0, 5000.0, 10.0) var max_speed: float = 270.0
+@export_range(0.0, 10000.0, 1.0) var base_speed: float = 100.0
+@export_range(0.0, 10.0, 0.01) var impact_speed_scale: float = 0.12
+@export_range(0.0, 5000.0, 10.0) var max_speed: float = 800.0
 
 @export_group("Decay")
-@export_range(0.01, 2.0, 0.01) var duration: float = 0.12
+@export_range(0.01, 2.0, 0.01) var duration: float = 0.18
 @export var transition_type := Tween.TRANS_QUAD
-@export var ease_type := Tween.EASE_IN
+@export var ease_type := Tween.EASE_OUT
 
 var _stats: EnemyBodyStats
 var _hit_stop: HitStop
@@ -23,7 +23,7 @@ func setup(stats: EnemyBodyStats, hit_stop: HitStop) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if _hit_stop.is_active():
+	if _hit_stop != null and _hit_stop.is_active():
 		return
 
 	if _decay_tween != null:
