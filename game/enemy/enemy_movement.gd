@@ -75,19 +75,14 @@ func _update_seek_velocity(delta: float) -> void:
 			delta
 		)
 
-	_seek_velocity = _seek_velocity.move_toward(
-		desired_velocity,
-		acceleration * delta
-	)
+	_seek_velocity = _seek_velocity.move_toward(desired_velocity, acceleration * delta)
 	_seek_velocity = _seek_velocity.limit_length(max_speed)
 
 
 func _update_crowd_velocity(delta: float) -> void:
+	_crowd_velocity = _crowd_velocity.move_toward(Vector2.ZERO, _stats.crowd_deceleration * delta)
+
 	_crowd_velocity += _crowd_acceleration * delta
 	_crowd_acceleration = Vector2.ZERO
 
-	_crowd_velocity = _crowd_velocity.move_toward(
-		Vector2.ZERO,
-		_stats.crowd_deceleration * delta
-	)
 	_crowd_velocity = _crowd_velocity.limit_length(_stats.max_crowd_speed)
