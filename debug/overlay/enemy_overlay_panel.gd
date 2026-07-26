@@ -12,4 +12,4 @@ func update_display() -> void:
 		text = "Enemies: -"
 		return
 
-	text = "Enemies: %d" % [enemy_crowd_system.get_enemy_count()]
+	text = "Enemies: %d" % [enemy_crowd_system.get_agent_count()]

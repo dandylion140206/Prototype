@@ -2,48 +2,52 @@ class_name EnemyCrowdSystem
 extends Node
 
 var _registry: EnemyRegistry = EnemyRegistry.new()
-var _active_enemies: Array[Enemy] = []
+var _active_agents: Array[EnemyCrowdAgent] = []
 
 @onready var _crowd_solver: EnemyCrowdSolver = $CrowdSolver
 @onready var _overlap_solver: EnemyOverlapSolver = $OverlapSolver
 
 
+func _ready() -> void:
+	# 群衆加速度を算出してから各 EnemyMovement が積分する。
+	process_physics_priority = -10
+
+	_overlap_solver.setup(self)
+
+
 func _physics_process(delta: float) -> void:
-	_collect_active_enemies()
-	if _active_enemies.is_empty():
+	_collect_active_agents()
+	if _active_agents.is_empty():
 		return
 
-	_crowd_solver.solve(_active_enemies, delta)
-	_overlap_solver.solve(_active_enemies)
+	_crowd_solver.solve(_active_agents, delta)
 
 
-func register(enemy: Enemy) -> void:
-	_registry.register(enemy)
+func register(agent: EnemyCrowdAgent) -> void:
+	_registry.register(agent)
 
 
-func unregister(enemy: Enemy) -> void:
-	_registry.unregister(enemy)
+func unregister(agent: EnemyCrowdAgent) -> void:
+	_registry.unregister(agent)
 
 
-func get_active_enemies() -> Array[Enemy]:
-	return _active_enemies
+func get_active_agents() -> Array[EnemyCrowdAgent]:
+	return _active_agents
 
 
-func get_enemy_count() -> int:
-	return _registry.get_enemies().size()
+func get_agent_count() -> int:
+	return _registry.get_agents().size()
 
 
 func get_crowd_pair_count() -> int:
 	return _crowd_solver.get_pair_count()
 
 
-func _collect_active_enemies() -> void:
-	_active_enemies.clear()
-	for enemy in _registry.get_enemies():
-		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
+func _collect_active_agents() -> void:
+	_active_agents.clear()
+
+	for agent in _registry.get_agents():
+		if not agent.is_active():
 			continue
 
-		if not enemy.visible:
-			continue
-
-		_active_enemies.append(enemy)
+		_active_agents.append(agent)

@@ -1,7 +1,7 @@
 class_name EnemyCrowdSolver
 extends Node
 
-var _enemies: Array[Enemy] = []
+var _agents: Array[EnemyCrowdAgent] = []
 var _grid: NeighborGrid = NeighborGrid.new()
 var _positions: PackedVector2Array = PackedVector2Array()
 var _effective_velocities: PackedVector2Array = PackedVector2Array()
@@ -16,55 +16,57 @@ var _separation_accelerations: PackedVector2Array = PackedVector2Array()
 var _damping_accelerations: PackedVector2Array = PackedVector2Array()
 
 
-func solve(enemies: Array[Enemy], delta: float) -> void:
-	_enemies = enemies
+func solve(agents: Array[EnemyCrowdAgent], delta: float) -> void:
+	_agents = agents
 
-	var enemy_count := _enemies.size()
-	if enemy_count == 0:
+	var agent_count := _agents.size()
+	if agent_count == 0:
 		return
 
-	var max_separation_radius := _build_snapshots(enemy_count)
-	if enemy_count >= 2 and max_separation_radius > 0.0:
+	var max_separation_radius := _build_snapshots(agent_count)
+	if agent_count >= 2 and max_separation_radius > 0.0:
 		_grid.build(_positions, max_separation_radius)
 		_grid.collect_pairs(max_separation_radius)
 		_accumulate_pair_accelerations(delta)
 
-	_apply_accelerations(enemy_count)
+	_apply_accelerations(agent_count)
 
 
-func _build_snapshots(enemy_count: int) -> float:
-	_positions.resize(enemy_count)
-	_effective_velocities.resize(enemy_count)
-	_instance_ids.resize(enemy_count)
-	_separation_radii.resize(enemy_count)
-	_separation_weights.resize(enemy_count)
-	_crowd_dampings.resize(enemy_count)
-	_inverse_masses.resize(enemy_count)
-	_max_separation_accelerations.resize(enemy_count)
-	_max_damping_accelerations.resize(enemy_count)
-	_separation_accelerations.resize(enemy_count)
-	_damping_accelerations.resize(enemy_count)
+func get_pair_count() -> int:
+	return _grid.get_pair_count()
+
+
+func _build_snapshots(agent_count: int) -> float:
+	_positions.resize(agent_count)
+	_effective_velocities.resize(agent_count)
+	_instance_ids.resize(agent_count)
+	_separation_radii.resize(agent_count)
+	_separation_weights.resize(agent_count)
+	_crowd_dampings.resize(agent_count)
+	_inverse_masses.resize(agent_count)
+	_max_separation_accelerations.resize(agent_count)
+	_max_damping_accelerations.resize(agent_count)
+	_separation_accelerations.resize(agent_count)
+	_damping_accelerations.resize(agent_count)
 
 	var max_separation_radius := 0.0
-	for index in enemy_count:
-		var enemy := _enemies[index]
-		var movement := enemy.get_enemy_movement()
+	for index in agent_count:
+		var agent := _agents[index]
+		var stats := agent.stats
 
-		_positions[index] = enemy.global_position
-		_effective_velocities[index] = (
-			movement.get_normal_velocity() + movement.get_external_knockback_velocity()
-		)
-		_instance_ids[index] = enemy.get_instance_id()
-		_separation_radii[index] = movement.separation_radius
-		_separation_weights[index] = movement.separation_weight
-		_crowd_dampings[index] = movement.crowd_damping
-		_inverse_masses[index] = movement.get_inverse_mass()
-		_max_separation_accelerations[index] = movement.max_separation_acceleration
-		_max_damping_accelerations[index] = movement.max_crowd_damping_acceleration
+		_positions[index] = agent.get_position()
+		_effective_velocities[index] = agent.get_effective_velocity()
+		_instance_ids[index] = agent.get_instance_id()
+		_separation_radii[index] = stats.separation_radius
+		_separation_weights[index] = stats.separation_weight
+		_crowd_dampings[index] = stats.crowd_damping
+		_inverse_masses[index] = stats.get_inverse_mass()
+		_max_separation_accelerations[index] = stats.max_separation_acceleration
+		_max_damping_accelerations[index] = stats.max_crowd_damping_acceleration
 		_separation_accelerations[index] = Vector2.ZERO
 		_damping_accelerations[index] = Vector2.ZERO
 
-		max_separation_radius = maxf(max_separation_radius, movement.separation_radius)
+		max_separation_radius = maxf(max_separation_radius, stats.separation_radius)
 
 	return max_separation_radius
 
@@ -126,14 +128,14 @@ func _accumulate_pair_accelerations(delta: float) -> void:
 		_damping_accelerations[b_index] -= normal * (damping_force * b_inverse_mass)
 
 
-func _apply_accelerations(enemy_count: int) -> void:
-	for index in enemy_count:
+func _apply_accelerations(agent_count: int) -> void:
+	for index in agent_count:
 		var separation_acceleration := _separation_accelerations[index].limit_length(
 			_max_separation_accelerations[index]
 		)
 		var damping_acceleration := _damping_accelerations[index].limit_length(
 			_max_damping_accelerations[index]
 		)
-		_enemies[index].set_crowd_acceleration(
+		_agents[index].apply_crowd_acceleration(
 			separation_acceleration + damping_acceleration
 		)

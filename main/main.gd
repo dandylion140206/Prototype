@@ -18,11 +18,15 @@ func _ready() -> void:
 	_input_controller.active_ability_requested.connect(
 		_ball.request_active_ability
 	)
-	_enemy_spawner.enemy_spawned.connect(_enemy_crowd_system.register)
-	_enemy_spawner.enemy_spawned.connect(_enemy_health_bar_layer.add_enemy)
+	_enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 
 	_ball.set_target_position(get_global_mouse_position())
 
 
 func _physics_process(_delta: float) -> void:
 	_ball.set_target_position(get_global_mouse_position())
+
+
+func _on_enemy_spawned(enemy: Enemy) -> void:
+	_enemy_crowd_system.register(enemy.get_crowd_agent())
+	_enemy_health_bar_layer.add_enemy(enemy)

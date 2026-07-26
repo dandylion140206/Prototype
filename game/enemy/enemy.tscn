@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bswtqb2xtbf20"]
 
 [ext_resource type="Script" uid="uid://c1blppbwj3h6t" path="res://game/enemy/enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" uid="uid://cb3grieyhg0x3" path="res://game/enemy/stats/default_enemy.tres" id="2_4elnr"]
 [ext_resource type="Script" uid="uid://dn3oyokvk2t61" path="res://game/enemy/enemy_visual.gd" id="2_visual"]
 [ext_resource type="Script" uid="uid://dp55a0aroiq8k" path="res://components/hit_flash.gd" id="3_hit_flash"]
 [ext_resource type="Script" uid="uid://b3gbktsl3efdv" path="res://components/hit_scale_reaction.gd" id="4_hit_scale_reaction"]
@@ -11,7 +12,9 @@
 [ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="8_hit_stop"]
 [ext_resource type="Script" uid="uid://3xs256tnqovt" path="res://game/enemy/enemy_movement.gd" id="9_movement"]
 [ext_resource type="Script" uid="uid://bfkc3udymp28k" path="res://game/enemy/enemy_destination.gd" id="10_destination"]
+[ext_resource type="Script" uid="uid://b6qqb7huppfla" path="res://game/enemy/enemy_knockback.gd" id="11_rqrnf"]
 [ext_resource type="Script" uid="uid://gyuqeth4db5k" path="res://game/enemy/enemy_steering.gd" id="11_steering"]
+[ext_resource type="Script" uid="uid://mm0asb6f8drp" path="res://game/enemy/crowd/enemy_crowd_agent.gd" id="15_r6v05"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 40.0
@@ -21,9 +24,9 @@ collision_layer = 0
 collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_enemy")
+body_stats = ExtResource("2_4elnr")
 
 [node name="Visual" type="Node2D" parent="." unique_id=971936920]
-unique_name_in_owner = true
 script = ExtResource("2_visual")
 
 [node name="HitFlash" type="Node" parent="Visual" unique_id=1079053635]
@@ -37,7 +40,6 @@ script = ExtResource("4_hit_scale_reaction")
 tween_duration = 1.0
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=509559158]
-unique_name_in_owner = true
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("4_hurtbox")
@@ -45,35 +47,32 @@ script = ExtResource("4_hurtbox")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=756895953]
 shape = SubResource("CircleShape2D_hurtbox")
 
-[node name="Health" type="Node" parent="." unique_id=10592492]
-unique_name_in_owner = true
-script = ExtResource("5_health")
-
 [node name="HitStop" type="Node" parent="." unique_id=52012667]
-unique_name_in_owner = true
 script = ExtResource("8_hit_stop")
 
-[node name="Destination" type="Node" parent="." unique_id=523095472]
-unique_name_in_owner = true
-script = ExtResource("10_destination")
-
-[node name="Steering" type="Node" parent="." unique_id=1845822639]
-unique_name_in_owner = true
-script = ExtResource("11_steering")
+[node name="Health" type="Node" parent="." unique_id=10592492]
+script = ExtResource("5_health")
 
 [node name="Movement" type="Node" parent="." unique_id=896627334]
-unique_name_in_owner = true
 script = ExtResource("9_movement")
-max_knockback_speed = 270.0
-knockback_deceleration = 2875.0
+
+[node name="Steering" type="Node" parent="." unique_id=1845822639]
+script = ExtResource("11_steering")
+
+[node name="Knockback" type="Node" parent="." unique_id=1942872961]
+script = ExtResource("11_rqrnf")
+
+[node name="Destination" type="Node" parent="." unique_id=523095472]
+script = ExtResource("10_destination")
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=2143628740]
-unique_name_in_owner = true
 stream = ExtResource("6_hit_sound")
 bus = &"SFX"
 
 [node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=725563217]
-unique_name_in_owner = true
 stream = ExtResource("7_death_sound")
 volume_db = -2.0
 bus = &"SFX"
+
+[node name="CrowdAgent" type="Node" parent="." unique_id=1714646144]
+script = ExtResource("15_r6v05")

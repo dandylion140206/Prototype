@@ -1,38 +1,34 @@
 class_name EnemyRegistry
 extends RefCounted
 
-var _enemies: Array[Enemy] = []
+var _agents: Array[EnemyCrowdAgent] = []
 
 
-func register(enemy: Enemy) -> void:
-	if enemy == null or _enemies.has(enemy):
+func register(agent: EnemyCrowdAgent) -> void:
+	if agent == null or _agents.has(agent):
 		return
 
-	_enemies.append(enemy)
-	enemy.died.connect(_on_enemy_removed.bind(enemy))
-	enemy.tree_exiting.connect(_on_enemy_removed.bind(enemy))
+	_agents.append(agent)
+	agent.tree_exiting.connect(_on_agent_tree_exiting.bind(agent))
 
 
-func unregister(enemy: Enemy) -> void:
-	if enemy == null:
+func unregister(agent: EnemyCrowdAgent) -> void:
+	if agent == null:
 		return
 
-	var index := _enemies.find(enemy)
+	var index := _agents.find(agent)
 	if index < 0:
 		return
 
-	_enemies.remove_at(index)
+	_agents.remove_at(index)
 
-	if enemy.died.is_connected(_on_enemy_removed):
-		enemy.died.disconnect(_on_enemy_removed)
-
-	if enemy.tree_exiting.is_connected(_on_enemy_removed):
-		enemy.tree_exiting.disconnect(_on_enemy_removed)
+	if agent.tree_exiting.is_connected(_on_agent_tree_exiting):
+		agent.tree_exiting.disconnect(_on_agent_tree_exiting)
 
 
-func get_enemies() -> Array[Enemy]:
-	return _enemies
+func get_agents() -> Array[EnemyCrowdAgent]:
+	return _agents
 
 
-func _on_enemy_removed(enemy: Enemy) -> void:
-	unregister(enemy)
+func _on_agent_tree_exiting(agent: EnemyCrowdAgent) -> void:
+	unregister(agent)

@@ -1,31 +1,40 @@
 class_name Enemy
-extends CharacterBody2D
+extends Node2D
 
 signal health_changed(current_health: float, max_health: float)
 signal died
 
+@export var body_stats: EnemyBodyStats
+
 var _is_dying: bool = false
 
-@onready var _visual: EnemyVisual = %Visual
+@onready var _visual: EnemyVisual = $Visual
 @onready var _hit_flash: HitFlash = %HitFlash
 @onready var _hit_scale_reaction: HitScaleReaction = %HitScaleReaction
-@onready var _hurtbox: Hurtbox = %Hurtbox
-@onready var _hit_stop: HitStop = %HitStop
-@onready var _health: Health = %Health
-@onready var _enemy_destination: EnemyDestination = %Destination
-@onready var _enemy_steering: EnemySteering = %Steering
-@onready var _enemy_movement: EnemyMovement = %Movement
-@onready var _hit_sound: AudioStreamPlayer2D = %HitSound
-@onready var _death_sound: AudioStreamPlayer2D = %DeathSound
+@onready var _hurtbox: Hurtbox = $Hurtbox
+@onready var _hit_stop: HitStop = $HitStop
+@onready var _health: Health = $Health
+@onready var _movement: EnemyMovement = $Movement
+@onready var _steering: EnemySteering = $Steering
+@onready var _knockback: EnemyKnockback = $Knockback
+@onready var _destination: EnemyDestination = $Destination
+@onready var _hit_sound: AudioStreamPlayer2D = $HitSound
+@onready var _death_sound: AudioStreamPlayer2D = $DeathSound
+@onready var _crowd_agent: EnemyCrowdAgent = $CrowdAgent
 
 
 func _ready() -> void:
+	assert(body_stats != null, "body_stats must not be null.")
+
 	_hit_flash.setup(_visual)
 	_hit_scale_reaction.setup(_visual)
-	_enemy_movement.setup(self, _hit_stop, _enemy_destination, _enemy_steering)
+	_knockback.setup(body_stats, _hit_stop)
+	_movement.setup(
+		self, body_stats, _hit_stop, _destination, _steering, _knockback
+	)
+	_crowd_agent.setup(self, body_stats, _movement, _knockback)
 
 	_hurtbox.hit_received.connect(_on_hit_received)
-	_health.damaged.connect(_on_damaged)
 	_health.health_changed.connect(_on_health_changed)
 	_health.died.connect(_on_died)
 
@@ -33,28 +42,15 @@ func _ready() -> void:
 
 
 func set_destination(destination: Vector2) -> void:
-	_enemy_destination.set_destination(destination)
-	_enemy_movement.start()
+	_destination.set_destination(destination)
 
 
-func set_destination_target(destination_target: Node2D) -> void:
-	_enemy_destination.set_destination_target(destination_target)
-	_enemy_movement.start()
+func set_destination_target(target: Node2D) -> void:
+	_destination.set_target(target)
 
 
-func clear_destination_target() -> void:
-	_enemy_destination.clear_destination_target()
-	if not _enemy_destination.has_destination():
-		_enemy_movement.stop()
-
-
-func clear_destination() -> void:
-	_enemy_destination.clear_destination()
-	_enemy_movement.stop()
-
-
-func stop_movement() -> void:
-	_enemy_movement.stop()
+func get_crowd_agent() -> EnemyCrowdAgent:
+	return _crowd_agent
 
 
 func get_current_health() -> float:
@@ -65,45 +61,19 @@ func get_max_health() -> float:
 	return _health.max_health
 
 
-func set_crowd_acceleration(crowd_acceleration: Vector2) -> void:
-	_enemy_movement.set_crowd_acceleration(crowd_acceleration)
-
-
-func get_normal_velocity() -> Vector2:
-	return _enemy_movement.get_normal_velocity()
-
-
-func get_external_knockback_velocity() -> Vector2:
-	return _enemy_movement.get_external_knockback_velocity()
-
-
-func get_enemy_movement() -> EnemyMovement:
-	return _enemy_movement
-
-
 func _on_hit_received(hit_data: HitData) -> void:
 	if _is_dying or _health.is_dead() or hit_data.damage <= 0.0:
 		return
 
-	_health.damage(hit_data.damage)
-	if _is_dying:
-		return
-
-	_enemy_movement.add_knockback(hit_data.knockback_velocity)
+	# ヒット演出は damage() より先に実行する。
+	# damage() は致死時に died を同期的に emit し、その中で _is_dying が立つため。
+	_knockback.apply(hit_data.knockback_velocity)
 	_hit_stop.start(hit_data.target_hit_stop_duration)
-
-
-func _on_damaged(
-	_amount: float,
-	_current_health: float,
-	_max_health: float
-) -> void:
-	if _is_dying:
-		return
-
 	_hit_flash.play()
 	_hit_scale_reaction.play()
-	_play_sound_from_start(_hit_sound)
+	_hit_sound.play()
+
+	_health.damage(hit_data.damage)
 
 
 func _on_health_changed(current_health: float, max_health: float) -> void:
@@ -116,17 +86,14 @@ func _on_died() -> void:
 		return
 
 	_is_dying = true
-	remove_from_group("enemy")
-	_enemy_movement.stop()
+	_hit_stop.cancel()
+	_crowd_agent.set_active(false)
+	_movement.set_physics_process(false)
+	_knockback.set_physics_process(false)
 	_hurtbox.set_enabled(false)
 	_visual.visible = false
 	died.emit()
 
-	_play_sound_from_start(_death_sound)
+	_death_sound.play()
 	await _death_sound.finished
 	queue_free()
-
-
-func _play_sound_from_start(sound: AudioStreamPlayer2D) -> void:
-	sound.stop()
-	sound.play()

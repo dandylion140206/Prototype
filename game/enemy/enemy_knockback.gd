@@ -1,0 +1,44 @@
+class_name EnemyKnockback
+extends Node
+
+@export_range(0.0, 5000.0, 10.0) var max_speed: float = 1500.0
+@export_range(0.0, 10000.0, 1.0) var deceleration: float = 6000.0
+@export_range(0.0, 1000.0, 1.0) var stop_speed: float = 10.0
+
+var _stats: EnemyBodyStats
+var _hit_stop: HitStop
+var _velocity: Vector2 = Vector2.ZERO
+
+
+func _ready() -> void:
+	process_physics_priority = 0
+	set_physics_process(false)
+
+
+func setup(stats: EnemyBodyStats, hit_stop: HitStop) -> void:
+	assert(stats != null, "stats must not be null.")
+
+	_stats = stats
+	_hit_stop = hit_stop
+
+	set_physics_process(true)
+
+
+func _physics_process(delta: float) -> void:
+	if _hit_stop.is_active() or _velocity.is_zero_approx():
+		return
+
+	_velocity = _velocity.move_toward(Vector2.ZERO, deceleration * delta)
+
+	if _velocity.length() < stop_speed:
+		_velocity = Vector2.ZERO
+
+
+func apply(impulse: Vector2) -> void:
+	_velocity = (
+		_velocity + impulse * _stats.get_inverse_mass()
+	).limit_length(max_speed)
+
+
+func get_velocity() -> Vector2:
+	return _velocity
