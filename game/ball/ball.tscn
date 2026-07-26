@@ -17,7 +17,7 @@ radius = 21.0
 physics_interpolation_mode = 1
 z_index = 10
 script = ExtResource("1_6plaf")
-hit_speed_multiplier = 0.96
+hit_speed_multiplier = 0.99
 
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
 script = ExtResource("3_biv8x")
@@ -51,6 +51,7 @@ script = ExtResource("5_vf1tv")
 [node name="HitStop" type="Node" parent="." unique_id=1979259650]
 unique_name_in_owner = true
 script = ExtResource("10_orjm5")
+restart_cooldown_frames = 1
 
 [node name="AbilityController" type="Node2D" parent="." unique_id=1095826231]
 unique_name_in_owner = true

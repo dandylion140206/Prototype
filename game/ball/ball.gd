@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	if not landed_hit_data.is_empty():
 		_movement.scale_velocity(hit_speed_multiplier)
 
-		_hit_stop.start(landed_hit_data.front().attacker_hit_stop_duration)
+		_start_attacker_hit_stop(landed_hit_data)
 
 		for hit_data in landed_hit_data:
 			hit_landed.emit(hit_data)
@@ -154,6 +154,18 @@ func _apply_hit(
 		_movement.get_velocity(),
 		impact_position
 	)
+
+
+func _start_attacker_hit_stop(hit_data_list: Array[HitData]) -> void:
+	var hit_stop_frames := 0
+
+	for hit_data in hit_data_list:
+		hit_stop_frames = maxi(
+			hit_stop_frames,
+			hit_data.attacker_hit_stop_frames
+		)
+
+	_hit_stop.start(hit_stop_frames)
 
 
 func _update_contacting_hurtboxes() -> void:

@@ -30,7 +30,12 @@ func _ready() -> void:
 	_hit_scale_reaction.setup(_visual)
 	_knockback.setup(body_stats, _hit_stop)
 	_movement.setup(
-		self, body_stats, _hit_stop, _destination, _steering, _knockback
+		self,
+		body_stats,
+		_hit_stop,
+		_destination,
+		_steering,
+		_knockback
 	)
 	_crowd_agent.setup(self, body_stats, _movement, _knockback)
 
@@ -38,7 +43,10 @@ func _ready() -> void:
 	_health.health_changed.connect(_on_health_changed)
 	_health.died.connect(_on_died)
 
-	_on_health_changed(_health.get_current_health(), _health.max_health)
+	_on_health_changed(
+		_health.get_current_health(),
+		_health.max_health
+	)
 
 
 func set_destination(destination: Vector2) -> void:
@@ -65,14 +73,12 @@ func _on_hit_received(hit_data: HitData) -> void:
 	if _is_dying or _health.is_dead() or hit_data.damage <= 0.0:
 		return
 
-	# ヒット演出は damage() より先に実行する。
-	# damage() は致死時に died を同期的に emit し、その中で _is_dying が立つため。
 	_knockback.apply_impact(
 		hit_data.impact_velocity,
 		hit_data.impact_position,
 		_hurtbox.global_position
 	)
-	_hit_stop.start(hit_data.target_hit_stop_duration)
+	_hit_stop.start(hit_data.target_hit_stop_frames)
 	_hit_flash.play()
 	_hit_scale_reaction.play()
 	_hit_sound.play()
@@ -80,7 +86,10 @@ func _on_hit_received(hit_data: HitData) -> void:
 	_health.damage(hit_data.damage)
 
 
-func _on_health_changed(current_health: float, max_health: float) -> void:
+func _on_health_changed(
+	current_health: float,
+	max_health: float
+) -> void:
 	_visual.update_health(current_health, max_health)
 	health_changed.emit(current_health, max_health)
 

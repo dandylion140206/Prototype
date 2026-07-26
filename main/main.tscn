@@ -50,9 +50,7 @@ offset = Vector2(960, 540)
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_4hmqs")
-spawn_interval = 0.13
-spawn_mode = 0
-destination_position = Vector2(1820, 540)
+spawn_interval = 0.15000000000000002
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]

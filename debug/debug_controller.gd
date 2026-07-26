@@ -5,17 +5,40 @@ extends Node
 @export_range(0.05, 1.0, 0.05) var slow_time_scale: float = 0.25
 @export var slow_key: Key = KEY_SHIFT
 
+var _base_physics_ticks_per_second: int
+var _current_time_scale: float = -1.0
+
+
+func _ready() -> void:
+	_base_physics_ticks_per_second = (Engine.physics_ticks_per_second)
+	_apply_time_scale(1.0)
+
 
 func _process(_delta: float) -> void:
-	if not enabled:
-		Engine.time_scale = 1.0
+	var requested_time_scale := 1.0
+
+	if enabled and Input.is_key_pressed(slow_key):
+		requested_time_scale = slow_time_scale
+
+	if is_equal_approx(
+		requested_time_scale,
+		_current_time_scale
+	):
 		return
 
-	if Input.is_key_pressed(slow_key):
-		Engine.time_scale = slow_time_scale
-	else:
-		Engine.time_scale = 1.0
+	_apply_time_scale(requested_time_scale)
 
 
 func _exit_tree() -> void:
 	Engine.time_scale = 1.0
+	Engine.physics_ticks_per_second = (_base_physics_ticks_per_second)
+
+
+func _apply_time_scale(time_scale: float) -> void:
+	assert(time_scale > 0.0, "time_scale must be positive.")
+
+	var scaled_physics_ticks := roundi(_base_physics_ticks_per_second * time_scale)
+
+	Engine.time_scale = time_scale
+	Engine.physics_ticks_per_second = maxi(scaled_physics_ticks, 1)
+	_current_time_scale = time_scale

@@ -9,8 +9,8 @@ signal hit_landed(hit_data: HitData)
 @export_range(0.0, 1000.0, 1.0) var max_damage: float = 100.0
 
 @export_range(0.0, 20000.0, 100.0) var min_hit_stop_speed: float = 1000.0
-@export_range(0.0, 0.2, 0.001) var attacker_hit_stop_duration: float = 0.02
-@export_range(0.0, 0.2, 0.001) var target_hit_stop_duration: float = 0.02
+@export_range(0, 60, 1) var attacker_hit_stop_frames: int = 1
+@export_range(0, 60, 1) var target_hit_stop_frames: int = 1
 
 var _attack_source: Node2D
 
@@ -40,8 +40,8 @@ func apply_hit(
 		damage,
 		impact_velocity,
 		impact_position,
-		_get_hit_stop_duration(speed, attacker_hit_stop_duration),
-		_get_hit_stop_duration(speed, target_hit_stop_duration),
+		_get_hit_stop_frames(speed, attacker_hit_stop_frames),
+		_get_hit_stop_frames(speed, target_hit_stop_frames),
 		_attack_source.get_instance_id()
 	)
 
@@ -58,8 +58,8 @@ func _calculate_damage(speed: float) -> float:
 	return clampf(damage, min_damage, max_damage)
 
 
-func _get_hit_stop_duration(speed: float, duration: float) -> float:
+func _get_hit_stop_frames(speed: float, frame_count: int) -> int:
 	if speed < min_hit_stop_speed:
-		return 0.0
+		return 0
 
-	return duration
+	return frame_count
