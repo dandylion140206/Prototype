@@ -67,7 +67,11 @@ func _on_hit_received(hit_data: HitData) -> void:
 
 	# ヒット演出は damage() より先に実行する。
 	# damage() は致死時に died を同期的に emit し、その中で _is_dying が立つため。
-	_knockback.apply(hit_data.knockback_velocity)
+	_knockback.apply_impact(
+		hit_data.impact_velocity,
+		hit_data.impact_position,
+		_hurtbox.global_position
+	)
 	_hit_stop.start(hit_data.target_hit_stop_duration)
 	_hit_flash.play()
 	_hit_scale_reaction.play()

@@ -19,13 +19,14 @@ func apply_hit(hit_data: HitData) -> void:
 	assert(_camera_shake != null, "ImpactCameraShake must be setup before apply_hit().")
 	assert(hit_data != null, "hit_data must not be null.")
 
-	if hit_data.hit_speed < min_shake_speed:
+	var impact_speed := hit_data.impact_velocity.length()
+	if impact_speed < min_shake_speed:
 		return
 
 	var speed_ratio := inverse_lerp(
 		min_shake_speed,
 		max_shake_speed,
-		hit_data.hit_speed
+		impact_speed
 	)
 	speed_ratio = clampf(speed_ratio, 0.0, 1.0)
 

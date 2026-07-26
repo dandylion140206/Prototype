@@ -19,7 +19,7 @@ var _contacting_hurtbox_ids: Dictionary[int, bool] = {}
 
 func _ready() -> void:
 	_movement.setup(self)
-	_impact_attack.setup(_movement.get_speed, self)
+	_impact_attack.setup(self)
 	_physics_position_interpolator.setup(self)
 
 	var ability_context := AbilityContext.new(
@@ -156,11 +156,11 @@ func _apply_hit(
 	if hurtbox == null or hurtbox.is_queued_for_deletion():
 		return null
 
-	var direction := (
-		hurtbox.global_position - impact_position
-	).normalized()
-
-	return _impact_attack.apply_hit(hurtbox, direction)
+	return _impact_attack.apply_hit(
+		hurtbox,
+		_movement.get_velocity(),
+		impact_position
+	)
 
 
 func _update_contacting_hurtboxes() -> void:
