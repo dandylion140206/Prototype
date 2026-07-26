@@ -45,3 +45,7 @@ common/physics_interpolation=true
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
 viewport/hdr_2d=true
+
+[spotlight_search]
+
+state/history=[]

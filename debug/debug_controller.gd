@@ -4,7 +4,7 @@ extends Node
 @export var enabled: bool = true
 @export_range(0.05, 1.0, 0.05) var slow_time_scale: float = 0.25
 @export var slow_key: Key = KEY_SHIFT
-@export var restart_key: Key = KEY_F7
+@export var restart_key: Key = KEY_R
 
 var _base_physics_ticks_per_second: int
 var _current_time_scale: float = -1.0
