@@ -41,11 +41,9 @@ func _reconcile_enemy_count() -> void:
 
 
 func _spawn_enemy() -> bool:
-	var enemy := _create_enemy()
+	var enemy := _create_enemy(_get_random_spawn_position())
 	if enemy == null:
 		return false
-
-	enemy.global_position = _get_random_spawn_position()
 
 	var enemy_id := enemy.get_instance_id()
 	_enemies[enemy_id] = enemy

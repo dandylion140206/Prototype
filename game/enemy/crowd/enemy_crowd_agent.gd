@@ -4,6 +4,7 @@ extends Node
 ## EnemyCrowdSystem が敵個体を操作するための窓口。
 ## Solver は Enemy 型を知らず、このクラス経由でのみ個体へアクセスする。
 
+## Solver が毎フレーム参照するため、getter を介さず直接公開する。
 var stats: EnemyBodyStats
 
 var _body: Node2D
@@ -18,7 +19,10 @@ func setup(
 	movement: EnemyMovement,
 	knockback: EnemyKnockback
 ) -> void:
+	assert(body != null, "body must not be null.")
 	assert(body_stats != null, "body_stats must not be null.")
+	assert(movement != null, "movement must not be null.")
+	assert(knockback != null, "knockback must not be null.")
 
 	_body = body
 	stats = body_stats

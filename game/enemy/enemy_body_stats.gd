@@ -4,7 +4,7 @@ extends Resource
 ## 敵の物理特性と群衆挙動のチューニング値。
 ## 実行時に書き換える用途は想定していないため、複数の敵で共有してよい。
 
-@export_range(0.01, 100.0, 0.01, "or_greater") var mass: float = 1.0
+@export_range(0.1, 30.0, 0.1, "or_greater") var mass: float = 1.0
 @export var is_immovable: bool = false
 
 @export_group("Separation")

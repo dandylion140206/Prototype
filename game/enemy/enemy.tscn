@@ -19,60 +19,59 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 40.0
 
-[node name="Enemy" type="CharacterBody2D" unique_id=136872646 groups=["enemy"]]
-collision_layer = 0
-collision_mask = 0
-motion_mode = 1
+[node name="Enemy" type="Node2D" unique_id=1811311764]
 script = ExtResource("1_enemy")
 body_stats = ExtResource("2_4elnr")
 
-[node name="Visual" type="Node2D" parent="." unique_id=971936920]
+[node name="Visual" type="Node2D" parent="." unique_id=9975807]
 script = ExtResource("2_visual")
 
-[node name="HitFlash" type="Node" parent="Visual" unique_id=1079053635]
+[node name="HitFlash" type="Node" parent="Visual" unique_id=698111814]
 unique_name_in_owner = true
 script = ExtResource("3_hit_flash")
 flash_modulate = Color(1.7867532, 1.7867532, 1.7867532, 1)
 
-[node name="HitScaleReaction" type="Node" parent="Visual" unique_id=2051073635]
+[node name="HitScaleReaction" type="Node" parent="Visual" unique_id=1456777285]
 unique_name_in_owner = true
 script = ExtResource("4_hit_scale_reaction")
 tween_duration = 1.0
 
-[node name="Hurtbox" type="Area2D" parent="." unique_id=509559158]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1386295835]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("4_hurtbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=756895953]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=257935518]
 shape = SubResource("CircleShape2D_hurtbox")
 
-[node name="HitStop" type="Node" parent="." unique_id=52012667]
+[node name="HitStop" type="Node" parent="." unique_id=376194325]
 script = ExtResource("8_hit_stop")
 
-[node name="Health" type="Node" parent="." unique_id=10592492]
+[node name="Health" type="Node" parent="." unique_id=1781612605]
 script = ExtResource("5_health")
 
-[node name="Movement" type="Node" parent="." unique_id=896627334]
+[node name="Movement" type="Node" parent="." unique_id=1669864983]
 script = ExtResource("9_movement")
 
-[node name="Steering" type="Node" parent="." unique_id=1845822639]
+[node name="Steering" type="Node" parent="." unique_id=2013910406]
 script = ExtResource("11_steering")
 
-[node name="Knockback" type="Node" parent="." unique_id=1942872961]
+[node name="Knockback" type="Node" parent="." unique_id=541626083]
 script = ExtResource("11_rqrnf")
+max_speed = 270.0
+deceleration = 2875.0
 
-[node name="Destination" type="Node" parent="." unique_id=523095472]
+[node name="Destination" type="Node" parent="." unique_id=299966659]
 script = ExtResource("10_destination")
 
-[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=2143628740]
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=267553710]
 stream = ExtResource("6_hit_sound")
 bus = &"SFX"
 
-[node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=725563217]
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=242421583]
 stream = ExtResource("7_death_sound")
 volume_db = -2.0
 bus = &"SFX"
 
-[node name="CrowdAgent" type="Node" parent="." unique_id=1714646144]
+[node name="CrowdAgent" type="Node" parent="." unique_id=1159136486]
 script = ExtResource("15_r6v05")

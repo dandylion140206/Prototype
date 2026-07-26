@@ -42,16 +42,14 @@ func _spawn_loop() -> void:
 
 
 func _spawn_enemy() -> void:
-	var enemy := _create_enemy()
+	var enemy := _create_enemy(_get_spawn_position())
 	if enemy == null:
 		return
 
-	enemy.global_position = _get_spawn_position()
-	enemy.set_destination(destination_position)
-
-	if destination_target != null:
-		if is_instance_valid(destination_target):
-			enemy.set_destination_target(destination_target)
+	if is_instance_valid(destination_target):
+		enemy.set_destination_target(destination_target)
+	else:
+		enemy.set_destination(destination_position)
 
 	_notify_enemy_spawned(enemy)
 

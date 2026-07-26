@@ -7,9 +7,9 @@ extends Node
 var _stats: EnemyBodyStats
 var _body: Node2D
 var _hit_stop: HitStop
-var _destination: EnemyDestination
 var _steering: EnemySteering
 var _knockback: EnemyKnockback
+var _destination: EnemyDestination
 var _seek_velocity: Vector2 = Vector2.ZERO
 var _crowd_velocity: Vector2 = Vector2.ZERO
 var _crowd_acceleration: Vector2 = Vector2.ZERO
@@ -30,6 +30,10 @@ func setup(
 ) -> void:
 	assert(body != null, "body must not be null.")
 	assert(body_stats != null, "body_stats must not be null.")
+	assert(hit_stop != null, "hit_stop must not be null.")
+	assert(destination != null, "destination must not be null.")
+	assert(steering != null, "steering must not be null.")
+	assert(knockback != null, "knockback must not be null.")
 
 	_body = body
 	_stats = body_stats

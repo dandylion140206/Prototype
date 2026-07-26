@@ -12,19 +12,21 @@ func _ready() -> void:
 	assert(enemy_scene != null, "enemy_scene must not be null.")
 
 
-func _create_enemy() -> Enemy:
+func _create_enemy(spawn_position: Vector2) -> Enemy:
 	var enemy := enemy_scene.instantiate() as Enemy
 	if enemy == null:
 		push_error("enemy_scene root must inherit Enemy.")
 		return null
 
 	var spawn_parent := get_parent()
-	assert(
-		spawn_parent != null,
-		"EnemySpawner must have a parent."
-	)
+	assert(spawn_parent != null, "EnemySpawner must have a parent.")
 
 	spawn_parent.add_child(enemy)
+	enemy.global_position = spawn_position
+
+	# 物理補間の前フレーム位置を初期化し、原点からの補間を防ぐ。
+	enemy.reset_physics_interpolation()
+
 	return enemy
 
 

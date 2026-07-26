@@ -17,6 +17,7 @@ func _ready() -> void:
 
 func setup(stats: EnemyBodyStats, hit_stop: HitStop) -> void:
 	assert(stats != null, "stats must not be null.")
+	assert(hit_stop != null, "hit_stop must not be null.")
 
 	_stats = stats
 	_hit_stop = hit_stop

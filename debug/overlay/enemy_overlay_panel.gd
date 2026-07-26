@@ -3,9 +3,6 @@ extends DebugOverlayPanel
 
 @export var enemy_crowd_system: EnemyCrowdSystem
 
-var enemy_count_provider: Callable = Callable()
-var active_enemy_count_provider: Callable = Callable()
-
 
 func update_display() -> void:
 	if enemy_crowd_system == null:
