@@ -1,6 +1,7 @@
+@abstract
 class_name DebugOverlayPanel
 extends Label
 
 
-func update_display() -> void:
-	pass
+@abstract
+func update_display() -> void

@@ -1,16 +1,17 @@
 @tool
+@abstract
 class_name PostProcessEffect
 extends Resource
 
 var shader_parameters: Dictionary[StringName, Variant] = {}
 
 
-func _get_shader() -> Shader:
-	return null
+@abstract
+func _get_shader() -> Shader
 
 
-func _update_shader_parameters() -> void:
-	pass
+@abstract
+func _update_shader_parameters() -> void
 
 
 func is_enabled() -> bool:
