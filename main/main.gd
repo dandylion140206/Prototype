@@ -9,6 +9,7 @@ extends Node2D
 @onready var _enemy_spawner: EnemySpawner = $EnemySpawner
 @onready var _enemy_crowd_system: EnemyCrowdSystem = $EnemyCrowdSystem
 @onready var _enemy_health_bar_layer: EnemyHealthBarLayer = %EnemyHealthBarLayer
+@onready var _coin_system: CoinSystem = $CoinSystem
 
 
 func _ready() -> void:
@@ -18,6 +19,7 @@ func _ready() -> void:
 	_ball.hit_landed.connect(_audio_manager.play_hit)
 	_input_controller.active_ability_requested.connect(_ball.request_ability_activation)
 	_enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
+	_coin_system.coin_collected.connect(_audio_manager.play_coin_collect)
 
 	_ball.set_target_position(get_global_mouse_position())
 
@@ -34,3 +36,4 @@ func _on_enemy_spawned(enemy: Enemy) -> void:
 
 func _on_enemy_died(enemy: Enemy) -> void:
 	_audio_manager.play_enemy_death(enemy.global_position)
+	_coin_system.drop_coin(enemy.global_position)

@@ -6,7 +6,7 @@ extends Node
 @export_range(0.0, 10.0, 0.1) var trauma_decay_rate: float = 3.0
 @export_range(1.0, 4.0, 0.1) var trauma_power: float = 2.0
 @export_range(0.0, 100.0, 1.0) var noise_speed: float = 30.0
-@export_range(0.0, 0.5, 0.01) var trauma_dead_zone: float = 0.1
+@export_range(0.0, 1.0, 0.01) var trauma_dead_zone: float = 0.1
 
 var _camera: Camera2D
 var _base_offset: Vector2 = Vector2.ZERO

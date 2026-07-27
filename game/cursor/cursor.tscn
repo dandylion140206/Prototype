@@ -9,5 +9,5 @@ script = ExtResource("1_g0wji")
 [node name="CircleVisual" type="Node2D" parent="." unique_id=1898520927]
 script = ExtResource("1_isnha")
 radius = 7.0
-color = Color(1, 0.984375, 0, 1)
+color = Color(0.1953125, 1, 0, 1)
 metadata/_custom_type_script = "uid://b3mrwkpsh0eno"

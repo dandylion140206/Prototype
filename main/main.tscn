@@ -21,6 +21,8 @@
 [ext_resource type="Script" uid="uid://dvoqtu1nlwsvi" path="res://game/audio/audio_manager.gd" id="19_audio_manager"]
 [ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/hit_audio_cue.tres" id="20_hit_audio_cue"]
 [ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/enemy_death_audio_cue.tres" id="21_enemy_death_audio_cue"]
+[ext_resource type="PackedScene" uid="uid://bk65yyetfv2o5" path="res://game/coin/coin_system.tscn" id="22_coin_system"]
+[ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/coin_collect_audio_cue.tres" id="23_coin_collect_audio_cue"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -45,6 +47,12 @@ script = ExtResource("2_ipbj0")
 [node name="InputController" type="Node" parent="." unique_id=953981804]
 script = ExtResource("3_grrlh")
 
+[node name="AudioManager" type="Node" parent="." unique_id=495623010]
+script = ExtResource("19_audio_manager")
+hit_audio_cue = ExtResource("20_hit_audio_cue")
+enemy_death_audio_cue = ExtResource("21_enemy_death_audio_cue")
+coin_collect_audio_cue = ExtResource("23_coin_collect_audio_cue")
+
 [node name="テスト画像" type="Sprite2D" parent="." unique_id=815715909]
 visible = false
 texture = ExtResource("10_s758e")
@@ -53,17 +61,15 @@ offset = Vector2(960, 540)
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_q0sk7")
-spawn_count = 67
+spawn_count = 343
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
 
-[node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
+[node name="CoinSystem" parent="." unique_id=948957681 instance=ExtResource("22_coin_system")]
+z_index = 5
 
-[node name="AudioManager" type="Node" parent="." unique_id=495623010]
-script = ExtResource("19_audio_manager")
-hit_audio_cue = ExtResource("20_hit_audio_cue")
-enemy_death_audio_cue = ExtResource("21_enemy_death_audio_cue")
+[node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
 
 [node name="Cursor" parent="." unique_id=413606096 instance=ExtResource("3_c2dye")]
 z_index = 1
@@ -75,7 +81,8 @@ ignore_rotation = false
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=996526789]
 unique_name_in_owner = true
 script = ExtResource("8_67ri8")
-trauma_decay_rate = 5.0
+max_offset = Vector2(14, 8)
+noise_speed = 20.0
 
 [node name="ImpactCameraShake" type="Node" parent="Camera2D/CameraShake" unique_id=1642740481]
 unique_name_in_owner = true

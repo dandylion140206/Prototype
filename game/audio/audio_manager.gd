@@ -3,23 +3,28 @@ extends Node
 
 @export var hit_audio_cue: AudioCue
 @export var enemy_death_audio_cue: AudioCue
+@export var coin_collect_audio_cue: AudioCue
 
 var _current_pitch: float = 1.0
 var _last_playback_time: float = -INF
 
 var _hit_audio_player: AudioStreamPlayer2D
 var _enemy_death_audio_player: AudioStreamPlayer2D
+var _coin_collect_audio_player: AudioStreamPlayer2D
 
 
 func _ready() -> void:
 	assert(hit_audio_cue != null, "hit_audio_cue must not be null.")
 	assert(enemy_death_audio_cue != null, "enemy_death_audio_cue must not be null.")
+	assert(coin_collect_audio_cue != null, "coin_collect_audio_cue must not be null.")
 	_validate_audio_cue(hit_audio_cue)
 	_validate_audio_cue(enemy_death_audio_cue)
+	_validate_audio_cue(coin_collect_audio_cue)
 
 	_current_pitch = hit_audio_cue.initial_pitch
 	_hit_audio_player = _create_audio_player(&"HitAudioPlayer", hit_audio_cue)
 	_enemy_death_audio_player = _create_audio_player(&"EnemyDeathAudioPlayer", enemy_death_audio_cue)
+	_coin_collect_audio_player = _create_audio_player(&"CoinCollectAudioPlayer", coin_collect_audio_cue)
 
 
 func play_hit(hit_data: HitData) -> void:
@@ -50,6 +55,15 @@ func play_enemy_death(world_position: Vector2) -> void:
 	_enemy_death_audio_player.global_position = world_position
 	_enemy_death_audio_player.pitch_scale = 1.0 + _get_random_pitch_offset(enemy_death_audio_cue)
 	_enemy_death_audio_player.play()
+
+
+func play_coin_collect(world_position: Vector2) -> void:
+	if coin_collect_audio_cue.stream == null:
+		return
+
+	_coin_collect_audio_player.global_position = world_position
+	_coin_collect_audio_player.pitch_scale = 1.0 + _get_random_pitch_offset(coin_collect_audio_cue)
+	_coin_collect_audio_player.play()
 
 
 func _setup_audio_player(player: AudioStreamPlayer2D, audio_cue: AudioCue) -> void:
