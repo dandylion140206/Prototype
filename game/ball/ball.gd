@@ -9,12 +9,12 @@ signal active_ability_activated
 var _target_position: Vector2 = Vector2.ZERO
 var _contacting_hurtbox_ids: Dictionary[int, bool] = {}
 
-@onready var _hitbox: Hitbox = %Hitbox
-@onready var _movement: Movement = %Movement
-@onready var _impact_attack: ImpactAttack = %ImpactAttack
-@onready var _hit_stop: HitStop = %HitStop
-@onready var _ability_controller: AbilityController = %AbilityController
-@onready var _physics_position_interpolator: PhysicsPositionInterpolator = %PhysicsPositionInterpolator
+@onready var _hitbox: Hitbox = $Hitbox
+@onready var _movement: Movement = $Movement
+@onready var _impact_attack: ImpactAttack = $ImpactAttack
+@onready var _hit_stop: HitStop = $HitStop
+@onready var _ability_controller: AbilityController = $AbilityController
+@onready var _physics_position_interpolator: PhysicsPositionInterpolator = $PhysicsPositionInterpolator
 
 
 func _ready() -> void:
@@ -119,11 +119,9 @@ func _move_and_apply_swept_hits(
 
 		var first_hurtboxes: Array[Hurtbox] = sweep_result["hurtboxes"]
 		var unsafe_fraction: float = sweep_result["unsafe_fraction"]
-		var contact_position := global_position + planned_motion * clampf(
-			unsafe_fraction,
-			0.0,
-			1.0
-		)
+		var fraction := clampf(unsafe_fraction, 0.0, 1.0)
+		var contact_position := global_position + planned_motion * fraction
+
 
 		for hurtbox in first_hurtboxes:
 			if not _is_contacting(hurtbox):

@@ -3,7 +3,7 @@ extends Area2D
 
 @export_range(1, 256, 1) var max_sweep_results: int = 64
 
-@onready var _shape_cast: ShapeCast2D = %ShapeCast2D
+@onready var _shape_cast: ShapeCast2D = $ShapeCast2D
 
 
 func _ready() -> void:

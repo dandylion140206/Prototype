@@ -25,7 +25,6 @@ radius = 21.0
 metadata/_custom_type_script = "uid://b3mrwkpsh0eno"
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1563584028]
-unique_name_in_owner = true
 collision_mask = 2
 script = ExtResource("4_vf1tv")
 
@@ -33,7 +32,6 @@ script = ExtResource("4_vf1tv")
 shape = SubResource("CircleShape2D_ua4af")
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="Hitbox" unique_id=912828512]
-unique_name_in_owner = true
 shape = SubResource("CircleShape2D_ua4af")
 max_results = 64
 collision_mask = 2
@@ -41,24 +39,19 @@ collide_with_areas = true
 collide_with_bodies = false
 
 [node name="Movement" type="Node" parent="." unique_id=607524805]
-unique_name_in_owner = true
 script = ExtResource("3_6xd6y")
 
 [node name="ImpactAttack" type="Node" parent="." unique_id=1609352213]
-unique_name_in_owner = true
 script = ExtResource("5_vf1tv")
 
 [node name="HitStop" type="Node" parent="." unique_id=1979259650]
-unique_name_in_owner = true
 script = ExtResource("10_orjm5")
 restart_cooldown_frames = 1
 
 [node name="AbilityController" type="Node2D" parent="." unique_id=1095826231]
-unique_name_in_owner = true
 physics_interpolation_mode = 1
 script = ExtResource("9_melhi")
 initial_active_ability_scene = ExtResource("10_w6tmd")
 
 [node name="PhysicsPositionInterpolator" type="Node" parent="." unique_id=908929602]
-unique_name_in_owner = true
 script = ExtResource("7_melhi")

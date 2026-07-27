@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://02fcye2pf3k3" path="res://main/input_controller.gd" id="3_grrlh"]
 [ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="4_n6juq"]
 [ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="5_enemy"]
-[ext_resource type="Script" uid="uid://c6kta2xmrain5" path="res://game/enemy/spawner/interval_enemy_spawner.gd" id="7_4hmqs"]
+[ext_resource type="Script" uid="uid://i4rxfurbhfrp" path="res://game/enemy/spawner/fixed_count_enemy_spawner.gd" id="7_q0sk7"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
 [ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://game/enemy/crowd/enemy_crowd_system.tscn" id="9_n3o0a"]
@@ -18,8 +18,9 @@
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="17_health_bars"]
 [ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="17_s758e"]
 [ext_resource type="Script" uid="uid://bg2fefmnl0lai" path="res://debug/overlay/enemy_overlay_panel.gd" id="18_4hmqs"]
-[ext_resource type="Script" path="res://game/audio/hit_audio_manager.gd" id="19_hit_audio_manager"]
-[ext_resource type="AudioStream" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="20_hit_stream"]
+[ext_resource type="Script" uid="uid://dvoqtu1nlwsvi" path="res://game/audio/audio_manager.gd" id="19_audio_manager"]
+[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/hit_audio_cue.tres" id="20_hit_audio_cue"]
+[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/enemy_death_audio_cue.tres" id="21_enemy_death_audio_cue"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -51,21 +52,18 @@ offset = Vector2(960, 540)
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
-script = ExtResource("7_4hmqs")
-spawn_interval = 0.01
-max_enemy_count = 100
+script = ExtResource("7_q0sk7")
+spawn_count = 140
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
 
-[node name="HitAudioManager" type="Node" parent="." unique_id=495623010]
-script = ExtResource("19_hit_audio_manager")
-hit_stream = ExtResource("20_hit_stream")
-
-[node name="HitAudioPlayer" type="AudioStreamPlayer2D" parent="HitAudioManager" unique_id=495623011]
-bus = &"SFX"
+[node name="AudioManager" type="Node" parent="." unique_id=495623010]
+script = ExtResource("19_audio_manager")
+hit_audio_cue = ExtResource("20_hit_audio_cue")
+enemy_death_audio_cue = ExtResource("21_enemy_death_audio_cue")
 
 [node name="Cursor" parent="." unique_id=413606096 instance=ExtResource("3_c2dye")]
 z_index = 1

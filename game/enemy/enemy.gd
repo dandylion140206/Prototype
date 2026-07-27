@@ -18,7 +18,6 @@ var _is_dying: bool = false
 @onready var _steering: EnemySteering = $Steering
 @onready var _knockback: EnemyKnockback = $Knockback
 @onready var _destination: EnemyDestination = $Destination
-@onready var _death_sound: AudioStreamPlayer2D = $DeathSound
 @onready var _crowd_agent: EnemyCrowdAgent = $CrowdAgent
 
 
@@ -37,10 +36,7 @@ func _ready() -> void:
 	_health.health_changed.connect(_on_health_changed)
 	_health.died.connect(_on_died)
 
-	_on_health_changed(
-		_health.get_current_health(),
-		_health.max_health
-	)
+	_on_health_changed(_health.get_current_health(), _health.max_health)
 
 
 func set_destination(destination: Vector2) -> void:
@@ -98,7 +94,4 @@ func _on_died() -> void:
 	_hurtbox.set_enabled(false)
 	_visual.visible = false
 	died.emit()
-
-	_death_sound.play()
-	await _death_sound.finished
 	queue_free()

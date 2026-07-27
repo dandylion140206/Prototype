@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AudioCue" format=3 uid="uid://cv7ca3dcdq1oa"]
+
+[ext_resource type="Script" uid="uid://dw8ao3311oa4v" path="res://game/audio/audio_cue.gd" id="1_audio_cue"]
+[ext_resource type="AudioStream" uid="uid://cep0clot5ipgh" path="res://assets/sfx/ヒット/DSGNMisc_HIT-Hit Rattle_HY_PC-003.wav" id="2_hit_stream"]
+
+[resource]
+script = ExtResource("1_audio_cue")
+stream = ExtResource("2_hit_stream")
+bus = &"SFX"
+pitch_random_range = 0.04
+pitch_increment = 0.04
+max_pitch = 1.5
+combo_timeout = 0.3
