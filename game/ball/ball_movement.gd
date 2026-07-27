@@ -1,4 +1,4 @@
-class_name Movement
+class_name BallMovement
 extends Node
 
 @export_range(100.0, 10000.0, 100.0) var target_speed: float = 6000.0
@@ -52,7 +52,11 @@ func scale_velocity(multiplier: float) -> void:
 	set_velocity(_velocity * multiplier)
 
 
-func move(delta: float) -> void:
-	assert(_body != null, "Movement must be setup before move().")
+func get_planned_motion(delta: float) -> Vector2:
+	return _velocity * delta
 
-	_body.global_position += _velocity * delta
+
+func move(planned_motion: Vector2) -> void:
+	assert(_body != null, "BallMovement must be setup before move().")
+
+	_body.global_position += planned_motion

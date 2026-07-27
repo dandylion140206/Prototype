@@ -17,7 +17,7 @@ func _ready() -> void:
 	_ball.hit_landed.connect(_impact_camera_shake.apply_hit)
 	_ball.hit_landed.connect(_audio_manager.play_hit)
 	_input_controller.active_ability_requested.connect(
-		_ball.request_active_ability
+		_ball.request_ability_activation
 	)
 	_enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 

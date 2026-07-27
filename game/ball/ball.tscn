@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://baj11f6v855i"]
 
 [ext_resource type="Script" uid="uid://g3hjyqdduhw0" path="res://game/ball/ball.gd" id="1_6plaf"]
-[ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://components/movement.gd" id="3_6xd6y"]
+[ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://game/ball/ball_movement.gd" id="2_movement"]
 [ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="3_biv8x"]
-[ext_resource type="Script" uid="uid://baeqwfpgl2bo3" path="res://components/hit/hitbox.gd" id="4_vf1tv"]
-[ext_resource type="Script" uid="uid://dev2b81tccxlv" path="res://components/hit/impact_attack.gd" id="5_vf1tv"]
+[ext_resource type="Script" uid="uid://d6u7un6lhflh" path="res://game/ball/hit/ball_hit_controller.gd" id="4_controller"]
+[ext_resource type="Script" uid="uid://baeqwfpgl2bo3" path="res://game/ball/hit/ball_hitbox.gd" id="5_hitbox"]
+[ext_resource type="Script" uid="uid://dev2b81tccxlv" path="res://game/ball/hit/ball_attack.gd" id="6_attack"]
 [ext_resource type="Script" uid="uid://bn7xq3fsmvk0r" path="res://components/physics_position_interpolator.gd" id="7_melhi"]
+[ext_resource type="Resource" uid="uid://caa0d37a5a6od" path="res://game/ball/abilities/boost/boost_definition.tres" id="8_ability"]
 [ext_resource type="Script" uid="uid://gxrfd04hun14" path="res://game/ball/abilities/ability_controller.gd" id="9_melhi"]
 [ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="10_orjm5"]
-[ext_resource type="PackedScene" uid="uid://cherfu7ivdcyx" path="res://game/ball/abilities/boost/boost.tscn" id="10_w6tmd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
 radius = 21.0
@@ -24,25 +25,24 @@ script = ExtResource("3_biv8x")
 radius = 21.0
 metadata/_custom_type_script = "uid://b3mrwkpsh0eno"
 
-[node name="Hitbox" type="Area2D" parent="." unique_id=1563584028]
-collision_mask = 2
-script = ExtResource("4_vf1tv")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1822812094]
-shape = SubResource("CircleShape2D_ua4af")
-
-[node name="ShapeCast2D" type="ShapeCast2D" parent="Hitbox" unique_id=912828512]
-shape = SubResource("CircleShape2D_ua4af")
-max_results = 64
-collision_mask = 2
-collide_with_areas = true
-collide_with_bodies = false
-
 [node name="Movement" type="Node" parent="." unique_id=607524805]
-script = ExtResource("3_6xd6y")
+script = ExtResource("2_movement")
 
-[node name="ImpactAttack" type="Node" parent="." unique_id=1609352213]
-script = ExtResource("5_vf1tv")
+[node name="HitController" type="Node2D" parent="." unique_id=1458013551]
+script = ExtResource("4_controller")
+
+[node name="BallHitbox" type="Area2D" parent="HitController" unique_id=1563584028]
+collision_mask = 2
+script = ExtResource("5_hitbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitController/BallHitbox" unique_id=1822812094]
+shape = SubResource("CircleShape2D_ua4af")
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="HitController/BallHitbox" unique_id=912828512]
+shape = SubResource("CircleShape2D_ua4af")
+
+[node name="Attack" type="Node" parent="HitController" unique_id=1609352213]
+script = ExtResource("6_attack")
 
 [node name="HitStop" type="Node" parent="." unique_id=1979259650]
 script = ExtResource("10_orjm5")
@@ -51,7 +51,7 @@ restart_cooldown_frames = 1
 [node name="AbilityController" type="Node2D" parent="." unique_id=1095826231]
 physics_interpolation_mode = 1
 script = ExtResource("9_melhi")
-initial_active_ability_scene = ExtResource("10_w6tmd")
+initial_ability = ExtResource("8_ability")
 
 [node name="PhysicsPositionInterpolator" type="Node" parent="." unique_id=908929602]
 script = ExtResource("7_melhi")

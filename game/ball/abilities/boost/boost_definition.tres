@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AbilityDefinition" format=3 uid="uid://caa0d37a5a6od"]
+
+[ext_resource type="Script" uid="uid://ctn2lxwu6nh3d" path="res://game/ball/abilities/ability_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" uid="uid://cherfu7ivdcyx" path="res://game/ball/abilities/boost/boost.tscn" id="2_ability"]
+
+[resource]
+script = ExtResource("1_definition")
+id = &"boost"
+display_name = "Boost"
+description = "現在の移動方向へ速度を加算する。"
+ability_scene = ExtResource("2_ability")

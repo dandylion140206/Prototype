@@ -53,7 +53,7 @@ offset = Vector2(960, 540)
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_q0sk7")
-spawn_count = 140
+spawn_count = 67
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
@@ -75,13 +75,13 @@ ignore_rotation = false
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=996526789]
 unique_name_in_owner = true
 script = ExtResource("8_67ri8")
-trauma_decay_rate = 4.5
-trauma_power = 1.5
+trauma_decay_rate = 5.0
 
 [node name="ImpactCameraShake" type="Node" parent="Camera2D/CameraShake" unique_id=1642740481]
 unique_name_in_owner = true
 script = ExtResource("9_grrlh")
 min_shake_speed = 0.0
+max_shake_speed = 6000.0
 trauma_at_max_speed = 0.8
 
 [node name="PostProcessing" parent="." unique_id=91190207 instance=ExtResource("13_n3o0a")]

@@ -1,7 +1,5 @@
-class_name ImpactAttack
+class_name BallAttack
 extends Node
-
-signal hit_landed(hit_data: HitData)
 
 @export_range(0.0, 100.0, 1.0) var base_damage: float = 1.0
 @export_range(0.0, 10.0, 0.1) var damage_add_per_100_speed: float = 1.2
@@ -26,7 +24,7 @@ func apply_hit(
 	impact_velocity: Vector2,
 	impact_position: Vector2
 ) -> HitData:
-	assert(_attack_source != null, "ImpactAttack must be setup before apply_hit().")
+	assert(_attack_source != null, "BallAttack must be setup before apply_hit().")
 
 	if hurtbox == null:
 		return null
@@ -48,7 +46,6 @@ func apply_hit(
 	if not hurtbox.receive_hit(hit_data):
 		return null
 
-	hit_landed.emit(hit_data)
 	return hit_data
 
 

@@ -1,5 +1,5 @@
 @abstract
-class_name ActiveAbility
+class_name Ability
 extends Node
 
 @warning_ignore("unused_signal")
@@ -15,4 +15,4 @@ func try_activate() -> bool
 
 
 @abstract
-func deactivate() -> void
+func teardown() -> void
