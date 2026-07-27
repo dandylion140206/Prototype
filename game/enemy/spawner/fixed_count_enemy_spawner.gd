@@ -48,14 +48,8 @@ func _spawn_enemy() -> bool:
 	var enemy_id := enemy.get_instance_id()
 	_enemies[enemy_id] = enemy
 
-	enemy.died.connect(
-		_on_enemy_removed.bind(enemy_id),
-		CONNECT_ONE_SHOT
-	)
-	enemy.tree_exited.connect(
-		_on_enemy_removed.bind(enemy_id),
-		CONNECT_ONE_SHOT
-	)
+	enemy.died.connect(_on_enemy_removed.bind(enemy_id), CONNECT_ONE_SHOT)
+	enemy.tree_exited.connect(_on_enemy_removed.bind(enemy_id), CONNECT_ONE_SHOT)
 
 	_notify_enemy_spawned(enemy)
 	return true
@@ -73,10 +67,7 @@ func _on_enemy_removed(enemy_id: int) -> void:
 
 func _get_random_spawn_position() -> Vector2:
 	var viewport_rect := get_viewport().get_visible_rect()
-	var max_margin := (
-		minf(viewport_rect.size.x, viewport_rect.size.y)
-		* 0.5
-	)
+	var max_margin := minf(viewport_rect.size.x, viewport_rect.size.y) * 0.5
 	var available_margin := minf(screen_margin, max_margin)
 
 	var screen_position := Vector2(
@@ -90,7 +81,4 @@ func _get_random_spawn_position() -> Vector2:
 		)
 	)
 
-	return (
-		get_viewport().get_canvas_transform().affine_inverse()
-		* screen_position
-	)
+	return get_viewport().get_canvas_transform().affine_inverse() * screen_position

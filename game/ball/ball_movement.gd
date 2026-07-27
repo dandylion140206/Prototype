@@ -15,11 +15,7 @@ func setup(body: Node2D) -> void:
 	_body = body
 
 
-func update_velocity(
-	current_position: Vector2,
-	target_position: Vector2,
-	delta: float
-) -> void:
+func update_velocity(current_position: Vector2, target_position: Vector2, delta: float) -> void:
 	var to_target := target_position - current_position
 
 	if to_target.is_zero_approx():

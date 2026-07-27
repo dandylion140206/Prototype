@@ -81,37 +81,13 @@ func _get_spawn_position() -> Vector2:
 
 	match _random.randi_range(0, 3):
 		0:
-			return Vector2(
-				_random.randf_range(
-					area.position.x,
-					area.end.x
-				),
-				area.position.y
-			)
+			return Vector2(_random.randf_range(area.position.x, area.end.x), area.position.y)
 		1:
-			return Vector2(
-				area.end.x,
-				_random.randf_range(
-					area.position.y,
-					area.end.y
-				)
-			)
+			return Vector2(area.end.x, _random.randf_range(area.position.y, area.end.y))
 		2:
-			return Vector2(
-				_random.randf_range(
-					area.position.x,
-					area.end.x
-				),
-				area.end.y
-			)
+			return Vector2(_random.randf_range(area.position.x, area.end.x), area.end.y)
 		3:
-			return Vector2(
-				area.position.x,
-				_random.randf_range(
-					area.position.y,
-					area.end.y
-				)
-			)
+			return Vector2(area.position.x, _random.randf_range(area.position.y, area.end.y))
 
 	return area.get_center()
 
@@ -122,7 +98,4 @@ func _get_spawn_area() -> Rect2:
 	var world_center := (get_viewport().get_canvas_transform().affine_inverse() * screen_center)
 	var area_size := spawn_area_size.abs()
 
-	return Rect2(
-		world_center - area_size * 0.5,
-		area_size
-	)
+	return Rect2(world_center - area_size * 0.5, area_size)

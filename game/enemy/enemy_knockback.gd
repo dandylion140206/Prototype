@@ -38,24 +38,16 @@ func apply_impact(
 	if impact_velocity.is_zero_approx():
 		return
 
-	var direction := (
-		target_position - impact_position
-	).normalized()
+	var direction := (target_position - impact_position).normalized()
 
 	if direction.is_zero_approx():
 		direction = Vector2.RIGHT
 
-	var speed := (
-		base_speed
-		+ impact_velocity.length() * impact_speed_scale
-	)
+	var speed := base_speed + impact_velocity.length() * impact_speed_scale
 
 	var impulse := direction * speed
 
-	_velocity = (
-		_velocity
-		+ impulse * _stats.get_inverse_mass()
-	).limit_length(max_speed)
+	_velocity = (_velocity + impulse * _stats.get_inverse_mass()).limit_length(max_speed)
 
 	_start_decay()
 

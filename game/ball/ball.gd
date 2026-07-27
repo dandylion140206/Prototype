@@ -35,17 +35,10 @@ func _physics_process(delta: float) -> void:
 		_physics_position_interpolator.record_position()
 		return
 
-	_movement.update_velocity(
-		global_position,
-		_target_position,
-		delta
-	)
+	_movement.update_velocity(global_position, _target_position, delta)
 
 	var planned_motion := _movement.get_planned_motion(delta)
-	var landed_hit_data := _hit_controller.apply_hits(
-		planned_motion,
-		_movement.get_velocity()
-	)
+	var landed_hit_data := _hit_controller.apply_hits(planned_motion, _movement.get_velocity())
 
 	_movement.move(planned_motion)
 	_hit_controller.update_contacting_hurtboxes()
@@ -72,9 +65,6 @@ func _start_attacker_hit_stop(hit_data_list: Array[HitData]) -> void:
 	var hit_stop_frames := 0
 
 	for hit_data in hit_data_list:
-		hit_stop_frames = maxi(
-			hit_stop_frames,
-			hit_data.attacker_hit_stop_frames
-		)
+		hit_stop_frames = maxi(hit_stop_frames, hit_data.attacker_hit_stop_frames)
 
 	_hit_stop.start(hit_stop_frames)

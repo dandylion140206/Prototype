@@ -63,12 +63,8 @@ func build(positions: PackedVector2Array, cell_size: float) -> void:
 	var last_row := _row_count - 1
 	for index in _item_count:
 		var position := positions[index]
-		var column := clampi(
-			int((position.x - _origin.x) * _inverse_cell_size), 0, last_column
-		)
-		var row := clampi(
-			int((position.y - _origin.y) * _inverse_cell_size), 0, last_row
-		)
+		var column := clampi(int((position.x - _origin.x) * _inverse_cell_size), 0, last_column)
+		var row := clampi(int((position.y - _origin.y) * _inverse_cell_size), 0, last_row)
 		var cell_index := row * _column_count + column
 
 		_item_columns[index] = column
@@ -137,10 +133,7 @@ func collect_pairs(max_distance: float) -> void:
 			while neighbor_cursor < neighbor_end:
 				var neighbor_index := _cell_items[neighbor_cursor]
 				neighbor_cursor += 1
-				if (
-					a_position.distance_squared_to(_positions[neighbor_index])
-					>= max_distance_squared
-				):
+				if a_position.distance_squared_to(_positions[neighbor_index]) >= max_distance_squared:
 					continue
 
 				if _pair_count * 2 + 2 > _pairs.size():

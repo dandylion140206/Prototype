@@ -30,11 +30,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	var impact_velocity := direction * impact_speed
 
-	_knockback.apply_impact(
-		impact_velocity,
-		impact_position,
-		global_position
-	)
+	_knockback.apply_impact(impact_velocity, impact_position, global_position)
 
 
 func _draw() -> void:

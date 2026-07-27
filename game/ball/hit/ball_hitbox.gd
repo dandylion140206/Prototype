@@ -17,22 +17,12 @@ func get_overlap_collisions() -> Array[BallHitCollision]:
 	return _get_collisions_at_motion(Vector2.ZERO, [])
 
 
-func sweep(
-	motion: Vector2,
-	excluded_hurtboxes: Array[Hurtbox]
-) -> HitSweepResult:
-	var collisions := _get_collisions_at_motion(
-		motion,
-		excluded_hurtboxes
-	)
+func sweep(motion: Vector2, excluded_hurtboxes: Array[Hurtbox]) -> HitSweepResult:
+	var collisions := _get_collisions_at_motion(motion, excluded_hurtboxes)
 	var unsafe_fraction := 1.0
 
 	if not collisions.is_empty():
-		unsafe_fraction = clampf(
-			_shape_cast.get_closest_collision_unsafe_fraction(),
-			0.0,
-			1.0
-		)
+		unsafe_fraction = clampf(_shape_cast.get_closest_collision_unsafe_fraction(), 0.0, 1.0)
 
 	return HitSweepResult.new(collisions, unsafe_fraction)
 
@@ -57,14 +47,9 @@ func _get_collisions_at_motion(
 		if hurtbox == null or hurtbox.is_queued_for_deletion():
 			continue
 
-		var collision := BallHitCollision.new(
-			hurtbox,
-			_shape_cast.get_collision_point(collision_index)
-		)
+		var collision := BallHitCollision.new(hurtbox, _shape_cast.get_collision_point(collision_index))
 		var hurtbox_id := hurtbox.get_instance_id()
-		var current_collision: BallHitCollision = collision_by_hurtbox_id.get(
-			hurtbox_id
-		)
+		var current_collision: BallHitCollision = collision_by_hurtbox_id.get(hurtbox_id)
 
 		if (
 			current_collision == null
@@ -92,13 +77,7 @@ func _is_collision_nearer(
 	var current_offset := current_position - global_position
 
 	if motion.is_zero_approx():
-		return (
-			candidate_offset.length_squared()
-			< current_offset.length_squared()
-		)
+		return candidate_offset.length_squared() < current_offset.length_squared()
 
 	var direction := motion.normalized()
-	return (
-		candidate_offset.dot(direction)
-		< current_offset.dot(direction)
-	)
+	return candidate_offset.dot(direction) < current_offset.dot(direction)

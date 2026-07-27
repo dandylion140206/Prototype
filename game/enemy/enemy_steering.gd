@@ -16,11 +16,7 @@ func _ready() -> void:
 	_wander_phase = randf_range(0.0, TAU)
 
 
-func get_desired_velocity(
-	position: Vector2,
-	destination: Vector2,
-	delta: float
-) -> Vector2:
+func get_desired_velocity(position: Vector2, destination: Vector2, delta: float) -> Vector2:
 	var to_destination := destination - position
 	if to_destination.length() <= arrival_distance:
 		return Vector2.ZERO

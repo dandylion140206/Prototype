@@ -47,11 +47,7 @@ func remove_enemy(enemy: Enemy) -> void:
 		health_bar.queue_free()
 
 
-func _on_enemy_health_changed(
-	current_health: float,
-	max_health: float,
-	enemy: Enemy,
-) -> void:
+func _on_enemy_health_changed(current_health: float, max_health: float, enemy: Enemy) -> void:
 	if not _health_bars.has(enemy):
 		return
 
@@ -69,4 +65,3 @@ func _on_enemy_tree_exiting(enemy: Enemy) -> void:
 
 func _update_health_bar_position(enemy: Enemy, health_bar: HealthBar) -> void:
 	health_bar.global_position = enemy.global_position + health_bar_offset
-

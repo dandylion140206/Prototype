@@ -21,10 +21,7 @@ func _process(_delta: float) -> void:
 	if enabled and Input.is_key_pressed(slow_key):
 		requested_time_scale = slow_time_scale
 
-	if is_equal_approx(
-		requested_time_scale,
-		_current_time_scale
-	):
+	if is_equal_approx(requested_time_scale, _current_time_scale):
 		return
 
 	_apply_time_scale(requested_time_scale)

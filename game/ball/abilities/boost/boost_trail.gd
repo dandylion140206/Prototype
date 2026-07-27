@@ -16,10 +16,7 @@ func _process(delta: float) -> void:
 	_update_boost_trail(delta)
 
 
-func setup(
-	source: Node2D,
-	get_interpolated_global_position: Callable
-) -> void:
+func setup(source: Node2D, get_interpolated_global_position: Callable) -> void:
 	assert(source != null, "source must not be null.")
 	assert(get_interpolated_global_position.is_valid(), "get_interpolated_global_position must be valid.")
 	assert(_trail != null, "Trail child node must not be null.")
@@ -34,15 +31,9 @@ func setup(
 
 func play_boost_trail() -> void:
 	_is_boost_trail_active = true
-	_boost_trail_time_remaining = (
-		lifetime_increase_duration
-		+ boost_trail_hold_duration
-	)
+	_boost_trail_time_remaining = lifetime_increase_duration + boost_trail_hold_duration
 
-	_trail.transition_point_lifetime(
-		boost_point_lifetime,
-		lifetime_increase_duration
-	)
+	_trail.transition_point_lifetime(boost_point_lifetime, lifetime_increase_duration)
 
 
 func stop_immediately() -> void:
@@ -64,7 +55,4 @@ func _update_boost_trail(delta: float) -> void:
 	_is_boost_trail_active = false
 	_boost_trail_time_remaining = 0.0
 
-	_trail.transition_point_lifetime(
-		0.0,
-		lifetime_decrease_duration
-	)
+	_trail.transition_point_lifetime(0.0, lifetime_decrease_duration)

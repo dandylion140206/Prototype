@@ -33,7 +33,4 @@ func get_interpolated_global_position() -> Vector2:
 
 	var interpolation_fraction := Engine.get_physics_interpolation_fraction()
 
-	return _previous_physics_position.lerp(
-		_current_physics_position,
-		interpolation_fraction
-	)
+	return _previous_physics_position.lerp(_current_physics_position, interpolation_fraction)

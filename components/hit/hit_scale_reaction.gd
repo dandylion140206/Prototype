@@ -72,11 +72,7 @@ func play() -> void:
 	if _scale_tween != null:
 		_scale_tween.kill()
 
-	_scale_value = clampf(
-		_scale_value + scale_pull,
-		min_scale_value,
-		max_scale_value
-	)
+	_scale_value = clampf(_scale_value + scale_pull, min_scale_value, max_scale_value)
 
 	if reaction_mode == ReactionMode.SPRING:
 		return
@@ -101,11 +97,7 @@ func _update_spring(delta: float) -> void:
 		-spring_max_scale_velocity,
 		spring_max_scale_velocity
 	)
-	_scale_value = clampf(
-		_scale_value + _scale_velocity * delta,
-		min_scale_value,
-		max_scale_value
-	)
+	_scale_value = clampf(_scale_value + _scale_velocity * delta, min_scale_value, max_scale_value)
 
 
 func _finish_tween_reaction() -> void:

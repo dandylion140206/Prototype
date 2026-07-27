@@ -24,10 +24,7 @@ func receive_hit(hit_data: HitData) -> bool:
 func can_receive_hit(hit_data: HitData) -> bool:
 	assert(hit_data != null, "hit_data must not be null.")
 
-	var last_hit_time: float = _last_hit_time_by_source_id.get(
-		hit_data.attack_source_id,
-		-INF
-	)
+	var last_hit_time: float = _last_hit_time_by_source_id.get(hit_data.attack_source_id, -INF)
 	return _get_current_time() - last_hit_time >= rehit_cooldown
 
 

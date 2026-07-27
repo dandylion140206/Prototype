@@ -52,10 +52,7 @@ func _process(delta: float) -> void:
 		_remove_oldest_point()
 
 
-func setup(
-	source: Node2D,
-	get_interpolated_position: Callable = Callable()
-) -> void:
+func setup(source: Node2D, get_interpolated_position: Callable = Callable()) -> void:
 	assert(source != null, "source must not be null.")
 
 	_source = source
@@ -132,11 +129,7 @@ func _update_lifetime_transition(delta: float) -> void:
 	var progress := _lifetime_transition_elapsed / _lifetime_transition_duration
 	progress = clampf(progress, 0.0, 1.0)
 
-	point_lifetime = lerpf(
-		_lifetime_transition_start,
-		_lifetime_transition_target,
-		progress
-	)
+	point_lifetime = lerpf(_lifetime_transition_start, _lifetime_transition_target, progress)
 
 	if progress >= 1.0:
 		point_lifetime = _lifetime_transition_target

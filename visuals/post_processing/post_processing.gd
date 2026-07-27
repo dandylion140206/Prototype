@@ -49,12 +49,7 @@ func rebuild_effects() -> void:
 
 	var registered_effects: Dictionary[int, bool] = {}
 
-	_build_effect_layer(
-		&"WorldEffects",
-		WORLD_EFFECT_LAYER,
-		world_effects,
-		registered_effects,
-	)
+	_build_effect_layer(&"WorldEffects", WORLD_EFFECT_LAYER, world_effects, registered_effects)
 	_build_effect_layer(
 		&"CompositeEffects",
 		COMPOSITE_EFFECT_LAYER,
@@ -108,18 +103,13 @@ func _validate_effect(
 	registered_effects: Dictionary[int, bool],
 ) -> bool:
 	if effect == null:
-		push_warning(
-			"PostProcessing ignored a null effect at %s[%d]." % [layer_name, index]
-		)
+		push_warning("PostProcessing ignored a null effect at %s[%d]." % [layer_name, index])
 		return false
 
 	var instance_id := effect.get_instance_id()
 
 	if registered_effects.has(instance_id):
-		push_warning(
-			"PostProcessing ignored a duplicate Resource at %s[%d]."
-			% [layer_name, index]
-		)
+		push_warning("PostProcessing ignored a duplicate Resource at %s[%d]." % [layer_name, index])
 		return false
 
 	if effect._get_shader() == null:
@@ -170,18 +160,12 @@ func _set_binding_enabled(binding: EffectBinding, is_enabled: bool) -> void:
 	binding.rect.visible = is_enabled
 
 
-func _apply_shader_parameters(
-	effect: PostProcessEffect,
-	material: ShaderMaterial,
-) -> void:
+func _apply_shader_parameters(effect: PostProcessEffect, material: ShaderMaterial) -> void:
 	effect.shader_parameters.clear()
 	effect._update_shader_parameters()
 
 	for parameter_name in effect.shader_parameters:
-		material.set_shader_parameter(
-			parameter_name,
-			effect.shader_parameters[parameter_name],
-		)
+		material.set_shader_parameter(parameter_name, effect.shader_parameters[parameter_name])
 
 
 func _disconnect_effects() -> void:

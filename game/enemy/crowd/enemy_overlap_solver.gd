@@ -45,9 +45,7 @@ func solve(agents: Array[EnemyCrowdAgent]) -> void:
 	_build_snapshots(agent_count)
 	for index in agent_count:
 		max_radius = maxf(max_radius, _overlap_radii[index])
-		iteration_count = maxi(
-			iteration_count, _agents[index].stats.overlap_iterations
-		)
+		iteration_count = maxi(iteration_count, _agents[index].stats.overlap_iterations)
 
 	if max_radius <= 0.0 or iteration_count <= 0:
 		return

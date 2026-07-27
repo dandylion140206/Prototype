@@ -69,10 +69,7 @@ func _update_seek_velocity(delta: float) -> void:
 			delta
 		)
 
-	_seek_velocity = _seek_velocity.move_toward(
-		desired_velocity,
-		acceleration * delta
-	)
+	_seek_velocity = _seek_velocity.move_toward(desired_velocity, acceleration * delta)
 	_seek_velocity += _crowd_acceleration * delta
 	_crowd_acceleration = Vector2.ZERO
 	_seek_velocity = _seek_velocity.limit_length(max_speed)

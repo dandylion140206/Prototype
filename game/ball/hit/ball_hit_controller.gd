@@ -13,31 +13,20 @@ func setup(attack_source: Node2D) -> void:
 	_attack.setup(attack_source)
 
 
-func apply_hits(
-	planned_motion: Vector2,
-	impact_velocity: Vector2
-) -> Array[HitData]:
+func apply_hits(planned_motion: Vector2, impact_velocity: Vector2) -> Array[HitData]:
 	var hit_data_list: Array[HitData] = []
 	var processed_hurtbox_ids: Dictionary[int, bool] = {}
 	var excluded_hurtboxes: Array[Hurtbox] = []
 
 	for collision in _hitbox.get_overlap_collisions():
-		_process_collision(
-			collision,
-			impact_velocity,
-			processed_hurtbox_ids,
-			hit_data_list
-		)
+		_process_collision(collision, impact_velocity, processed_hurtbox_ids, hit_data_list)
 		excluded_hurtboxes.append(collision.hurtbox)
 
 	if planned_motion.is_zero_approx():
 		return hit_data_list
 
 	while true:
-		var sweep_result := _hitbox.sweep(
-			planned_motion,
-			excluded_hurtboxes
-		)
+		var sweep_result := _hitbox.sweep(planned_motion, excluded_hurtboxes)
 
 		if sweep_result.collisions.is_empty():
 			break
@@ -45,12 +34,7 @@ func apply_hits(
 		var exclusion_count := excluded_hurtboxes.size()
 
 		for collision in sweep_result.collisions:
-			_process_collision(
-				collision,
-				impact_velocity,
-				processed_hurtbox_ids,
-				hit_data_list
-			)
+			_process_collision(collision, impact_velocity, processed_hurtbox_ids, hit_data_list)
 
 			if not excluded_hurtboxes.has(collision.hurtbox):
 				excluded_hurtboxes.append(collision.hurtbox)
@@ -89,11 +73,7 @@ func _process_collision(
 	if _contacting_hurtbox_ids.has(hurtbox_id):
 		return
 
-	var hit_data := _attack.apply_hit(
-		hurtbox,
-		impact_velocity,
-		collision.position
-	)
+	var hit_data := _attack.apply_hit(hurtbox, impact_velocity, collision.position)
 
 	if hit_data != null:
 		hit_data_list.append(hit_data)

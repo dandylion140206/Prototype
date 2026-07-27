@@ -27,9 +27,7 @@ func _ready() -> void:
 	_hit_flash.setup(_visual)
 	_hit_scale_reaction.setup(_visual)
 	_knockback.setup(body_stats, _hit_stop)
-	_movement.setup(
-		self, _hit_stop, _destination, _steering, _knockback
-	)
+	_movement.setup(self, _hit_stop, _destination, _steering, _knockback)
 	_crowd_agent.setup(self, body_stats, _movement, _knockback)
 
 	_hurtbox.hit_received.connect(_on_hit_received)
@@ -74,10 +72,7 @@ func _on_hit_received(hit_data: HitData) -> void:
 	_health.damage(hit_data.damage)
 
 
-func _on_health_changed(
-	current_health: float,
-	max_health: float
-) -> void:
+func _on_health_changed(current_health: float, max_health: float) -> void:
 	_visual.update_health(current_health, max_health)
 	health_changed.emit(current_health, max_health)
 

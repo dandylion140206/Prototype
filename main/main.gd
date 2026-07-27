@@ -16,9 +16,7 @@ func _ready() -> void:
 	_impact_camera_shake.setup(_camera_shake)
 	_ball.hit_landed.connect(_impact_camera_shake.apply_hit)
 	_ball.hit_landed.connect(_audio_manager.play_hit)
-	_input_controller.active_ability_requested.connect(
-		_ball.request_ability_activation
-	)
+	_input_controller.active_ability_requested.connect(_ball.request_ability_activation)
 	_enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 
 	_ball.set_target_position(get_global_mouse_position())

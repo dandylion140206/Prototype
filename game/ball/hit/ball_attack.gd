@@ -19,11 +19,7 @@ func setup(attack_source: Node2D) -> void:
 	_attack_source = attack_source
 
 
-func apply_hit(
-	hurtbox: Hurtbox,
-	impact_velocity: Vector2,
-	impact_position: Vector2
-) -> HitData:
+func apply_hit(hurtbox: Hurtbox, impact_velocity: Vector2, impact_position: Vector2) -> HitData:
 	assert(_attack_source != null, "BallAttack must be setup before apply_hit().")
 
 	if hurtbox == null:

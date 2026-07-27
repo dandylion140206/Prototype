@@ -23,13 +23,7 @@ func apply_hit(hit_data: HitData) -> void:
 	if impact_speed < min_shake_speed:
 		return
 
-	var speed_ratio := inverse_lerp(
-		min_shake_speed,
-		max_shake_speed,
-		impact_speed
-	)
+	var speed_ratio := inverse_lerp(min_shake_speed, max_shake_speed, impact_speed)
 	speed_ratio = clampf(speed_ratio, 0.0, 1.0)
 
-	_camera_shake.add_trauma(
-		trauma_at_max_speed * speed_ratio
-	)
+	_camera_shake.add_trauma(trauma_at_max_speed * speed_ratio)

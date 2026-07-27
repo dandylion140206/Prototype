@@ -102,9 +102,7 @@ func _accumulate_pair_accelerations(delta: float) -> void:
 			normal = Vector2.from_angle(fposmod(id_difference * 0.61803398875, TAU))
 
 		var compression := 1.0 - distance / pair_radius
-		var pair_weight := (
-			_separation_weights[a_index] + _separation_weights[b_index]
-		) * 0.5
+		var pair_weight := (_separation_weights[a_index] + _separation_weights[b_index]) * 0.5
 		var separation_force := normal * compression * compression * pair_weight
 		_separation_accelerations[a_index] += separation_force * a_inverse_mass
 		_separation_accelerations[b_index] -= separation_force * b_inverse_mass
@@ -112,9 +110,7 @@ func _accumulate_pair_accelerations(delta: float) -> void:
 		if not has_valid_delta:
 			continue
 
-		var relative_velocity := (
-			_effective_velocities[a_index] - _effective_velocities[b_index]
-		)
+		var relative_velocity := _effective_velocities[a_index] - _effective_velocities[b_index]
 		var closing_speed := maxf(0.0, -relative_velocity.dot(normal))
 		if closing_speed <= 0.0:
 			continue
@@ -130,12 +126,6 @@ func _accumulate_pair_accelerations(delta: float) -> void:
 
 func _apply_accelerations(agent_count: int) -> void:
 	for index in agent_count:
-		var separation_acceleration := _separation_accelerations[index].limit_length(
-			_max_separation_accelerations[index]
-		)
-		var damping_acceleration := _damping_accelerations[index].limit_length(
-			_max_damping_accelerations[index]
-		)
-		_agents[index].apply_crowd_acceleration(
-			separation_acceleration + damping_acceleration
-		)
+		var separation_acceleration := _separation_accelerations[index].limit_length(_max_separation_accelerations[index])
+		var damping_acceleration := _damping_accelerations[index].limit_length(_max_damping_accelerations[index])
+		_agents[index].apply_crowd_acceleration(separation_acceleration + damping_acceleration)

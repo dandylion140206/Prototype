@@ -22,9 +22,7 @@ func start(frame_count: int) -> bool:
 
 	_start_physics_frame = current_frame + 1
 	_end_physics_frame = _start_physics_frame + frame_count
-	_restart_available_physics_frame = (
-		_end_physics_frame + restart_cooldown_frames
-	)
+	_restart_available_physics_frame = _end_physics_frame + restart_cooldown_frames
 	return true
 
 
@@ -68,14 +66,8 @@ func get_remaining_frames() -> int:
 	if not _has_scheduled_hit_stop(current_frame):
 		return 0
 
-	var effective_start_frame := maxi(
-		current_frame,
-		_start_physics_frame
-	)
-	return maxi(
-		_end_physics_frame - effective_start_frame,
-		0
-	)
+	var effective_start_frame := maxi(current_frame, _start_physics_frame)
+	return maxi(_end_physics_frame - effective_start_frame, 0)
 
 
 func _has_scheduled_hit_stop(current_frame: int) -> bool:

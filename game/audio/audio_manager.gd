@@ -48,26 +48,18 @@ func play_enemy_death(world_position: Vector2) -> void:
 		return
 
 	_enemy_death_audio_player.global_position = world_position
-	_enemy_death_audio_player.pitch_scale = (
-		1.0 + _get_random_pitch_offset(enemy_death_audio_cue)
-	)
+	_enemy_death_audio_player.pitch_scale = 1.0 + _get_random_pitch_offset(enemy_death_audio_cue)
 	_enemy_death_audio_player.play()
 
 
-func _setup_audio_player(
-	player: AudioStreamPlayer2D,
-	audio_cue: AudioCue
-) -> void:
+func _setup_audio_player(player: AudioStreamPlayer2D, audio_cue: AudioCue) -> void:
 	player.stream = audio_cue.stream
 	player.bus = audio_cue.bus
 	player.max_polyphony = audio_cue.max_polyphony
 	player.volume_db = audio_cue.volume_db
 
 
-func _create_audio_player(
-	player_name: StringName,
-	audio_cue: AudioCue
-) -> AudioStreamPlayer2D:
+func _create_audio_player(player_name: StringName, audio_cue: AudioCue) -> AudioStreamPlayer2D:
 	var player := AudioStreamPlayer2D.new()
 	player.name = player_name
 	_setup_audio_player(player, audio_cue)
