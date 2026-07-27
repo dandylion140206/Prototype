@@ -14,11 +14,19 @@ config/name="Prototype"
 run/main_scene="uid://uiulovu4jc4r"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[autoload]
+
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
 [input]
 

@@ -18,7 +18,6 @@ var _is_dying: bool = false
 @onready var _steering: EnemySteering = $Steering
 @onready var _knockback: EnemyKnockback = $Knockback
 @onready var _destination: EnemyDestination = $Destination
-@onready var _hit_sound: AudioStreamPlayer2D = $HitSound
 @onready var _death_sound: AudioStreamPlayer2D = $DeathSound
 @onready var _crowd_agent: EnemyCrowdAgent = $CrowdAgent
 
@@ -76,8 +75,6 @@ func _on_hit_received(hit_data: HitData) -> void:
 	_hit_stop.start(hit_data.target_hit_stop_frames)
 	_hit_flash.play()
 	_hit_scale_reaction.play()
-	_hit_sound.play()
-
 	_health.damage(hit_data.damage)
 
 

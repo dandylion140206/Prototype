@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var _input_controller: InputController = $InputController
 @onready var _ball: Ball = $Ball
+@onready var _hit_audio_manager: HitAudioManager = $HitAudioManager
 @onready var _camera: Camera2D = $Camera2D
 @onready var _camera_shake: CameraShake = %CameraShake
 @onready var _impact_camera_shake: ImpactCameraShake = %ImpactCameraShake
@@ -13,8 +14,10 @@ extends Node2D
 func _ready() -> void:
 	_camera_shake.setup(_camera)
 	_impact_camera_shake.setup(_camera_shake)
+	_hit_audio_manager.setup(_ball)
 
 	_ball.hit_landed.connect(_impact_camera_shake.apply_hit)
+	_ball.hit_landed.connect(_hit_audio_manager.play_hit)
 	_input_controller.active_ability_requested.connect(
 		_ball.request_active_ability
 	)
