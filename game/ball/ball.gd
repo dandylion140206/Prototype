@@ -38,17 +38,16 @@ func _physics_process(delta: float) -> void:
 	_movement.update_velocity(global_position, _target_position, delta)
 
 	var planned_motion := _movement.get_planned_motion(delta)
-	var landed_hit_data := _hit_controller.apply_hits(planned_motion, _movement.get_velocity())
+	var landed_hits: Array[HitData] = _hit_controller.apply_hits(
+		planned_motion,
+		_movement.get_velocity()
+	)
 
 	_movement.move(planned_motion)
 	_hit_controller.update_contacting_hurtboxes()
 
-	if not landed_hit_data.is_empty():
-		_movement.scale_velocity(hit_speed_multiplier)
-		_start_attacker_hit_stop(landed_hit_data)
-
-		for hit_data in landed_hit_data:
-			hit_landed.emit(hit_data)
+	if not landed_hits.is_empty():
+		_handle_landed_hits(landed_hits)
 
 	_physics_position_interpolator.record_position()
 
@@ -69,10 +68,21 @@ func request_ability_activation() -> bool:
 	return _ability_controller.try_activate()
 
 
+func _handle_landed_hits(landed_hits: Array[HitData]) -> void:
+	_movement.scale_velocity(hit_speed_multiplier)
+	_start_attacker_hit_stop(landed_hits)
+
+	for hit_data in landed_hits:
+		hit_landed.emit(hit_data)
+
+
 func _start_attacker_hit_stop(hit_data_list: Array[HitData]) -> void:
 	var hit_stop_frames := 0
 
 	for hit_data in hit_data_list:
-		hit_stop_frames = maxi(hit_stop_frames, hit_data.attacker_hit_stop_frames)
+		hit_stop_frames = maxi(
+			hit_stop_frames,
+			hit_data.attacker_hit_stop_frames
+		)
 
 	_hit_stop.start(hit_stop_frames)

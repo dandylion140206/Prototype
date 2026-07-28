@@ -41,7 +41,8 @@ shape = SubResource("CircleShape2D_ua4af")
 
 [node name="Attack" type="Node" parent="HitController" unique_id=1609352213]
 script = ExtResource("6_attack")
-base_damage = 100.0
+base_damage = 10.0
+damage_add_per_100_speed = 1.5
 
 [node name="HitStop" type="Node" parent="." unique_id=1979259650]
 script = ExtResource("10_orjm5")
