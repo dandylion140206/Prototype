@@ -15,7 +15,11 @@ extends Node2D
 
 
 func _ready() -> void:
-	_camera_target_follow.setup(_camera, Callable(_ball, "get_interpolated_global_position"))
+	_camera_target_follow.setup(
+		_camera,
+		Callable(_ball, "get_interpolated_global_position"),
+		Callable(_ball, "get_velocity")
+	)
 	_camera_shake.setup(_camera)
 	_impact_camera_shake.setup(_camera_shake)
 	_coin_raid_system.setup(_coin_system)

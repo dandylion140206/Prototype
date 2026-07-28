@@ -42,7 +42,6 @@ script = ExtResource("1_ipbj0")
 [node name="CheckerboardBackground" type="ColorRect" parent="." unique_id=1515908873]
 material = SubResource("ShaderMaterial_na0o7")
 script = ExtResource("3_fwcvl")
-coverage_size = Vector2(3840, 2160)
 
 [node name="DebugController" type="Node" parent="." unique_id=486050992]
 script = ExtResource("2_ipbj0")
@@ -86,6 +85,9 @@ z_index = 10
 offset = Vector2(960, 540)
 ignore_rotation = false
 
+[node name="CameraTargetFollow" type="Node" parent="Camera2D" unique_id=1956155572]
+script = ExtResource("21_d00gp")
+
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=996526789]
 unique_name_in_owner = true
 script = ExtResource("8_67ri8")
@@ -98,9 +100,6 @@ script = ExtResource("9_grrlh")
 min_shake_speed = 0.0
 max_shake_speed = 6000.0
 trauma_at_max_speed = 0.8
-
-[node name="CameraTargetFollow" type="Node" parent="Camera2D" unique_id=1956155572]
-script = ExtResource("21_d00gp")
 
 [node name="PostProcessing" parent="." unique_id=91190207 instance=ExtResource("13_n3o0a")]
 

@@ -3,7 +3,7 @@ extends Node2D
 
 signal hit_landed(hit_data: HitData)
 
-@export_range(0.9, 1.0, 0.002) var hit_speed_multiplier: float = 0.97
+@export_range(0.9, 1.0, 0.001) var hit_speed_multiplier: float = 0.985
 
 var _target_position: Vector2 = Vector2.ZERO
 
@@ -55,6 +55,10 @@ func _physics_process(delta: float) -> void:
 
 func set_target_position(target_position: Vector2) -> void:
 	_target_position = target_position
+
+
+func get_velocity() -> Vector2:
+	return _movement.get_velocity()
 
 
 func get_interpolated_global_position() -> Vector2:
