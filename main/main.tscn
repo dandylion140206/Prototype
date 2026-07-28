@@ -20,9 +20,12 @@
 [ext_resource type="Script" uid="uid://bg2fefmnl0lai" path="res://debug/overlay/enemy_overlay_panel.gd" id="18_4hmqs"]
 [ext_resource type="Script" uid="uid://dvoqtu1nlwsvi" path="res://game/audio/audio_manager.gd" id="19_audio_manager"]
 [ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/hit_audio_cue.tres" id="20_hit_audio_cue"]
+[ext_resource type="Script" uid="uid://d0syxi23gcgsx" path="res://main/camera/camera_target_follow.gd" id="21_d00gp"]
 [ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/enemy_death_audio_cue.tres" id="21_enemy_death_audio_cue"]
 [ext_resource type="PackedScene" uid="uid://bk65yyetfv2o5" path="res://game/coin/coin_system.tscn" id="22_coin_system"]
 [ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/coin_collect_audio_cue.tres" id="23_coin_collect_audio_cue"]
+[ext_resource type="Script" uid="uid://vewqex7phvm" path="res://game/coin/coin_raid_system.gd" id="24_oagth"]
+[ext_resource type="PackedScene" path="res://game/coin/coin.tscn" id="25_coin"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -61,13 +64,17 @@ offset = Vector2(960, 540)
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_q0sk7")
-spawn_count = 320
+spawn_count = 61
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
 
 [node name="CoinSystem" parent="." unique_id=948957681 instance=ExtResource("22_coin_system")]
 z_index = 5
+
+[node name="CoinRaidSystem" type="Node" parent="." unique_id=828599585]
+script = ExtResource("24_oagth")
+carried_coin_scene = ExtResource("25_coin")
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
 z_index = 20
@@ -91,6 +98,9 @@ script = ExtResource("9_grrlh")
 min_shake_speed = 0.0
 max_shake_speed = 6000.0
 trauma_at_max_speed = 0.8
+
+[node name="CameraTargetFollow" type="Node" parent="Camera2D" unique_id=1956155572]
+script = ExtResource("21_d00gp")
 
 [node name="PostProcessing" parent="." unique_id=91190207 instance=ExtResource("13_n3o0a")]
 

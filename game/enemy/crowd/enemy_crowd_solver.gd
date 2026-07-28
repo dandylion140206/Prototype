@@ -60,7 +60,7 @@ func _build_snapshots(agent_count: int) -> float:
 		_separation_radii[index] = stats.separation_radius
 		_separation_weights[index] = stats.separation_weight
 		_crowd_dampings[index] = stats.crowd_damping
-		_inverse_masses[index] = stats.get_inverse_mass()
+		_inverse_masses[index] = agent.get_inverse_mass()
 		_max_separation_accelerations[index] = stats.max_separation_acceleration
 		_max_damping_accelerations[index] = stats.max_crowd_damping_acceleration
 		_separation_accelerations[index] = Vector2.ZERO

@@ -76,7 +76,7 @@ func _build_snapshots(agent_count: int) -> void:
 		_initial_positions[index] = position
 		_instance_ids[index] = agent.get_instance_id()
 		_overlap_radii[index] = stats.overlap_radius
-		_inverse_masses[index] = stats.get_inverse_mass()
+		_inverse_masses[index] = agent.get_inverse_mass()
 
 
 func _solve_iteration() -> void:

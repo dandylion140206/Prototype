@@ -12,13 +12,22 @@ extends Node
 @export var ease_type := Tween.EASE_OUT
 
 var _stats: EnemyBodyStats
+var _motion_modifiers: EnemyMotionModifierStack
 var _hit_stop: HitStop
 var _velocity := Vector2.ZERO
 var _decay_tween: Tween
 
 
-func setup(stats: EnemyBodyStats, hit_stop: HitStop) -> void:
+func setup(
+	stats: EnemyBodyStats,
+	motion_modifiers: EnemyMotionModifierStack,
+	hit_stop: HitStop
+) -> void:
+	assert(stats != null, "stats must not be null.")
+	assert(motion_modifiers != null, "motion_modifiers must not be null.")
+
 	_stats = stats
+	_motion_modifiers = motion_modifiers
 	_hit_stop = hit_stop
 
 
@@ -46,8 +55,9 @@ func apply_impact(
 	var speed := base_speed + impact_velocity.length() * impact_speed_scale
 
 	var impulse := direction * speed
+	var inverse_mass := _stats.get_inverse_mass() / _motion_modifiers.get_mass_multiplier()
 
-	_velocity = (_velocity + impulse * _stats.get_inverse_mass()).limit_length(max_speed)
+	_velocity = (_velocity + impulse * inverse_mass).limit_length(max_speed)
 
 	_start_decay()
 

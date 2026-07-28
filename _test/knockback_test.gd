@@ -4,6 +4,7 @@ extends Node2D
 @export_range(0.1, 30.0, 0.1) var mass: float = 1.0
 
 var _stats: EnemyBodyStats
+var _motion_modifiers: EnemyMotionModifierStack
 
 @onready var _knockback: EnemyKnockback = $Knockback
 
@@ -11,8 +12,10 @@ var _stats: EnemyBodyStats
 func _ready() -> void:
 	_stats = EnemyBodyStats.new()
 	_stats.mass = mass
+	_motion_modifiers = EnemyMotionModifierStack.new()
+	add_child(_motion_modifiers)
 
-	_knockback.setup(_stats, null)
+	_knockback.setup(_stats, _motion_modifiers, null)
 
 
 func _physics_process(delta: float) -> void:

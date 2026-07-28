@@ -10,6 +10,7 @@ var stats: EnemyBodyStats
 var _body: Node2D
 var _movement: EnemyMovement
 var _knockback: EnemyKnockback
+var _motion_modifiers: EnemyMotionModifierStack
 var _is_active: bool = true
 
 
@@ -17,17 +18,20 @@ func setup(
 	body: Node2D,
 	body_stats: EnemyBodyStats,
 	movement: EnemyMovement,
-	knockback: EnemyKnockback
+	knockback: EnemyKnockback,
+	motion_modifiers: EnemyMotionModifierStack
 ) -> void:
 	assert(body != null, "body must not be null.")
 	assert(body_stats != null, "body_stats must not be null.")
 	assert(movement != null, "movement must not be null.")
 	assert(knockback != null, "knockback must not be null.")
+	assert(motion_modifiers != null, "motion_modifiers must not be null.")
 
 	_body = body
 	stats = body_stats
 	_movement = movement
 	_knockback = knockback
+	_motion_modifiers = motion_modifiers
 
 
 func is_active() -> bool:
@@ -48,6 +52,10 @@ func set_position(position: Vector2) -> void:
 
 func get_effective_velocity() -> Vector2:
 	return _movement.get_effective_velocity() + _knockback.get_velocity()
+
+
+func get_inverse_mass() -> float:
+	return stats.get_inverse_mass() / _motion_modifiers.get_mass_multiplier()
 
 
 func apply_crowd_acceleration(acceleration: Vector2) -> void:

@@ -1,6 +1,8 @@
 class_name Enemy
 extends Node2D
 
+const ENEMY_MOTION_MODIFIER_RESOURCE = preload("res://game/enemy/enemy_motion_modifier.gd")
+
 signal health_changed(current_health: float, max_health: float)
 signal died
 
@@ -19,6 +21,7 @@ var _is_dying: bool = false
 @onready var _knockback: EnemyKnockback = $Knockback
 @onready var _destination: EnemyDestination = $Destination
 @onready var _crowd_agent: EnemyCrowdAgent = $CrowdAgent
+@onready var _motion_modifiers: EnemyMotionModifierStack = $MotionModifiers
 
 
 func _ready() -> void:
@@ -26,9 +29,16 @@ func _ready() -> void:
 
 	_hit_flash.setup(_visual)
 	_hit_scale_reaction.setup(_visual)
-	_knockback.setup(body_stats, _hit_stop)
-	_movement.setup(self, _hit_stop, _destination, _steering, _knockback)
-	_crowd_agent.setup(self, body_stats, _movement, _knockback)
+	_knockback.setup(body_stats, _motion_modifiers, _hit_stop)
+	_movement.setup(
+		self,
+		_hit_stop,
+		_destination,
+		_steering,
+		_knockback,
+		_motion_modifiers
+	)
+	_crowd_agent.setup(self, body_stats, _movement, _knockback, _motion_modifiers)
 
 	_hurtbox.hit_received.connect(_on_hit_received)
 	_health.health_changed.connect(_on_health_changed)
@@ -47,6 +57,14 @@ func set_destination_target(target: Node2D) -> void:
 
 func get_crowd_agent() -> EnemyCrowdAgent:
 	return _crowd_agent
+
+
+func add_motion_modifier(modifier: ENEMY_MOTION_MODIFIER_RESOURCE) -> int:
+	return _motion_modifiers.add_modifier(modifier)
+
+
+func remove_motion_modifier(modifier_id: int) -> void:
+	_motion_modifiers.remove_modifier(modifier_id)
 
 
 func get_current_health() -> float:

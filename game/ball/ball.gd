@@ -57,6 +57,10 @@ func set_target_position(target_position: Vector2) -> void:
 	_target_position = target_position
 
 
+func get_interpolated_global_position() -> Vector2:
+	return _physics_position_interpolator.get_interpolated_global_position()
+
+
 func request_ability_activation() -> bool:
 	return _ability_controller.try_activate()
 

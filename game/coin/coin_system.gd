@@ -19,6 +19,7 @@ func _ready() -> void:
 	assert(_coins != null, "Coins must exist.")
 	assert(_coin_label != null, "CoinLabel must exist.")
 	_update_coin_label()
+	_coin_box.set_coin_count(_coin_count)
 
 
 func drop_coin(drop_global_position: Vector2) -> void:
@@ -37,12 +38,30 @@ func get_coin_count() -> int:
 	return _coin_count
 
 
+func get_coin_box_global_position() -> Vector2:
+	return _coin_box.global_position
+
+
+func try_take_coin() -> bool:
+	if _coin_count <= 0:
+		return false
+
+	_coin_count -= 1
+	_notify_coin_count_changed()
+	return true
+
+
 func _on_coin_collected() -> void:
 	_coin_count += 1
-	_update_coin_label()
-	coin_count_changed.emit(_coin_count)
+	_notify_coin_count_changed()
 	coin_collected.emit(_coin_box.global_position)
 	_coin_box.play_collect_animation()
+
+
+func _notify_coin_count_changed() -> void:
+	_update_coin_label()
+	_coin_box.set_coin_count(_coin_count)
+	coin_count_changed.emit(_coin_count)
 
 
 func _update_coin_label() -> void:
