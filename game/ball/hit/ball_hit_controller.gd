@@ -3,7 +3,7 @@ extends Node
 
 var _contacting_hurtbox_ids: Dictionary[int, bool] = {}
 
-@onready var _hitbox: BallHitbox = $BallHitbox
+@onready var _hitbox: BallHitbox = $Hitbox
 @onready var _attack: BallAttack = $Attack
 
 

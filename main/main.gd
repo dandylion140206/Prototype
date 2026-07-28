@@ -21,7 +21,9 @@ func _ready() -> void:
 	_enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	_coin_system.coin_collected.connect(_audio_manager.play_coin_collect)
 
-	_ball.set_target_position(get_global_mouse_position())
+	var mouse_position := get_global_mouse_position()
+	_ball.global_position = mouse_position
+	_ball.set_target_position(mouse_position)
 
 
 func _physics_process(_delta: float) -> void:

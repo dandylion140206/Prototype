@@ -9,5 +9,5 @@ stream = ExtResource("2_hit_stream")
 bus = &"SFX"
 pitch_random_range = 0.04
 pitch_increment = 0.04
-max_pitch = 1.5
+max_pitch_increase = 0.5
 combo_timeout = 0.3

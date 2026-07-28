@@ -41,7 +41,7 @@ func collect_to(target_global_position: Vector2) -> void:
 	move_tween.finished.connect(_on_collect_tween_finished)
 
 	var scale_tween := create_tween()
-	scale_tween.tween_property(self, "scale", Vector2(0.5, 0.5), MOVE_DURATION)
+	scale_tween.tween_property(self, "scale", Vector2(0.8, 0.8), MOVE_DURATION)
 
 
 func _on_collect_tween_finished() -> void:

@@ -61,7 +61,7 @@ offset = Vector2(960, 540)
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_q0sk7")
-spawn_count = 343
+spawn_count = 320
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
@@ -70,9 +70,10 @@ enemy_scene = ExtResource("5_enemy")
 z_index = 5
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
+z_index = 20
 
 [node name="Cursor" parent="." unique_id=413606096 instance=ExtResource("3_c2dye")]
-z_index = 1
+z_index = 10
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1383456107]
 offset = Vector2(960, 540)
