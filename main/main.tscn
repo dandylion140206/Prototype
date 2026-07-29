@@ -33,7 +33,6 @@ shader_parameter/dark_color = Color(0.26075834, 0.2581, 0.29, 1)
 shader_parameter/light_color = Color(0.31149998, 0.31149998, 0.35, 1)
 shader_parameter/cell_size = 84.0
 shader_parameter/edge_softness = 4.0000000596048
-shader_parameter/pattern_center = Vector2(960, 540)
 
 [node name="Main" type="Node2D" unique_id=764362608]
 physics_interpolation_mode = 2
@@ -58,7 +57,6 @@ coin_collect_audio_cue = ExtResource("23_coin_collect_audio_cue")
 [node name="テスト画像" type="Sprite2D" parent="." unique_id=815715909]
 visible = false
 texture = ExtResource("10_s758e")
-offset = Vector2(960, 540)
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
@@ -82,7 +80,6 @@ z_index = 20
 z_index = 10
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1383456107]
-offset = Vector2(960, 540)
 ignore_rotation = false
 
 [node name="CameraTargetFollow" type="Node" parent="Camera2D" unique_id=1956155572]

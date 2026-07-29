@@ -20,7 +20,7 @@ uniform float cell_size
 uniform float edge_softness
 	: hint_range(0.1, 32.0, 0.1) = 5.0;
 
-uniform vec2 pattern_center = vec2(960.0, 540.0);
+uniform vec2 pattern_center = vec2(0.0);
 
 varying vec2 world_position;
 

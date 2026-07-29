@@ -12,14 +12,14 @@ enum SpawnMode {
 @export var spawn_mode: SpawnMode = SpawnMode.AREA_PERIMETER
 
 @export_group("Circle Spawn")
-@export var spawn_center: Vector2 = Vector2(100.0, 540.0)
+@export var spawn_center: Vector2 = Vector2(-860.0, 0.0)
 @export_range(0.0, 1000.0, 1.0) var spawn_radius: float = 100.0
 
 @export_group("Perimeter Spawn")
 @export var spawn_area_size: Vector2 = Vector2(1820.0, 1000.0)
 
 @export_group("Destination")
-@export var destination_position: Vector2 = Vector2(960.0, 540.0)
+@export var destination_position: Vector2 = Vector2.ZERO
 @export var destination_target: Node2D
 
 var _enemy_count: int = 0

@@ -9,7 +9,6 @@ script = ExtResource("1_system")
 coin_scene = ExtResource("3_coin")
 
 [node name="CoinBox" type="Node2D" parent="." unique_id=469965277]
-position = Vector2(960, 540)
 script = ExtResource("2_box")
 
 [node name="Coins" type="Node2D" parent="." unique_id=1868955402]
