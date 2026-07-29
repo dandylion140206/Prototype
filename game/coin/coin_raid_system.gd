@@ -6,9 +6,6 @@ const EXIT_TARGET_PADDING: float = 10.0
 
 @export var carried_coin_scene: PackedScene
 
-@export_group("Raid")
-@export_range(0.0, 1000.0, 1.0) var steal_distance: float = 72.0
-
 @export_group("Carry")
 @export_range(0.0, 10.0, 0.01, "or_greater") var carry_speed_multiplier: float = 0.65
 @export_range(0.01, 10.0, 0.01, "or_greater") var carry_mass_multiplier: float = 2.0
@@ -42,7 +39,7 @@ func _physics_process(_delta: float) -> void:
 				_update_exit_destination(enemy, data)
 			continue
 
-		if enemy.global_position.distance_squared_to(_coin_system.get_coin_box_global_position()) > steal_distance * steal_distance:
+		if not _coin_system.is_global_position_inside(enemy.global_position):
 			continue
 
 		if _coin_system.try_take_coin():
