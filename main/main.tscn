@@ -25,7 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://bk65yyetfv2o5" path="res://game/coin/coin_system.tscn" id="22_coin_system"]
 [ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/coin_collect_audio_cue.tres" id="23_coin_collect_audio_cue"]
 [ext_resource type="Script" uid="uid://vewqex7phvm" path="res://game/coin/coin_raid_system.gd" id="24_oagth"]
-[ext_resource type="PackedScene" path="res://game/coin/coin.tscn" id="25_coin"]
+[ext_resource type="PackedScene" uid="uid://wwhor3nk1ymr" path="res://game/coin/coin.tscn" id="25_coin"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -63,7 +63,7 @@ offset = Vector2(960, 540)
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_q0sk7")
-spawn_count = 61
+spawn_count = 71
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]

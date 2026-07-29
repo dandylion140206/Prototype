@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://bfkc3udymp28k" path="res://game/enemy/enemy_destination.gd" id="10_destination"]
 [ext_resource type="Script" uid="uid://b6qqb7huppfla" path="res://game/enemy/enemy_knockback.gd" id="11_rqrnf"]
 [ext_resource type="Script" uid="uid://gyuqeth4db5k" path="res://game/enemy/enemy_steering.gd" id="11_steering"]
-[ext_resource type="Script" path="res://game/enemy/enemy_motion_modifier_stack.gd" id="14_rqrnf"]
+[ext_resource type="Script" uid="uid://oql1lmfrqg6u" path="res://game/enemy/enemy_motion_modifier_stack.gd" id="14_rqrnf"]
 [ext_resource type="Script" uid="uid://mm0asb6f8drp" path="res://game/enemy/crowd/enemy_crowd_agent.gd" id="15_r6v05"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]

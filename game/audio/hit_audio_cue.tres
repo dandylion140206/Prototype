@@ -7,6 +7,7 @@
 script = ExtResource("1_audio_cue")
 stream = ExtResource("2_hit_stream")
 bus = &"SFX"
+initial_pitch = 1.8
 pitch_random_range = 0.04
 pitch_increment = 0.04
 max_pitch_increase = 0.5

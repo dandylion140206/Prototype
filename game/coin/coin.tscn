@@ -1,7 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://wwhor3nk1ymr"]
 
-[ext_resource type="Script" path="res://game/coin/coin.gd" id="1_coin"]
+[ext_resource type="Script" uid="uid://c884bof4h1jss" path="res://game/coin/coin.gd" id="1_coin"]
 
-[node name="Coin" type="Node2D"]
+[node name="Coin" type="Node2D" unique_id=1145304587]
+physics_interpolation_mode = 2
 z_index = 20
 script = ExtResource("1_coin")

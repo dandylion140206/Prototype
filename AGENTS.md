@@ -69,15 +69,14 @@ Editorに依存する作業の前に`editor_state`を実行する。シーンや
 
 ## 検証
 
-実装後は変更内容に応じて、可能な範囲で次を確認する。
 
-- GDScript に構文エラーや型エラーがないか。
-- Node や Resource の参照が壊れていないか。
-- Signal の接続が有効か。
-- Shader にコンパイルエラーがないか。
-- 変更対象の Scene を読み込み、実行したときに期待どおり動作するか。
+Godotプロジェクトの検証は、次の優先順位に従う。
 
-プロジェクトの実装を変更した場合は、プロジェクトルートで次を実行する。
+1. Godot AI MCP
+2. GodotのCLIコマンド
+3. 静的なファイル確認
+
+MCPで検証できない場合に限り、プロジェクトルートで次を実行する。
 
 ```powershell
 cmd.exe /d /c 'set "APPDATA=%TEMP%\codex-godot-validation\Roaming" && set "LOCALAPPDATA=%TEMP%\codex-godot-validation\Local" && call godot.cmd --headless --path . --import'
