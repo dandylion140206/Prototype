@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://02fcye2pf3k3" path="res://main/input_controller.gd" id="3_grrlh"]
 [ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="4_n6juq"]
 [ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="5_enemy"]
-[ext_resource type="Script" uid="uid://i4rxfurbhfrp" path="res://game/enemy/spawner/fixed_count_enemy_spawner.gd" id="7_q0sk7"]
+[ext_resource type="Script" uid="uid://ll5a4q0xuts5" path="res://game/enemy/spawner/wave_enemy_spawner.gd" id="7_q0sk7"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
 [ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://game/enemy/crowd/enemy_crowd_system.tscn" id="9_n3o0a"]
@@ -26,6 +26,7 @@
 [ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/coin_collect_audio_cue.tres" id="23_coin_collect_audio_cue"]
 [ext_resource type="Script" uid="uid://vewqex7phvm" path="res://game/coin/coin_raid_system.gd" id="24_oagth"]
 [ext_resource type="PackedScene" uid="uid://wwhor3nk1ymr" path="res://game/coin/coin.tscn" id="25_coin"]
+[ext_resource type="Script" uid="uid://cvf6n7mc5wtu3" path="res://game/enemy/line_segment_2d.gd" id="26_line_segment"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
 shader = ExtResource("2_bsumw")
@@ -62,7 +63,9 @@ texture = ExtResource("10_s758e")
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
 y_sort_enabled = true
 script = ExtResource("7_q0sk7")
-spawn_count = 71
+min_wave_interval = 1.0
+max_wave_interval = 1.7
+enemy_spawn_interval = 0.18
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
@@ -83,6 +86,24 @@ z_index = 10
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1383456107]
 position = Vector2(0, -350)
 ignore_rotation = false
+
+[node name="SpawnLine" type="Node2D" parent="Camera2D" unique_id=963365169]
+position = Vector2(0, -400)
+script = ExtResource("26_line_segment")
+
+[node name="LeftExitLine" type="Node2D" parent="Camera2D" unique_id=1011538893]
+position = Vector2(-1020, 0)
+rotation = -1.5707963267949
+script = ExtResource("26_line_segment")
+length = 1080.0
+editor_color = Color(1, 0.3, 0.3, 0.9)
+
+[node name="RightExitLine" type="Node2D" parent="Camera2D"]
+position = Vector2(1020, 0)
+rotation = 1.5707963267949
+script = ExtResource("26_line_segment")
+length = 1080.0
+editor_color = Color(1, 0.3, 0.3, 0.9)
 
 [node name="CameraTargetFollow" type="Node" parent="Camera2D" unique_id=1956155572]
 script = ExtResource("21_d00gp")

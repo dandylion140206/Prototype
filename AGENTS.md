@@ -68,14 +68,13 @@ Godot Editorとの連携にはGodot AI MCPを使用する。公開ドメイン�
 
 ## 検証
 
-
-Godotプロジェクトの検証は、次の優先順位に従う。
+実装内容に応じた検証を行う。検証方法は、次の優先順位に従う。
 
 1. Godot AI MCP
 2. GodotのCLIコマンド
 3. 静的なファイル確認
 
-MCPで検証できない場合に限り、プロジェクトルートで次を実行する。
+CLIコマンドを使用する場合は、プロジェクトルートで次を実行する。
 
 ```powershell
 cmd.exe /d /c 'set "APPDATA=%TEMP%\codex-godot-validation\Roaming" && set "LOCALAPPDATA=%TEMP%\codex-godot-validation\Local" && call godot.cmd --headless --path . --import'

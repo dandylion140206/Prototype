@@ -2,13 +2,12 @@ class_name CoinRaidSystem
 extends Node
 
 const ENEMY_MOTION_MODIFIER_RESOURCE = preload("res://game/enemy/enemy_motion_modifier.gd")
-const ESCAPE_TARGET_PADDING: float = 10.0
+const EXIT_TARGET_PADDING: float = 10.0
 
 @export var carried_coin_scene: PackedScene
 
 @export_group("Raid")
 @export_range(0.0, 1000.0, 1.0) var steal_distance: float = 72.0
-@export_range(0.0, 1000.0, 1.0) var escape_margin: float = 40.0
 
 @export_group("Carry")
 @export_range(0.0, 10.0, 0.01, "or_greater") var carry_speed_multiplier: float = 0.65
@@ -16,6 +15,7 @@ const ESCAPE_TARGET_PADDING: float = 10.0
 @export var carried_coin_offset: Vector2 = Vector2.ZERO
 
 var _coin_system: CoinSystem
+var _exit_lines: Array[LineSegment2D] = []
 var _carry_modifier: ENEMY_MOTION_MODIFIER_RESOURCE
 var _raid_data: Dictionary[Enemy, RaidData] = {}
 
@@ -36,8 +36,10 @@ func _physics_process(_delta: float) -> void:
 
 		var data := _raid_data[enemy]
 		if data.is_carrying:
-			if _is_fully_outside_viewport(enemy.global_position):
+			if data.exit_line.has_global_point_crossed_outward(enemy.global_position):
 				_complete_raid(enemy)
+			else:
+				_update_exit_destination(enemy, data)
 			continue
 
 		if enemy.global_position.distance_squared_to(_coin_system.get_coin_box_global_position()) > steal_distance * steal_distance:
@@ -47,11 +49,15 @@ func _physics_process(_delta: float) -> void:
 			_start_carrying(enemy, data)
 
 
-func setup(coin_system: CoinSystem) -> void:
+func setup(coin_system: CoinSystem, exit_lines: Array[LineSegment2D]) -> void:
 	assert(coin_system != null, "coin_system must not be null.")
+	assert(not exit_lines.is_empty(), "exit_lines must not be empty.")
 	assert(carried_coin_scene != null, "carried_coin_scene must not be null.")
+	for exit_line in exit_lines:
+		assert(exit_line != null, "exit_lines must not contain null.")
 
 	_coin_system = coin_system
+	_exit_lines = exit_lines
 	set_physics_process(true)
 
 
@@ -87,10 +93,11 @@ func _on_enemy_tree_exiting(enemy: Enemy) -> void:
 
 
 func _start_carrying(enemy: Enemy, data: RaidData) -> void:
+	data.exit_line = _get_nearest_exit_line(enemy.global_position)
 	data.is_carrying = true
 	data.modifier_id = enemy.add_motion_modifier(_carry_modifier)
 	data.carried_visual = _create_carried_visual(enemy)
-	enemy.set_destination(_get_nearest_escape_position(enemy.global_position))
+	_update_exit_destination(enemy, data)
 
 
 func _complete_raid(enemy: Enemy) -> void:
@@ -122,42 +129,34 @@ func _create_carried_visual(enemy: Enemy) -> Node2D:
 	return carried_visual
 
 
-func _get_nearest_escape_position(world_position: Vector2) -> Vector2:
-	var viewport := get_viewport()
-	var viewport_rect := viewport.get_visible_rect()
-	var canvas_transform := viewport.get_canvas_transform()
-	var screen_position := canvas_transform * world_position
+func _get_nearest_exit_line(world_position: Vector2) -> LineSegment2D:
+	var nearest_line := _exit_lines[0]
+	var nearest_position := nearest_line.get_closest_global_point(world_position)
+	var nearest_distance_squared := world_position.distance_squared_to(nearest_position)
 
-	var left_distance := absf(screen_position.x - viewport_rect.position.x)
-	var right_distance := absf(viewport_rect.end.x - screen_position.x)
-	var top_distance := absf(screen_position.y - viewport_rect.position.y)
-	var bottom_distance := absf(viewport_rect.end.y - screen_position.y)
-	var minimum_distance := minf(
-		minf(left_distance, right_distance),
-		minf(top_distance, bottom_distance)
+	for index in range(1, _exit_lines.size()):
+		var exit_line := _exit_lines[index]
+		var exit_position := exit_line.get_closest_global_point(world_position)
+		var distance_squared := world_position.distance_squared_to(exit_position)
+		if distance_squared >= nearest_distance_squared:
+			continue
+
+		nearest_line = exit_line
+		nearest_distance_squared = distance_squared
+
+	return nearest_line
+
+
+func _update_exit_destination(enemy: Enemy, data: RaidData) -> void:
+	var destination := data.exit_line.get_closest_global_point(
+		enemy.global_position,
+		EXIT_TARGET_PADDING
 	)
-	var target_screen_position := screen_position
-	var target_offset := escape_margin + ESCAPE_TARGET_PADDING
-
-	if minimum_distance == left_distance:
-		target_screen_position.x = viewport_rect.position.x - target_offset
-	elif minimum_distance == right_distance:
-		target_screen_position.x = viewport_rect.end.x + target_offset
-	elif minimum_distance == top_distance:
-		target_screen_position.y = viewport_rect.position.y - target_offset
-	else:
-		target_screen_position.y = viewport_rect.end.y + target_offset
-
-	return canvas_transform.affine_inverse() * target_screen_position
-
-
-func _is_fully_outside_viewport(world_position: Vector2) -> bool:
-	var viewport := get_viewport()
-	var screen_position := viewport.get_canvas_transform() * world_position
-	return not viewport.get_visible_rect().grow(escape_margin).has_point(screen_position)
+	enemy.set_destination(destination)
 
 
 class RaidData:
 	var is_carrying: bool = false
 	var modifier_id: int = -1
 	var carried_visual: Node2D
+	var exit_line: LineSegment2D
