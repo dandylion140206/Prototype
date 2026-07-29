@@ -33,29 +33,28 @@
 
 - `.godot/` 以下のファイルは編集しない。ただし、Godotによるインポートや検証で自動的に生成、更新されることは許容する。
 - `addons/` 以下のファイルは編集しない。
-- 実装に関係ない部分の構造、命名などを勝手に変更しない。
+- フォルダ名の最初に `_` がついているフォルダは、指示がない限り編集しない。
 
 ## Godot AI MCP
 
 Godot Editorとの連携にはGodot AI MCPを使用する。公開ドメインは次のとおり。
 
 - `api`
+- `batch`
 - `editor`
 - `filesystem`
 - `game`
+- `input_map`
+- `node`
 - `project`
+- `scene`
 - `testing`
 
-基本的なファイルの参照・編集にはCodexの通常のファイル操作を使用する。Godot AI MCPは主に次の用途で使用する。
+次の作業は、MCPツールを使わない。
 
-- Editorの状態、SceneTree、Nodeプロパティの確認
-- 使用中のGodotバージョンに対応したAPIの確認
-- EditorFileSystemのスキャンとアセットの再インポート
-- プロジェクトの実行・停止
-- ログ、スクリーンショット、実行時状態の確認
-- ゲーム入力とテストの実行
-
-Editorに依存する作業の前に`editor_state`を実行する。シーンやノードの確認には`scene_get_hierarchy`と`node_get_properties`を使用する。
+- スクリプト・シェーダーの作成、編集。
+- `.tscn` の新規作成。
+- 文字列・パスの一括置換。
 
 ## 作業前の確認
 
