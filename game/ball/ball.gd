@@ -2,8 +2,12 @@ class_name Ball
 extends Node2D
 
 signal hit_landed(hit_data: HitData)
+signal audio_requested(request: AudioRequest)
 
 @export_range(0.9, 1.0, 0.001) var hit_speed_multiplier: float = 0.985
+
+@export_group("Audio")
+@export var hit_audio_cue: AudioCue
 
 var _target_position: Vector2 = Vector2.ZERO
 
@@ -15,9 +19,12 @@ var _target_position: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
+	assert(hit_audio_cue != null, "hit_audio_cue must not be null.")
+
 	_movement.setup(self)
 	_hit_controller.setup(self)
 	_physics_position_interpolator.setup(self)
+	_ability_controller.audio_requested.connect(_on_ability_audio_requested)
 
 	var ability_context := AbilityContext.new(
 		self,
@@ -73,6 +80,12 @@ func _handle_landed_hits(landed_hits: Array[HitData]) -> void:
 	_start_attacker_hit_stop(landed_hits)
 
 	for hit_data in landed_hits:
+		var audio_request := AudioRequest.new(
+			hit_audio_cue,
+			hit_data.impact_position,
+			hit_data.attack_source_id
+		)
+		audio_requested.emit(audio_request)
 		hit_landed.emit(hit_data)
 
 
@@ -86,3 +99,7 @@ func _start_attacker_hit_stop(hit_data_list: Array[HitData]) -> void:
 		)
 
 	_hit_stop.start(hit_stop_frames)
+
+
+func _on_ability_audio_requested(audio_request: AudioRequest) -> void:
+	audio_requested.emit(audio_request)

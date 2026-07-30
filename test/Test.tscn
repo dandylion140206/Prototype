@@ -12,19 +12,18 @@
 [ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="10_post_processing"]
 [ext_resource type="Script" uid="uid://blw028u5wmg2t" path="res://debug/overlay/debug_overlay_layer.gd" id="11_debug_overlay"]
 [ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="12_performance"]
+[ext_resource type="PackedScene" path="res://game/audio/audio_director.tscn" id="13_p07pb"]
 [ext_resource type="Script" uid="uid://dvrvkqmrob1o2" path="res://test/wandering_enemy_system.gd" id="13_wandering_system"]
 [ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="14_enemy"]
 [ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://game/enemy/crowd/enemy_crowd_system.tscn" id="15_crowd"]
 [ext_resource type="Script" uid="uid://biifx44042o10" path="res://test/wandering_enemy_overlay_panel.gd" id="16_enemy_overlay"]
-[ext_resource type="Script" uid="uid://cgd5a3y6oavyb" path="res://test/wandering_test_audio_manager.gd" id="17_audio_manager"]
-[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/hit_audio_cue.tres" id="18_hit_audio"]
-[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/enemy_death_audio_cue.tres" id="19_death_audio"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="20_health_bars"]
 [ext_resource type="Script" uid="uid://dyxck3y30t273" path="res://test/combo_radial_ability.gd" id="21_radial_ability"]
 [ext_resource type="Script" uid="uid://mahj6c2wdt5s" path="res://test/radial_attack_visual.gd" id="22_radial_visual"]
 [ext_resource type="Resource" path="res://test/radial_activation_audio_cue.tres" id="23_activation_audio"]
 [ext_resource type="Resource" uid="uid://cifjcnh3bsrdq" path="res://test/radial_hit_audio_cue.tres" id="24_radial_hit_audio"]
 [ext_resource type="Resource" uid="uid://d14fhkr6y2ogs" path="res://test/combo_hit_audio_cue.tres" id="25_combo_hit_audio"]
+[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/cues/enemy_death_audio_cue.tres" id="26_death_audio"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
 shader = ExtResource("2_background_shader")
@@ -64,6 +63,10 @@ combo_timeout = 0.4
 max_combo = 15
 base_radius = 60.0
 radius_per_combo = 20.0
+damage_per_combo = 3.0
+radial_activation_audio_cue = ExtResource("23_activation_audio")
+radial_hit_audio_cue = ExtResource("24_radial_hit_audio")
+combo_hit_audio_cue = ExtResource("25_combo_hit_audio")
 
 [node name="CooldownTimer" type="Timer" parent="Gameplay/ComboRadialAbility" unique_id=347530723]
 one_shot = true
@@ -77,6 +80,8 @@ z_index = 10
 [node name="WanderingEnemySystem" type="Node2D" parent="Gameplay" unique_id=631167769]
 script = ExtResource("13_wandering_system")
 enemy_scene = ExtResource("14_enemy")
+enemy_death_audio_cue = ExtResource("26_death_audio")
+wander_area = Rect2(-900, -490, 1800, 980)
 
 [node name="EnemyCrowdSystem" parent="Gameplay/WanderingEnemySystem" unique_id=1528871980 instance=ExtResource("15_crowd")]
 
@@ -84,13 +89,7 @@ enemy_scene = ExtResource("14_enemy")
 physics_interpolation_mode = 1
 y_sort_enabled = true
 
-[node name="AudioManager" type="Node" parent="." unique_id=2098966875]
-script = ExtResource("17_audio_manager")
-hit_audio_cue = ExtResource("18_hit_audio")
-enemy_death_audio_cue = ExtResource("19_death_audio")
-radial_activation_audio_cue = ExtResource("23_activation_audio")
-radial_hit_audio_cue = ExtResource("24_radial_hit_audio")
-combo_hit_audio_cue = ExtResource("25_combo_hit_audio")
+[node name="AudioDirector" parent="." unique_id=584685882 instance=ExtResource("13_p07pb")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=273203557]
 ignore_rotation = false

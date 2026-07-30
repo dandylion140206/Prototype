@@ -10,9 +10,13 @@
 [ext_resource type="Script" path="res://game/coin/coin_drop_collector.gd" id="8_collector"]
 [ext_resource type="Script" uid="uid://vewqex7phvm" path="res://game/coin/coin_raid_controller.gd" id="9_controller"]
 [ext_resource type="PackedScene" uid="uid://wwhor3nk1ymr" path="res://game/coin/dropped_coin.tscn" id="10_coin"]
+[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/cues/enemy_death_audio_cue.tres" id="11_death_audio"]
+[ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/cues/coin_collect_audio_cue.tres" id="12_coin_audio"]
 
 [node name="CoinRaidRoute" type="Node2D"]
 script = ExtResource("1_route")
+enemy_death_audio_cue = ExtResource("11_death_audio")
+coin_collect_audio_cue = ExtResource("12_coin_audio")
 
 [node name="EnemySystem" type="Node2D" parent="."]
 

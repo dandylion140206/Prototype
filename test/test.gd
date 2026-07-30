@@ -7,7 +7,7 @@ extends Node2D
 @onready var _wandering_enemy_system: WanderingEnemySystem = (
 	$Gameplay/WanderingEnemySystem
 )
-@onready var _audio_manager: WanderingTestAudioManager = $AudioManager
+@onready var _audio_director: AudioDirector = $AudioDirector
 @onready var _camera: Camera2D = $Camera2D
 @onready var _camera_shake: CameraShake = %CameraShake
 @onready var _impact_camera_shake: ImpactCameraShake = %ImpactCameraShake
@@ -19,13 +19,14 @@ func _ready() -> void:
 	_impact_camera_shake.setup(_camera_shake)
 	_combo_radial_ability.combo_changed.connect(_on_combo_changed)
 	_combo_radial_ability.activated.connect(_on_radial_ability_activated)
-	_combo_radial_ability.hit_landed.connect(_audio_manager.play_radial_hit)
+	_combo_radial_ability.audio_requested.connect(_audio_director.request)
 	_combo_radial_ability.setup(_ball)
 	_ball.hit_landed.connect(_on_ball_hit_landed)
+	_ball.audio_requested.connect(_audio_director.request)
 	_input_controller.active_ability_requested.connect(_ball.request_ability_activation)
 	_input_controller.secondary_ability_requested.connect(_combo_radial_ability.try_activate)
 	_wandering_enemy_system.enemy_spawned.connect(_enemy_health_bar_layer.add_enemy)
-	_wandering_enemy_system.enemy_died.connect(_audio_manager.play_enemy_death)
+	_wandering_enemy_system.audio_requested.connect(_audio_director.request)
 
 	var mouse_position := get_global_mouse_position()
 	_ball.global_position = mouse_position
@@ -44,14 +45,12 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_ball_hit_landed(hit_data: HitData) -> void:
-	_combo_radial_ability.register_ball_hit()
+	_combo_radial_ability.register_ball_hit(hit_data)
 	_impact_camera_shake.apply_hit(hit_data)
-	_audio_manager.play_ball_hit(hit_data, _combo_radial_ability.get_combo_count())
 
 
 func _on_radial_ability_activated(impact_data: HitData) -> void:
 	_impact_camera_shake.apply_hit(impact_data)
-	_audio_manager.play_radial_activation(impact_data.impact_position)
 
 
 func _on_combo_changed(combo_count: int) -> void:

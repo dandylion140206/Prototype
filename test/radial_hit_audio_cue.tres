@@ -6,6 +6,5 @@
 [resource]
 script = ExtResource("1_audio_cue")
 stream = ExtResource("2_stream")
-bus = &"SFX"
-volume_db = 7.5
-pitch_random_range = 0.05
+random_pitch_range = 0.05
+aggregation_mode = 1

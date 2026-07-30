@@ -6,6 +6,11 @@ signal enemy_died(enemy: Enemy, world_position: Vector2)
 signal coin_collected(world_position: Vector2)
 signal coin_count_changed(coin_count: int)
 signal enemy_escaped(enemy: Enemy)
+signal audio_requested(request: AudioRequest)
+
+@export_group("Audio")
+@export var enemy_death_audio_cue: AudioCue
+@export var coin_collect_audio_cue: AudioCue
 
 @onready var _enemy_spawner: WaveEnemySpawner = $EnemySystem/EnemySpawner
 @onready var _enemy_crowd_system: EnemyCrowdSystem = $EnemySystem/EnemyCrowdSystem
@@ -22,6 +27,9 @@ signal enemy_escaped(enemy: Enemy)
 
 
 func _ready() -> void:
+	assert(enemy_death_audio_cue != null, "enemy_death_audio_cue must not be null.")
+	assert(coin_collect_audio_cue != null, "coin_collect_audio_cue must not be null.")
+
 	_approach_area.setup(_raid_area, _active_enemies)
 	_coin_raid_controller.setup(
 		_coin_inventory,
@@ -85,6 +93,13 @@ func _on_enemy_spawned(enemy: Enemy) -> void:
 func _on_enemy_died(enemy: Enemy) -> void:
 	var death_position := enemy.global_position
 	_coin_drop_collector.drop_coin(death_position)
+
+	var audio_request := AudioRequest.new(
+		enemy_death_audio_cue,
+		death_position,
+		enemy.get_instance_id()
+	)
+	audio_requested.emit(audio_request)
 	enemy_died.emit(enemy, death_position)
 
 
@@ -92,7 +107,9 @@ func _on_coin_count_changed(coin_count: int) -> void:
 	coin_count_changed.emit(coin_count)
 
 
-func _on_coin_collected(world_position: Vector2) -> void:
+func _on_coin_collected(source_id: int, world_position: Vector2) -> void:
+	var audio_request := AudioRequest.new(coin_collect_audio_cue, world_position, source_id)
+	audio_requested.emit(audio_request)
 	coin_collected.emit(world_position)
 
 

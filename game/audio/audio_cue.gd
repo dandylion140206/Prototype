@@ -2,23 +2,38 @@
 class_name AudioCue
 extends Resource
 
+enum OverflowPolicy {
+	STEAL_OLDEST,
+	DROP_NEW,
+}
+
+enum AggregationMode {
+	NONE,
+	BY_SOURCE,
+}
+
+@export_group("Audio")
 @export var stream: AudioStream
-@export var bus: StringName
+@export var bus: StringName = &"SFX"
 @export_range(-40.0, 24.0, 0.1) var volume_db: float = 0.0
-@export_range(1, 32, 1) var max_polyphony: int = 4
 
 @export_group("Pitch")
-@export_range(0.01, 3.0, 0.01) var initial_pitch: float = 1.0
-@export_range(0.0, 1.0, 0.01) var pitch_random_range: float = 0.0
-@export_range(0.0, 1.0, 0.01) var pitch_increment: float = 0.0
-@export_range(0.0, 3.0, 0.01) var max_pitch_increase: float = 0.0
-@export_range(0.0, 5.0, 0.01) var combo_timeout: float = 0.0
+@export_range(0.01, 3.0, 0.01) var base_pitch: float = 1.0
+@export_range(0.0, 1.0, 0.01) var random_pitch_range: float = 0.0
+@export_range(0.0, 1.0, 0.01) var sequence_pitch_step: float = 0.0
+@export_range(0.0, 3.0, 0.01) var max_sequence_pitch_offset: float = 0.0
+
+@export_group("Concurrency")
+@export_range(1, 32, 1) var max_concurrent_playbacks: int = 4
+@export var overflow_policy: OverflowPolicy = OverflowPolicy.STEAL_OLDEST
+@export_range(0.0, 1.0, 0.01) var minimum_interval: float = 0.0
+
+@export_group("Aggregation")
+@export var aggregation_mode: AggregationMode = AggregationMode.NONE
+@export_range(0.0, 0.2, 0.005) var aggregation_window: float = 0.0
 
 
 func _init() -> void:
-	if AudioServer.get_bus_count() > 0:
-		bus = StringName(AudioServer.get_bus_name(0))
-
 	if Engine.is_editor_hint():
 		AudioServer.bus_layout_changed.connect(_on_bus_layout_changed)
 

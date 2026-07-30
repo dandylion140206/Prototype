@@ -4,6 +4,8 @@ extends Node
 
 @warning_ignore("unused_signal")
 signal activated
+@warning_ignore("unused_signal")
+signal audio_requested(request: AudioRequest)
 
 
 @abstract

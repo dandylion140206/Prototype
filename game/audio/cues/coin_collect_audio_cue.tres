@@ -6,7 +6,8 @@
 [resource]
 script = ExtResource("1_audio_cue")
 stream = ExtResource("2_8qms7")
-bus = &"SFX"
-volume_db = -12.100000000000001
-initial_pitch = 0.7
-pitch_random_range = 0.1
+volume_db = -12.1
+base_pitch = 0.7
+random_pitch_range = 0.1
+max_concurrent_playbacks = 3
+minimum_interval = 0.03

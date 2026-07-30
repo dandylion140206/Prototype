@@ -4,6 +4,7 @@ extends Node2D
 signal activated(impact_data: HitData)
 signal hit_landed(hit_data: HitData)
 signal combo_changed(combo_count: int)
+signal audio_requested(request: AudioRequest)
 
 @export_group("Combo")
 @export_range(0.0, 5.0, 0.01) var combo_timeout: float = 0.3
@@ -19,6 +20,11 @@ signal combo_changed(combo_count: int)
 @export_range(0.0, 5.0, 0.01) var cooldown: float = 0.5
 @export_flags_2d_physics var collision_mask: int = 2
 @export_range(1, 512, 1) var max_query_results: int = 256
+
+@export_group("Audio")
+@export var radial_activation_audio_cue: AudioCue
+@export var radial_hit_audio_cue: AudioCue
+@export var combo_hit_audio_cue: AudioCue
 
 var _attack_source: Node2D
 var _combo_count: int = 0
@@ -68,6 +74,9 @@ func _physics_process(delta: float) -> void:
 
 func setup(attack_source: Node2D) -> void:
 	assert(attack_source != null, "attack_source must not be null.")
+	assert(radial_activation_audio_cue != null, "radial_activation_audio_cue must not be null.")
+	assert(radial_hit_audio_cue != null, "radial_hit_audio_cue must not be null.")
+	assert(combo_hit_audio_cue != null, "combo_hit_audio_cue must not be null.")
 	assert(combo_timeout >= 0.0, "combo_timeout must not be negative.")
 	assert(max_combo > 0, "max_combo must be positive.")
 	assert(base_radius >= 0.0, "base_radius must not be negative.")
@@ -83,8 +92,9 @@ func setup(attack_source: Node2D) -> void:
 	combo_changed.emit(_combo_count)
 
 
-func register_ball_hit() -> void:
+func register_ball_hit(hit_data: HitData) -> void:
 	assert(_attack_source != null, "ComboRadialAbility must be setup before registering hits.")
+	assert(hit_data != null, "hit_data must not be null.")
 
 	var physics_frame := Engine.get_physics_frames()
 	if physics_frame == _last_combo_physics_frame:
@@ -101,6 +111,14 @@ func register_ball_hit() -> void:
 	if next_combo != _combo_count:
 		_combo_count = next_combo
 		combo_changed.emit(_combo_count)
+
+	var audio_request := AudioRequest.new(
+		combo_hit_audio_cue,
+		hit_data.impact_position,
+		hit_data.attack_source_id,
+		maxi(_combo_count - 1, 0)
+	)
+	audio_requested.emit(audio_request)
 
 
 func try_activate() -> bool:
@@ -128,6 +146,13 @@ func try_activate() -> bool:
 		get_instance_id()
 	)
 	activated.emit(activation_data)
+
+	var audio_request := AudioRequest.new(
+		radial_activation_audio_cue,
+		_attack_position,
+		get_instance_id()
+	)
+	audio_requested.emit(audio_request)
 	_reset_combo()
 
 	return true
@@ -192,6 +217,12 @@ func _apply_hits_at_radius(current_radius: float) -> void:
 
 		if hurtbox.receive_hit(hit_data):
 			hit_landed.emit(hit_data)
+			var audio_request := AudioRequest.new(
+				radial_hit_audio_cue,
+				hurtbox.global_position,
+				hit_data.attack_source_id
+			)
+			audio_requested.emit(audio_request)
 
 
 func _get_active_combo() -> int:

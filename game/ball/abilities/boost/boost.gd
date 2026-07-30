@@ -3,15 +3,18 @@ extends Ability
 @export_range(0.0, 5000.0, 10.0) var boost_speed: float = 1700.0
 @export_range(0.0, 2.0, 0.01) var cooldown: float = 0.4
 
+@export_group("Audio")
+@export var activation_audio_cue: AudioCue
+
 var _context: AbilityContext
 
 @onready var _cooldown_timer: Timer = $CooldownTimer
-@onready var _sound: AudioStreamPlayer2D = $Sound
 @onready var _boost_trail: BoostTrail = $BoostTrail
 
 
 func setup(context: AbilityContext) -> void:
 	assert(context != null, "context must not be null.")
+	assert(activation_audio_cue != null, "activation_audio_cue must not be null.")
 
 	_context = context
 	_cooldown_timer.one_shot = true
@@ -45,11 +48,17 @@ func try_activate() -> bool:
 	_boost_trail.play_boost_trail()
 	activated.emit()
 
+	var audio_request := AudioRequest.new(
+		activation_audio_cue,
+		_context.body.global_position,
+		get_instance_id()
+	)
+	audio_requested.emit(audio_request)
+
 	return true
 
 
 func teardown() -> void:
 	_cooldown_timer.stop()
-	_sound.stop()
 	_boost_trail.stop_immediately()
 	_context = null

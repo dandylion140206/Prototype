@@ -5,8 +5,12 @@ const PLACEMENT_ATTEMPTS_PER_ENEMY: int = 100
 
 signal enemy_spawned(enemy: Enemy)
 signal enemy_died(world_position: Vector2)
+signal audio_requested(request: AudioRequest)
 
 @export var enemy_scene: PackedScene
+
+@export_group("Audio")
+@export var enemy_death_audio_cue: AudioCue
 
 @export_group("Population")
 @export_range(1, 1000, 1) var enemy_count: int = 40
@@ -30,6 +34,7 @@ var _pending_respawn_count: int = 0
 
 func _ready() -> void:
 	assert(enemy_scene != null, "enemy_scene must not be null.")
+	assert(enemy_death_audio_cue != null, "enemy_death_audio_cue must not be null.")
 	assert(wander_area.size.x > 0.0, "wander_area width must be greater than zero.")
 	assert(wander_area.size.y > 0.0, "wander_area height must be greater than zero.")
 	assert(
@@ -159,7 +164,14 @@ func _get_random_local_position() -> Vector2:
 
 func _on_enemy_died(enemy: Enemy) -> void:
 	_pending_respawn_count += 1
-	enemy_died.emit(enemy.global_position)
+	var death_position := enemy.global_position
+	var audio_request := AudioRequest.new(
+		enemy_death_audio_cue,
+		death_position,
+		enemy.get_instance_id()
+	)
+	audio_requested.emit(audio_request)
+	enemy_died.emit(death_position)
 
 
 func _on_enemy_tree_exited(enemy_id: int) -> void:

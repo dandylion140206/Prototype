@@ -1,6 +1,8 @@
 class_name AbilityController
 extends Node
 
+signal audio_requested(request: AudioRequest)
+
 @export var initial_ability: AbilityDefinition
 
 var _context: AbilityContext
@@ -52,6 +54,7 @@ func _equip_ability(definition: AbilityDefinition) -> bool:
 
 	_ability = instance as Ability
 	add_child(_ability)
+	_ability.audio_requested.connect(_on_ability_audio_requested)
 	_ability.setup(_context)
 	return true
 
@@ -60,6 +63,13 @@ func _teardown_ability() -> void:
 	if _ability == null:
 		return
 
+	if _ability.audio_requested.is_connected(_on_ability_audio_requested):
+		_ability.audio_requested.disconnect(_on_ability_audio_requested)
+
 	_ability.teardown()
 	_ability.queue_free()
 	_ability = null
+
+
+func _on_ability_audio_requested(audio_request: AudioRequest) -> void:
+	audio_requested.emit(audio_request)

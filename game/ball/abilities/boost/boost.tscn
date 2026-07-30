@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cherfu7ivdcyx"]
 
 [ext_resource type="Script" uid="uid://0xh102dl4abt" path="res://game/ball/abilities/boost/boost.gd" id="1_ra6ms"]
-[ext_resource type="AudioStream" uid="uid://c1k0prxqnpsex" path="res://assets/sfx/ブースト/DSGNMisc_HIT-Synth Hit_HY_PC-001.wav" id="2_c2dil"]
+[ext_resource type="Resource" path="res://game/audio/cues/boost_audio_cue.tres" id="2_c2dil"]
 [ext_resource type="Script" uid="uid://svpwvxd17hmo" path="res://game/ball/abilities/boost/boost_trail.gd" id="3_c2dil"]
 [ext_resource type="Script" uid="uid://b3ye53qcjhqid" path="res://visuals/effects/trail.gd" id="4_rp6jb"]
 
@@ -17,14 +17,10 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 [node name="Boost" type="Node2D" unique_id=293315367]
 physics_interpolation_mode = 2
 script = ExtResource("1_ra6ms")
+activation_audio_cue = ExtResource("2_c2dil")
 
 [node name="CooldownTimer" type="Timer" parent="." unique_id=116471577]
 one_shot = true
-
-[node name="Sound" type="AudioStreamPlayer2D" parent="." unique_id=814106714]
-stream = ExtResource("2_c2dil")
-volume_db = -2.0
-bus = &"SFX"
 
 [node name="BoostTrail" type="Node2D" parent="." unique_id=157861159]
 unique_name_in_owner = true
@@ -39,5 +35,3 @@ joint_mode = 2
 begin_cap_mode = 2
 script = ExtResource("4_rp6jb")
 source_position_mode = 1
-
-[connection signal="activated" from="." to="Sound" method="play"]

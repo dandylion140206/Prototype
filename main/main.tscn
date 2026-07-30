@@ -10,14 +10,11 @@
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_camera_shake"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_impact_shake"]
 [ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="11_post_processing"]
+[ext_resource type="PackedScene" path="res://game/audio/audio_director.tscn" id="11_s758e"]
 [ext_resource type="Script" uid="uid://blw028u5wmg2t" path="res://debug/overlay/debug_overlay_layer.gd" id="12_debug_overlay"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="13_health_bars"]
 [ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="14_performance"]
 [ext_resource type="Script" uid="uid://bg2fefmnl0lai" path="res://debug/overlay/enemy_overlay_panel.gd" id="15_enemy_overlay"]
-[ext_resource type="Script" uid="uid://dvoqtu1nlwsvi" path="res://game/audio/audio_manager.gd" id="16_audio"]
-[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/hit_audio_cue.tres" id="17_hit_audio"]
-[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/enemy_death_audio_cue.tres" id="18_death_audio"]
-[ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/coin_collect_audio_cue.tres" id="19_coin_audio"]
 [ext_resource type="PackedScene" uid="uid://bk65yyetfv2o5" path="res://game/coin/coin_raid_route.tscn" id="20_route"]
 [ext_resource type="PackedScene" path="res://game/coin/coin_hud.tscn" id="21_hud"]
 
@@ -73,11 +70,7 @@ min_shake_speed = 0.0
 max_shake_speed = 6000.0
 trauma_at_max_speed = 0.8
 
-[node name="AudioManager" type="Node" parent="." unique_id=1930811320]
-script = ExtResource("16_audio")
-hit_audio_cue = ExtResource("17_hit_audio")
-enemy_death_audio_cue = ExtResource("18_death_audio")
-coin_collect_audio_cue = ExtResource("19_coin_audio")
+[node name="AudioDirector" parent="." unique_id=2015600703 instance=ExtResource("11_s758e")]
 
 [node name="PostProcessing" parent="." unique_id=796068853 instance=ExtResource("11_post_processing")]
 

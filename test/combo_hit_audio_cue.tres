@@ -6,7 +6,6 @@
 [resource]
 script = ExtResource("1_audio_cue")
 stream = ExtResource("2_rwul0")
-bus = &"SFX"
-max_polyphony = 1
-pitch_increment = 0.15
-max_pitch_increase = 3.0
+sequence_pitch_step = 0.15
+max_sequence_pitch_offset = 3.0
+aggregation_mode = 1

@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://caa0d37a5a6od" path="res://game/ball/abilities/boost/boost_definition.tres" id="8_ability"]
 [ext_resource type="Script" uid="uid://gxrfd04hun14" path="res://game/ball/abilities/ability_controller.gd" id="9_melhi"]
 [ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="10_orjm5"]
+[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/cues/ball_hit_audio_cue.tres" id="11_hit_audio"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
 radius = 24.0
@@ -18,6 +19,7 @@ radius = 24.0
 [node name="Ball" type="Node2D" unique_id=698706806]
 physics_interpolation_mode = 1
 script = ExtResource("1_6plaf")
+hit_audio_cue = ExtResource("11_hit_audio")
 
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
 script = ExtResource("3_biv8x")

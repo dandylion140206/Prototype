@@ -7,5 +7,5 @@
 script = ExtResource("1_audio_cue")
 stream = ExtResource("2_stream")
 bus = &"SFX"
-max_polyphony = 1
-initial_pitch = 1.0
+max_concurrent_playbacks = 1
+overflow_policy = 1

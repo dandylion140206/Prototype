@@ -1,7 +1,7 @@
 class_name CoinDropCollector
 extends Node
 
-signal coin_collected(world_position: Vector2)
+signal coin_collected(source_id: int, world_position: Vector2)
 
 @export var dropped_coin_scene: PackedScene
 
@@ -35,7 +35,10 @@ func drop_coin(drop_global_position: Vector2) -> void:
 
 	_active_coins.add_child(dropped_coin)
 	dropped_coin.global_position = drop_global_position
-	dropped_coin.collected.connect(_on_dropped_coin_collected, CONNECT_ONE_SHOT)
+	dropped_coin.collected.connect(
+		_on_dropped_coin_collected.bind(dropped_coin.get_instance_id()),
+		CONNECT_ONE_SHOT
+	)
 	dropped_coin.collect_to(_coin_stash.get_collect_global_position())
 
 
@@ -46,8 +49,8 @@ func get_active_coin_count() -> int:
 	return _active_coins.get_child_count()
 
 
-func _on_dropped_coin_collected() -> void:
+func _on_dropped_coin_collected(source_id: int) -> void:
 	var collect_position := _coin_stash.get_collect_global_position()
 	_coin_inventory.add_coin()
 	_coin_stash.play_collect_animation()
-	coin_collected.emit(collect_position)
+	coin_collected.emit(source_id, collect_position)
