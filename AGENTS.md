@@ -47,6 +47,7 @@ Godot Editorとの連携にはGodot AI MCPを使用する。公開ドメイン�
 - `input_map`
 - `node`
 - `project`
+- `resource`
 - `scene`
 - `testing`
 

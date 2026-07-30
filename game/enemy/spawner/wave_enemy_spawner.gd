@@ -31,11 +31,13 @@ func _ready() -> void:
 	_random.randomize()
 
 
-func setup(spawn_line: LineSegment2D) -> void:
+func setup(spawn_line: LineSegment2D, spawn_parent: Node) -> void:
 	assert(spawn_line != null, "spawn_line must not be null.")
+	assert(spawn_parent != null, "spawn_parent must not be null.")
 	assert(not _has_started, "WaveEnemySpawner.setup must only be called once.")
 
 	_spawn_line = spawn_line
+	set_spawn_parent(spawn_parent)
 	_has_started = true
 	_spawn_loop()
 
@@ -129,8 +131,8 @@ func _find_spawn_position(
 
 
 func _is_inside_viewport(local_position: Vector2) -> bool:
-	var global_position := _spawn_line.to_global(local_position)
-	var screen_position := get_viewport().get_canvas_transform() * global_position
+	var spawn_global_position := _spawn_line.to_global(local_position)
+	var screen_position := get_viewport().get_canvas_transform() * spawn_global_position
 
 	return get_viewport().get_visible_rect().has_point(screen_position)
 

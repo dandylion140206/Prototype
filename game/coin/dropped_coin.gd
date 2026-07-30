@@ -1,4 +1,4 @@
-class_name Coin
+class_name DroppedCoin
 extends Node2D
 
 signal collected

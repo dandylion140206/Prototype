@@ -1,19 +1,11 @@
-[gd_scene format=3 uid="uid://bk65yyetfv2o5"]
-
-[ext_resource type="Script" uid="uid://db1t00cvcax6m" path="res://game/coin/coin_system.gd" id="1_system"]
-[ext_resource type="Script" uid="uid://dp52iocrivtf0" path="res://game/coin/coin_box.gd" id="2_box"]
-[ext_resource type="PackedScene" uid="uid://wwhor3nk1ymr" path="res://game/coin/coin.tscn" id="3_coin"]
+[gd_scene format=3 uid="uid://bvjptc41qfniy"]
 
 [node name="CoinSystem" type="Node2D" unique_id=2097713411]
-script = ExtResource("1_system")
-coin_scene = ExtResource("3_coin")
 
 [node name="CoinBox" type="Node2D" parent="." unique_id=469965277]
 z_index = -1
 z_as_relative = false
 position = Vector2(0, 190)
-script = ExtResource("2_box")
-collect_scale = Vector2(1, 1.135)
 
 [node name="Coins" type="Node2D" parent="." unique_id=1868955402]
 

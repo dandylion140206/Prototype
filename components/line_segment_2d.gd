@@ -41,5 +41,14 @@ func get_closest_global_point(global_point: Vector2, outward_offset: float = 0.0
 	return to_global(local_point)
 
 
+func get_global_point_at_ratio(ratio: float, outward_offset: float = 0.0) -> Vector2:
+	var half_length := length * 0.5
+	var local_point := Vector2(
+		lerpf(-half_length, half_length, clampf(ratio, 0.0, 1.0)),
+		-outward_offset
+	)
+	return to_global(local_point)
+
+
 func has_global_point_crossed_outward(global_point: Vector2) -> bool:
 	return to_local(global_point).y <= 0.0

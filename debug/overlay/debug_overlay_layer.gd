@@ -3,7 +3,6 @@ extends CanvasLayer
 
 const MILLISECONDS_PER_SECOND := 1000.0
 
-@export var enemy_crowd_system: EnemyCrowdSystem
 @export_range(0.05, 3.0, 0.05) var update_interval: float = 0.10
 @export var toggle_keycode: Key = KEY_BACKSPACE
 

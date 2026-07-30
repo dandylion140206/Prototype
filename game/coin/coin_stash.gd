@@ -1,4 +1,4 @@
-class_name CoinBox
+class_name CoinStash
 extends Node2D
 
 const BORDER_WIDTH: float = 4.0
@@ -31,14 +31,8 @@ func _draw() -> void:
 	draw_colored_polygon(_create_ellipse_points(inner_radius), FILL_COLOR)
 
 
-func is_global_position_inside(global_position: Vector2) -> bool:
-	var local_position := to_local(global_position)
-	var radius := size * 0.5
-	return (
-		local_position.x * local_position.x / (radius.x * radius.x)
-		+ local_position.y * local_position.y / (radius.y * radius.y)
-		<= 1.0
-	)
+func get_collect_global_position() -> Vector2:
+	return global_position
 
 
 func play_collect_animation() -> void:
@@ -60,6 +54,7 @@ func _apply_scale() -> void:
 func _create_ellipse_points(radius: Vector2) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	points.resize(ELLIPSE_SEGMENT_COUNT)
+
 	for index in ELLIPSE_SEGMENT_COUNT:
 		var angle := TAU * float(index) / float(ELLIPSE_SEGMENT_COUNT)
 		points[index] = Vector2(cos(angle) * radius.x, sin(angle) * radius.y)

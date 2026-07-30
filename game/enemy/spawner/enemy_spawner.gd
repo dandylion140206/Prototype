@@ -7,9 +7,17 @@ signal enemy_spawned(enemy: Enemy)
 
 @export var enemy_scene: PackedScene
 
+var _spawn_parent: Node
+
 
 func _ready() -> void:
 	assert(enemy_scene != null, "enemy_scene must not be null.")
+
+
+func set_spawn_parent(spawn_parent: Node) -> void:
+	assert(spawn_parent != null, "spawn_parent must not be null.")
+
+	_spawn_parent = spawn_parent
 
 
 func _create_enemy(spawn_position: Vector2) -> Enemy:
@@ -18,10 +26,9 @@ func _create_enemy(spawn_position: Vector2) -> Enemy:
 		push_error("enemy_scene root must inherit Enemy.")
 		return null
 
-	var spawn_parent := get_parent()
-	assert(spawn_parent != null, "EnemySpawner must have a parent.")
+	assert(_spawn_parent != null, "set_spawn_parent must be called before spawning enemies.")
 
-	spawn_parent.add_child(enemy)
+	_spawn_parent.add_child(enemy)
 	enemy.global_position = spawn_position
 
 	# 物理補間の前フレーム位置を初期化し、原点からの補間を防ぐ。

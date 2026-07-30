@@ -1,149 +1,117 @@
 [gd_scene format=3 uid="uid://uiulovu4jc4r"]
 
-[ext_resource type="Script" uid="uid://b33kavqsjahjc" path="res://main/main.gd" id="1_ipbj0"]
-[ext_resource type="Shader" uid="uid://efcd8y1ki25f" path="res://components/background/checkboard_background.gdshader" id="2_bsumw"]
-[ext_resource type="Script" uid="uid://bp1kypbjxpikr" path="res://debug/debug_controller.gd" id="2_ipbj0"]
-[ext_resource type="PackedScene" uid="uid://cg1ug3ry6a5x1" path="res://game/cursor/cursor.tscn" id="3_c2dye"]
-[ext_resource type="Script" uid="uid://brlgnkqw8xfsb" path="res://components/background/checkerboard_background.gd" id="3_fwcvl"]
-[ext_resource type="Script" uid="uid://02fcye2pf3k3" path="res://main/input_controller.gd" id="3_grrlh"]
-[ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="4_n6juq"]
-[ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="5_enemy"]
-[ext_resource type="Script" uid="uid://ll5a4q0xuts5" path="res://game/enemy/spawner/wave_enemy_spawner.gd" id="7_q0sk7"]
-[ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_67ri8"]
-[ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_grrlh"]
-[ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://game/enemy/crowd/enemy_crowd_system.tscn" id="9_n3o0a"]
-[ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_temp/画像/0040997d99e7fc8ecebb4518ae97c9e9.png" id="10_s758e"]
-[ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="13_n3o0a"]
-[ext_resource type="Script" uid="uid://blw028u5wmg2t" path="res://debug/overlay/debug_overlay_layer.gd" id="16_n3o0a"]
-[ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="17_health_bars"]
-[ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="17_s758e"]
-[ext_resource type="Script" uid="uid://bg2fefmnl0lai" path="res://debug/overlay/enemy_overlay_panel.gd" id="18_4hmqs"]
-[ext_resource type="Script" uid="uid://dvoqtu1nlwsvi" path="res://game/audio/audio_manager.gd" id="19_audio_manager"]
-[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/hit_audio_cue.tres" id="20_hit_audio_cue"]
-[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/enemy_death_audio_cue.tres" id="21_enemy_death_audio_cue"]
-[ext_resource type="PackedScene" uid="uid://bk65yyetfv2o5" path="res://game/coin/coin_system.tscn" id="22_coin_system"]
-[ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/coin_collect_audio_cue.tres" id="23_coin_collect_audio_cue"]
-[ext_resource type="Script" uid="uid://vewqex7phvm" path="res://game/coin/coin_raid_system.gd" id="24_oagth"]
-[ext_resource type="PackedScene" uid="uid://wwhor3nk1ymr" path="res://game/coin/coin.tscn" id="25_coin"]
-[ext_resource type="Script" uid="uid://cvf6n7mc5wtu3" path="res://game/enemy/line_segment_2d.gd" id="26_line_segment"]
+[ext_resource type="Script" uid="uid://b33kavqsjahjc" path="res://main/main.gd" id="1_main"]
+[ext_resource type="Shader" uid="uid://efcd8y1ki25f" path="res://components/background/checkboard_background.gdshader" id="2_background_shader"]
+[ext_resource type="Script" uid="uid://bp1kypbjxpikr" path="res://debug/debug_controller.gd" id="3_debug_controller"]
+[ext_resource type="PackedScene" uid="uid://cg1ug3ry6a5x1" path="res://game/cursor/cursor.tscn" id="4_cursor"]
+[ext_resource type="Script" uid="uid://brlgnkqw8xfsb" path="res://components/background/checkerboard_background.gd" id="5_background"]
+[ext_resource type="Script" uid="uid://02fcye2pf3k3" path="res://main/input_controller.gd" id="6_input"]
+[ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="7_ball"]
+[ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_camera_shake"]
+[ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_impact_shake"]
+[ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="11_post_processing"]
+[ext_resource type="Script" uid="uid://blw028u5wmg2t" path="res://debug/overlay/debug_overlay_layer.gd" id="12_debug_overlay"]
+[ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="13_health_bars"]
+[ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="14_performance"]
+[ext_resource type="Script" uid="uid://bg2fefmnl0lai" path="res://debug/overlay/enemy_overlay_panel.gd" id="15_enemy_overlay"]
+[ext_resource type="Script" uid="uid://dvoqtu1nlwsvi" path="res://game/audio/audio_manager.gd" id="16_audio"]
+[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/hit_audio_cue.tres" id="17_hit_audio"]
+[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/enemy_death_audio_cue.tres" id="18_death_audio"]
+[ext_resource type="Resource" uid="uid://bxl5droj7wc1v" path="res://game/audio/coin_collect_audio_cue.tres" id="19_coin_audio"]
+[ext_resource type="PackedScene" uid="uid://bk65yyetfv2o5" path="res://game/coin/coin_raid_route.tscn" id="20_route"]
+[ext_resource type="PackedScene" path="res://game/coin/coin_hud.tscn" id="21_hud"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_na0o7"]
-shader = ExtResource("2_bsumw")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
+shader = ExtResource("2_background_shader")
 shader_parameter/dark_color = Color(0.26075834, 0.2581, 0.29, 1)
 shader_parameter/light_color = Color(0.31149998, 0.31149998, 0.35, 1)
 shader_parameter/cell_size = 84.0
 shader_parameter/edge_softness = 4.0000000596048
 shader_parameter/pattern_center = Vector2(960, 540)
 
-[node name="Main" type="Node2D" unique_id=764362608]
+[node name="Main" type="Node2D" unique_id=1805564427]
 physics_interpolation_mode = 2
-script = ExtResource("1_ipbj0")
+script = ExtResource("1_main")
 
-[node name="CheckerboardBackground" type="ColorRect" parent="." unique_id=1515908873]
-material = SubResource("ShaderMaterial_na0o7")
-script = ExtResource("3_fwcvl")
+[node name="Background" type="Node2D" parent="." unique_id=445570339]
 
-[node name="DebugController" type="Node" parent="." unique_id=486050992]
-script = ExtResource("2_ipbj0")
+[node name="Checkerboard" type="ColorRect" parent="Background" unique_id=1401685006]
+material = SubResource("ShaderMaterial_background")
+script = ExtResource("5_background")
 
-[node name="InputController" type="Node" parent="." unique_id=953981804]
-script = ExtResource("3_grrlh")
+[node name="Controllers" type="Node" parent="." unique_id=136607892]
 
-[node name="AudioManager" type="Node" parent="." unique_id=495623010]
-script = ExtResource("19_audio_manager")
-hit_audio_cue = ExtResource("20_hit_audio_cue")
-enemy_death_audio_cue = ExtResource("21_enemy_death_audio_cue")
-coin_collect_audio_cue = ExtResource("23_coin_collect_audio_cue")
+[node name="InputController" type="Node" parent="Controllers" unique_id=392958950]
+script = ExtResource("6_input")
 
-[node name="テスト画像" type="Sprite2D" parent="." unique_id=815715909]
-visible = false
-texture = ExtResource("10_s758e")
+[node name="DebugController" type="Node" parent="Controllers" unique_id=288400710]
+script = ExtResource("3_debug_controller")
 
-[node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
-physics_interpolation_mode = 1
-y_sort_enabled = true
-script = ExtResource("7_q0sk7")
-min_wave_size = 4
-max_wave_size = 8
-min_wave_interval = 1.0
-max_wave_interval = 2.0
-enemy_spawn_interval = 0.18
-cluster_radius = 207.0
-minimum_spawn_distance = 36.0
-enemy_scene = ExtResource("5_enemy")
+[node name="Gameplay" type="Node2D" parent="." unique_id=296001802]
 
-[node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
-
-[node name="SpawnLine" type="Node2D" parent="." unique_id=963365169]
-position = Vector2(0, -750)
-script = ExtResource("26_line_segment")
-
-[node name="CoinSystem" parent="." unique_id=948957681 instance=ExtResource("22_coin_system")]
-z_index = 5
-
-[node name="CoinRaidSystem" type="Node" parent="." unique_id=828599585]
-script = ExtResource("24_oagth")
-carried_coin_scene = ExtResource("25_coin")
-carry_mass_multiplier = 1.5
-
-[node name="ExitLine" type="Node2D" parent="." unique_id=1011538893]
-position = Vector2(0, -1050)
-script = ExtResource("26_line_segment")
-editor_color = Color(1, 0.3, 0.3, 0.9)
-
-[node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
+[node name="Ball" parent="Gameplay" unique_id=642332224 instance=ExtResource("7_ball")]
 z_index = 20
 
-[node name="Cursor" parent="." unique_id=413606096 instance=ExtResource("3_c2dye")]
+[node name="Cursor" parent="Gameplay" unique_id=779617368 instance=ExtResource("4_cursor")]
 z_index = 10
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1383456107]
-position = Vector2(0, -350)
+[node name="CoinRaidRoute" parent="Gameplay" unique_id=616091221 instance=ExtResource("20_route")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1879744289]
 ignore_rotation = false
 
-[node name="CameraShake" type="Node" parent="Camera2D" unique_id=996526789]
+[node name="CameraShake" type="Node" parent="Camera2D" unique_id=1000702155]
 unique_name_in_owner = true
-script = ExtResource("8_67ri8")
+script = ExtResource("8_camera_shake")
 max_offset = Vector2(14, 8)
 noise_speed = 20.0
 
-[node name="ImpactCameraShake" type="Node" parent="Camera2D/CameraShake" unique_id=1642740481]
+[node name="ImpactCameraShake" type="Node" parent="Camera2D/CameraShake" unique_id=1987971078]
 unique_name_in_owner = true
-script = ExtResource("9_grrlh")
+script = ExtResource("9_impact_shake")
 min_shake_speed = 0.0
 max_shake_speed = 6000.0
 trauma_at_max_speed = 0.8
 
-[node name="PostProcessing" parent="." unique_id=91190207 instance=ExtResource("13_n3o0a")]
+[node name="AudioManager" type="Node" parent="." unique_id=1930811320]
+script = ExtResource("16_audio")
+hit_audio_cue = ExtResource("17_hit_audio")
+enemy_death_audio_cue = ExtResource("18_death_audio")
+coin_collect_audio_cue = ExtResource("19_coin_audio")
 
-[node name="WorldUI" type="CanvasLayer" parent="." unique_id=304478551]
+[node name="PostProcessing" parent="." unique_id=796068853 instance=ExtResource("11_post_processing")]
+
+[node name="WorldUI" type="CanvasLayer" parent="." unique_id=1071136939]
 layer = 100
 follow_viewport_enabled = true
 
-[node name="EnemyHealthBarLayer" type="Node2D" parent="WorldUI" unique_id=1874207393]
+[node name="EnemyHealthBarLayer" type="Node2D" parent="WorldUI" unique_id=1381340847]
 unique_name_in_owner = true
-script = ExtResource("17_health_bars")
+script = ExtResource("13_health_bars")
 
-[node name="DebugOverlay" type="CanvasLayer" parent="." unique_id=21771265]
+[node name="ScreenUI" type="CanvasLayer" parent="." unique_id=1913113075]
+layer = 200
+
+[node name="CoinHUD" parent="ScreenUI" unique_id=174563261 instance=ExtResource("21_hud")]
+
+[node name="DebugOverlay" type="CanvasLayer" parent="." unique_id=715406694]
 layer = 250
-script = ExtResource("16_n3o0a")
+script = ExtResource("12_debug_overlay")
 
-[node name="PanelContainer" type="VBoxContainer" parent="DebugOverlay" unique_id=940181128]
+[node name="PanelContainer" type="VBoxContainer" parent="DebugOverlay" unique_id=2001437609]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Background" type="ColorRect" parent="DebugOverlay/PanelContainer" unique_id=2131034917]
+[node name="Background" type="ColorRect" parent="DebugOverlay/PanelContainer" unique_id=1934022682]
 layout_mode = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="PerformanceOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=770936730]
+[node name="PerformanceOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=1796046518]
 layout_mode = 2
-script = ExtResource("17_s758e")
-metadata/_custom_type_script = "uid://dh7s5qmqhmn7v"
+script = ExtResource("14_performance")
 
-[node name="EnemyOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=506056999 node_paths=PackedStringArray("enemy_crowd_system")]
+[node name="EnemyOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=1579082167 node_paths=PackedStringArray("coin_raid_route")]
 layout_mode = 2
-script = ExtResource("18_4hmqs")
-enemy_crowd_system = NodePath("../../../EnemyCrowdSystem")
-metadata/_custom_type_script = "uid://bg2fefmnl0lai"
+script = ExtResource("15_enemy_overlay")
+coin_raid_route = NodePath("../../../Gameplay/CoinRaidRoute")
