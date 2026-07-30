@@ -2,30 +2,56 @@ extends Node2D
 
 @onready var _input_controller: InputController = $Controllers/InputController
 @onready var _ball: Ball = $Gameplay/Ball
-@onready var _coin_raid_route: CoinRaidRoute = $Gameplay/CoinRaidRoute
+@onready var _combo_radial_ability: ComboRadialAbility = $Gameplay/ComboRadialAbility
+@onready var _combo_label: Label = %ComboLabel
+@onready var _wandering_enemy_system: WanderingEnemySystem = (
+	$Gameplay/WanderingEnemySystem
+)
 @onready var _audio_director: AudioDirector = $AudioDirector
 @onready var _camera: Camera2D = $Camera2D
 @onready var _camera_shake: CameraShake = %CameraShake
 @onready var _impact_camera_shake: ImpactCameraShake = %ImpactCameraShake
 @onready var _enemy_health_bar_layer: EnemyHealthBarLayer = %EnemyHealthBarLayer
-@onready var _coin_hud: CoinHUD = $ScreenUI/CoinHUD
 
 
 func _ready() -> void:
 	_camera_shake.setup(_camera)
 	_impact_camera_shake.setup(_camera_shake)
-	_ball.hit_landed.connect(_impact_camera_shake.apply_hit)
+	_combo_radial_ability.combo_changed.connect(_on_combo_changed)
+	_combo_radial_ability.activated.connect(_on_radial_ability_activated)
+	_combo_radial_ability.audio_requested.connect(_audio_director.request)
+	_combo_radial_ability.setup(_ball)
+	_ball.hit_landed.connect(_on_ball_hit_landed)
 	_ball.audio_requested.connect(_audio_director.request)
 	_input_controller.active_ability_requested.connect(_ball.request_ability_activation)
-	_coin_raid_route.enemy_spawned.connect(_enemy_health_bar_layer.add_enemy)
-	_coin_raid_route.audio_requested.connect(_audio_director.request)
-	_coin_raid_route.coin_count_changed.connect(_coin_hud.set_coin_count)
-	_coin_hud.setup(_coin_raid_route.get_coin_count())
+	_input_controller.secondary_ability_requested.connect(_combo_radial_ability.try_activate)
+	_wandering_enemy_system.enemy_spawned.connect(_enemy_health_bar_layer.add_enemy)
+	_wandering_enemy_system.audio_requested.connect(_audio_director.request)
 
 	var mouse_position := get_global_mouse_position()
 	_ball.global_position = mouse_position
 	_ball.set_target_position(mouse_position)
 
 
+func _process(_delta: float) -> void:
+	_combo_label.global_position = (
+		_ball.get_interpolated_global_position()
+		+ Vector2(-68.0, -82.0)
+	)
+
+
 func _physics_process(_delta: float) -> void:
 	_ball.set_target_position(get_global_mouse_position())
+
+
+func _on_ball_hit_landed(hit_data: HitData) -> void:
+	_combo_radial_ability.register_ball_hit(hit_data)
+	_impact_camera_shake.apply_hit(hit_data)
+
+
+func _on_radial_ability_activated(impact_data: HitData) -> void:
+	_impact_camera_shake.apply_hit(impact_data)
+
+
+func _on_combo_changed(combo_count: int) -> void:
+	_combo_label.text = "COMBO %d" % combo_count
