@@ -1,10 +1,7 @@
-class_name ComboRadialAbility
-extends Node2D
+class_name Shockwave
+extends Ability
 
-signal activated(impact_data: HitData)
 signal hit_landed(hit_data: HitData)
-signal combo_changed(combo_count: int)
-signal audio_requested(request: AudioRequest)
 
 @export_group("Combo")
 @export_range(0.0, 5.0, 0.01) var combo_timeout: float = 0.3
@@ -22,11 +19,11 @@ signal audio_requested(request: AudioRequest)
 @export_range(1, 512, 1) var max_query_results: int = 256
 
 @export_group("Audio")
-@export var radial_activation_audio_cue: AudioCue
-@export var radial_hit_audio_cue: AudioCue
-@export var combo_hit_audio_cue: AudioCue
+@export var shockwave_activation_audio_cue: AudioCue
+@export var shockwave_hit_audio_cue: AudioCue
+@export var shockwave_combo_hit_audio_cue: AudioCue
 
-var _attack_source: Node2D
+var _ball: Ball
 var _combo_count: int = 0
 var _last_combo_hit_time: float = -INF
 var _last_combo_physics_frame: int = -1
@@ -38,7 +35,7 @@ var _attack_elapsed_time: float = 0.0
 var _hit_hurtbox_ids: Dictionary[int, bool] = {}
 
 @onready var _cooldown_timer: Timer = $CooldownTimer
-@onready var _visual: RadialAttackVisual = $RadialAttackVisual
+@onready var _visual: ShockwaveVisual = $ShockwaveVisual
 
 
 func _ready() -> void:
@@ -72,11 +69,14 @@ func _physics_process(delta: float) -> void:
 		_finish_attack()
 
 
-func setup(attack_source: Node2D) -> void:
-	assert(attack_source != null, "attack_source must not be null.")
-	assert(radial_activation_audio_cue != null, "radial_activation_audio_cue must not be null.")
-	assert(radial_hit_audio_cue != null, "radial_hit_audio_cue must not be null.")
-	assert(combo_hit_audio_cue != null, "combo_hit_audio_cue must not be null.")
+func setup(context: AbilityContext) -> void:
+	assert(context != null, "context must not be null.")
+
+	var ball := context.body as Ball
+	assert(ball != null, "AbilityContext.body must be a Ball.")
+	assert(shockwave_activation_audio_cue != null, "shockwave_activation_audio_cue must not be null.")
+	assert(shockwave_hit_audio_cue != null, "shockwave_hit_audio_cue must not be null.")
+	assert(shockwave_combo_hit_audio_cue != null, "shockwave_combo_hit_audio_cue must not be null.")
 	assert(combo_timeout >= 0.0, "combo_timeout must not be negative.")
 	assert(max_combo > 0, "max_combo must be positive.")
 	assert(base_radius >= 0.0, "base_radius must not be negative.")
@@ -88,12 +88,21 @@ func setup(attack_source: Node2D) -> void:
 	assert(cooldown >= 0.0, "cooldown must not be negative.")
 	assert(max_query_results > 0, "max_query_results must be positive.")
 
-	_attack_source = attack_source
-	combo_changed.emit(_combo_count)
+	_ball = ball
+	_ball.hit_landed.connect(_on_ball_hit_landed)
 
 
-func register_ball_hit(hit_data: HitData) -> void:
-	assert(_attack_source != null, "ComboRadialAbility must be setup before registering hits.")
+func teardown() -> void:
+	if _ball != null and _ball.hit_landed.is_connected(_on_ball_hit_landed):
+		_ball.hit_landed.disconnect(_on_ball_hit_landed)
+
+	_cooldown_timer.stop()
+	_finish_attack()
+	_ball = null
+
+
+func _on_ball_hit_landed(hit_data: HitData) -> void:
+	assert(_ball != null, "Shockwave must be setup before registering hits.")
 	assert(hit_data != null, "hit_data must not be null.")
 
 	var physics_frame := Engine.get_physics_frames()
@@ -110,10 +119,9 @@ func register_ball_hit(hit_data: HitData) -> void:
 	var next_combo := mini(_combo_count + 1, max_combo)
 	if next_combo != _combo_count:
 		_combo_count = next_combo
-		combo_changed.emit(_combo_count)
 
 	var audio_request := AudioRequest.new(
-		combo_hit_audio_cue,
+		shockwave_combo_hit_audio_cue,
 		hit_data.impact_position,
 		hit_data.attack_source_id,
 		maxi(_combo_count - 1, 0)
@@ -122,14 +130,14 @@ func register_ball_hit(hit_data: HitData) -> void:
 
 
 func try_activate() -> bool:
-	assert(_attack_source != null, "ComboRadialAbility must be setup before try_activate().")
+	assert(_ball != null, "Shockwave must be setup before try_activate().")
 
 	if _is_attack_active or not _cooldown_timer.is_stopped():
 		return false
 
 	var consumed_combo := _get_active_combo()
 	_start_attack(
-		_attack_source.global_position,
+		_ball.global_position,
 		base_radius + radius_per_combo * consumed_combo,
 		base_damage + damage_per_combo * consumed_combo
 	)
@@ -148,7 +156,7 @@ func try_activate() -> bool:
 	activated.emit(activation_data)
 
 	var audio_request := AudioRequest.new(
-		radial_activation_audio_cue,
+		shockwave_activation_audio_cue,
 		_attack_position,
 		get_instance_id()
 	)
@@ -218,7 +226,7 @@ func _apply_hits_at_radius(current_radius: float) -> void:
 		if hurtbox.receive_hit(hit_data):
 			hit_landed.emit(hit_data)
 			var audio_request := AudioRequest.new(
-				radial_hit_audio_cue,
+				shockwave_hit_audio_cue,
 				hurtbox.global_position,
 				hit_data.attack_source_id
 			)
@@ -242,7 +250,6 @@ func _reset_combo() -> void:
 	_combo_count = 0
 	_last_combo_hit_time = -INF
 	_last_combo_physics_frame = -1
-	combo_changed.emit(_combo_count)
 
 
 func _get_current_time() -> float:

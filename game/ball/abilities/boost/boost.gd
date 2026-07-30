@@ -46,7 +46,7 @@ func try_activate() -> bool:
 		_cooldown_timer.start(cooldown)
 
 	_boost_trail.play_boost_trail()
-	activated.emit()
+	activated.emit(null)
 
 	var audio_request := AudioRequest.new(
 		activation_audio_cue,

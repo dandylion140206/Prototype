@@ -1,9 +1,9 @@
 @abstract
 class_name Ability
-extends Node
+extends Node2D
 
 @warning_ignore("unused_signal")
-signal activated
+signal activated(activation_data: Variant)
 @warning_ignore("unused_signal")
 signal audio_requested(request: AudioRequest)
 

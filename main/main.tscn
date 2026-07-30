@@ -18,11 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://game/enemy/crowd/enemy_crowd_system.tscn" id="15_crowd"]
 [ext_resource type="Script" uid="uid://biifx44042o10" path="res://debug/overlay/enemy_overlay_panel.gd" id="16_enemy_overlay"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="20_health_bars"]
-[ext_resource type="Script" uid="uid://dyxck3y30t273" path="res://game/ball/abilities/combo/combo_radial_ability.gd" id="21_radial_ability"]
-[ext_resource type="Script" uid="uid://mahj6c2wdt5s" path="res://game/ball/abilities/combo/radial_attack_visual.gd" id="22_radial_visual"]
-[ext_resource type="Resource" path="res://game/audio/cues/radial_activation_audio_cue.tres" id="23_activation_audio"]
-[ext_resource type="Resource" uid="uid://cifjcnh3bsrdq" path="res://game/audio/cues/radial_hit_audio_cue.tres" id="24_radial_hit_audio"]
-[ext_resource type="Resource" uid="uid://d14fhkr6y2ogs" path="res://game/audio/cues/combo_hit_audio_cue.tres" id="25_combo_hit_audio"]
 [ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/cues/enemy_death_audio_cue.tres" id="26_death_audio"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
@@ -55,24 +50,6 @@ script = ExtResource("3_debug_controller")
 
 [node name="Ball" parent="Gameplay" unique_id=1105125244 instance=ExtResource("7_ball")]
 z_index = 20
-
-[node name="ComboRadialAbility" type="Node2D" parent="Gameplay" unique_id=2097365178]
-z_index = 30
-script = ExtResource("21_radial_ability")
-combo_timeout = 0.4
-max_combo = 15
-base_radius = 60.0
-radius_per_combo = 20.0
-damage_per_combo = 3.0
-radial_activation_audio_cue = ExtResource("23_activation_audio")
-radial_hit_audio_cue = ExtResource("24_radial_hit_audio")
-combo_hit_audio_cue = ExtResource("25_combo_hit_audio")
-
-[node name="CooldownTimer" type="Timer" parent="Gameplay/ComboRadialAbility" unique_id=347530723]
-one_shot = true
-
-[node name="RadialAttackVisual" type="Node2D" parent="Gameplay/ComboRadialAbility" unique_id=1013423239]
-script = ExtResource("22_radial_visual")
 
 [node name="Cursor" parent="Gameplay" unique_id=1314549472 instance=ExtResource("4_cursor")]
 z_index = 10
@@ -112,17 +89,6 @@ trauma_at_max_speed = 0.8
 [node name="WorldUI" type="CanvasLayer" parent="." unique_id=1538871617]
 layer = 100
 follow_viewport_enabled = true
-
-[node name="ComboLabel" type="Label" parent="WorldUI" unique_id=1399791726]
-unique_name_in_owner = true
-offset_right = 136.0
-offset_bottom = 32.0
-theme_override_colors/font_color = Color(0.65, 0.95, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
-theme_override_constants/shadow_offset_x = 2
-theme_override_constants/shadow_offset_y = 2
-theme_override_font_sizes/font_size = 24
-horizontal_alignment = 1
 
 [node name="EnemyHealthBarLayer" type="Node2D" parent="WorldUI" unique_id=1113178300]
 unique_name_in_owner = true

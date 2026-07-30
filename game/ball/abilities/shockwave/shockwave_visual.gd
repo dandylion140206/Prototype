@@ -1,4 +1,4 @@
-class_name RadialAttackVisual
+class_name ShockwaveVisual
 extends Node2D
 
 @export var fill_color: Color = Color(0.35, 0.8, 1.0, 0.18)

@@ -15,7 +15,7 @@ enum AggregationMode {
 @export_group("Audio")
 @export var stream: AudioStream
 @export var bus: StringName = &"SFX"
-@export_range(-40.0, 24.0, 0.1) var volume_db: float = 0.0
+@export_range(-16.0, 16.0, 0.1) var volume_db: float = 0.0
 
 @export_group("Pitch")
 @export_range(0.01, 3.0, 0.01) var base_pitch: float = 1.0

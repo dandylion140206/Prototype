@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ball/abilities/shockwave/shockwave.gd" id="1_ability"]
+[ext_resource type="Script" path="res://game/ball/abilities/shockwave/shockwave_visual.gd" id="2_visual"]
+[ext_resource type="Resource" path="res://game/audio/cues/shockwave_activation_audio_cue.tres" id="3_activation_audio"]
+[ext_resource type="Resource" path="res://game/audio/cues/shockwave_hit_audio_cue.tres" id="4_hit_audio"]
+[ext_resource type="Resource" path="res://game/audio/cues/shockwave_combo_hit_audio_cue.tres" id="5_combo_hit_audio"]
+
+[node name="Shockwave" type="Node2D"]
+z_index = 30
+top_level = true
+script = ExtResource("1_ability")
+combo_timeout = 0.4
+max_combo = 15
+base_radius = 60.0
+radius_per_combo = 20.0
+damage_per_combo = 3.0
+shockwave_activation_audio_cue = ExtResource("3_activation_audio")
+shockwave_hit_audio_cue = ExtResource("4_hit_audio")
+shockwave_combo_hit_audio_cue = ExtResource("5_combo_hit_audio")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ShockwaveVisual" type="Node2D" parent="."]
+script = ExtResource("2_visual")

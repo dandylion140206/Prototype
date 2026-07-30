@@ -3,6 +3,7 @@ extends Node2D
 
 signal hit_landed(hit_data: HitData)
 signal audio_requested(request: AudioRequest)
+signal shockwave_activated(impact_data: HitData)
 
 @export_range(0.9, 1.0, 0.001) var hit_speed_multiplier: float = 0.985
 
@@ -34,6 +35,7 @@ func _ready() -> void:
 	)
 
 	_ability_controller.setup(ability_context)
+	_setup_shockwave_ability()
 	_target_position = global_position
 
 
@@ -71,8 +73,12 @@ func get_interpolated_global_position() -> Vector2:
 	return _physics_position_interpolator.get_interpolated_global_position()
 
 
-func request_ability_activation() -> bool:
-	return _ability_controller.try_activate()
+func request_primary_ability_activation() -> bool:
+	return _ability_controller.try_activate_primary()
+
+
+func request_secondary_ability_activation() -> bool:
+	return _ability_controller.try_activate_secondary()
 
 
 func _handle_landed_hits(landed_hits: Array[HitData]) -> void:
@@ -103,3 +109,15 @@ func _start_attacker_hit_stop(hit_data_list: Array[HitData]) -> void:
 
 func _on_ability_audio_requested(audio_request: AudioRequest) -> void:
 	audio_requested.emit(audio_request)
+
+
+func _setup_shockwave_ability() -> void:
+	var shockwave := _ability_controller.get_secondary_ability() as Shockwave
+	if shockwave == null:
+		return
+
+	shockwave.activated.connect(_on_shockwave_activated)
+
+
+func _on_shockwave_activated(impact_data: HitData) -> void:
+	shockwave_activated.emit(impact_data)
