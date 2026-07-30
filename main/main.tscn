@@ -60,14 +60,23 @@ visible = false
 texture = ExtResource("10_s758e")
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=713743795]
+physics_interpolation_mode = 1
 y_sort_enabled = true
 script = ExtResource("7_q0sk7")
+min_wave_size = 4
+max_wave_size = 8
 min_wave_interval = 1.0
-max_wave_interval = 1.7
+max_wave_interval = 2.0
 enemy_spawn_interval = 0.18
+cluster_radius = 207.0
+minimum_spawn_distance = 36.0
 enemy_scene = ExtResource("5_enemy")
 
 [node name="EnemyCrowdSystem" parent="." unique_id=1572037012 instance=ExtResource("9_n3o0a")]
+
+[node name="SpawnLine" type="Node2D" parent="." unique_id=963365169]
+position = Vector2(0, -750)
+script = ExtResource("26_line_segment")
 
 [node name="CoinSystem" parent="." unique_id=948957681 instance=ExtResource("22_coin_system")]
 z_index = 5
@@ -75,6 +84,12 @@ z_index = 5
 [node name="CoinRaidSystem" type="Node" parent="." unique_id=828599585]
 script = ExtResource("24_oagth")
 carried_coin_scene = ExtResource("25_coin")
+carry_mass_multiplier = 1.5
+
+[node name="ExitLine" type="Node2D" parent="." unique_id=1011538893]
+position = Vector2(0, -1050)
+script = ExtResource("26_line_segment")
+editor_color = Color(1, 0.3, 0.3, 0.9)
 
 [node name="Ball" parent="." unique_id=698706806 instance=ExtResource("4_n6juq")]
 z_index = 20
@@ -85,24 +100,6 @@ z_index = 10
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1383456107]
 position = Vector2(0, -350)
 ignore_rotation = false
-
-[node name="SpawnLine" type="Node2D" parent="Camera2D" unique_id=963365169]
-position = Vector2(0, -400)
-script = ExtResource("26_line_segment")
-
-[node name="LeftExitLine" type="Node2D" parent="Camera2D" unique_id=1011538893]
-position = Vector2(-1020, 0)
-rotation = -1.5707963267949
-script = ExtResource("26_line_segment")
-length = 1080.0
-editor_color = Color(1, 0.3, 0.3, 0.9)
-
-[node name="RightExitLine" type="Node2D" parent="Camera2D"]
-position = Vector2(1020, 0)
-rotation = 1.5707963267949
-script = ExtResource("26_line_segment")
-length = 1080.0
-editor_color = Color(1, 0.3, 0.3, 0.9)
 
 [node name="CameraShake" type="Node" parent="Camera2D" unique_id=996526789]
 unique_name_in_owner = true

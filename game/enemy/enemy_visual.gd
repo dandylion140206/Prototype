@@ -6,6 +6,15 @@ extends Node2D
 @export var low_health_color: Color = Color(1.0, 0.3, 0.3, 1.0)
 
 var _health_ratio: float = 1.0
+var _base_scale: Vector2 = Vector2.ONE
+var _spawn_scale: Vector2 = Vector2.ONE
+var _hit_scale: float = 1.0
+var _is_hit_scale_active: bool = false
+
+
+func _ready() -> void:
+	_base_scale = scale
+	_apply_scale()
 
 
 func _draw() -> void:
@@ -21,3 +30,32 @@ func update_health(current_health: float, max_health: float) -> void:
 		_health_ratio = clampf(current_health / max_health, 0.0, 1.0)
 
 	queue_redraw()
+
+
+func set_spawn_scale(scale_value: Vector2) -> void:
+	_spawn_scale = scale_value
+	_apply_scale()
+
+
+func start_hit_scale() -> void:
+	_is_hit_scale_active = true
+	_apply_scale()
+
+
+func set_hit_scale(scale_value: float) -> void:
+	_hit_scale = scale_value
+	_apply_scale()
+
+
+func finish_hit_scale() -> void:
+	_is_hit_scale_active = false
+	_hit_scale = 1.0
+	_apply_scale()
+
+
+func _apply_scale() -> void:
+	if _is_hit_scale_active:
+		scale = _base_scale * _hit_scale
+		return
+
+	scale = _base_scale * _spawn_scale

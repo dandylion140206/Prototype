@@ -1,6 +1,8 @@
 class_name HitScaleReaction
 extends Node
 
+signal reaction_started
+signal reaction_finished
 enum ReactionMode {
 	SPRING,
 	TWEEN,
@@ -19,6 +21,8 @@ enum ReactionMode {
 @export_range(1, 32, 1) var spring_max_substeps: int = 8
 @export_range(0.001, 1.0, 0.001, "suffix:s") var spring_max_frame_delta: float = 0.067
 @export_range(0.0, 100.0, 0.1) var spring_max_scale_velocity: float = 20.0
+@export_range(0.0001, 0.1, 0.0001) var spring_settle_distance: float = 0.001
+@export_range(0.001, 1.0, 0.001) var spring_settle_velocity: float = 0.01
 
 @export_group("Tween", "tween_")
 @export_range(0.01, 1.0, 0.01, "suffix:s") var tween_duration: float = 0.2
@@ -26,10 +30,12 @@ enum ReactionMode {
 @export var tween_ease: Tween.EaseType = Tween.EASE_OUT
 
 var _target: Node2D
+var _scale_applier: Callable
 var _base_scale: Vector2 = Vector2.ONE
 var _scale_value: float = 1.0
 var _scale_velocity: float = 0.0
 var _scale_tween: Tween
+var _is_reacting: bool = false
 
 
 func _process(delta: float) -> void:
@@ -51,16 +57,22 @@ func _process(delta: float) -> void:
 		remaining_time -= step
 		substep_count += 1
 
-	_target.scale = _base_scale * _scale_value
+	_apply_scale()
+	if _has_settled():
+		_set_scale_value(1.0)
+		_scale_velocity = 0.0
+		_finish_reaction()
 
 
-func setup(target: Node2D) -> void:
+func setup(target: Node2D, scale_applier: Callable = Callable()) -> void:
 	assert(target != null, "target must not be null.")
 
 	_target = target
+	_scale_applier = scale_applier
 	_base_scale = target.scale
 	_scale_value = 1.0
 	_scale_velocity = 0.0
+	_is_reacting = false
 
 
 func play() -> void:
@@ -73,19 +85,15 @@ func play() -> void:
 		_scale_tween.kill()
 
 	_scale_value = clampf(_scale_value + scale_pull, min_scale_value, max_scale_value)
+	_start_reaction()
+	_apply_scale()
 
 	if reaction_mode == ReactionMode.SPRING:
 		return
 
 	_scale_velocity = 0.0
-	_target.scale = _base_scale * _scale_value
 	_scale_tween = create_tween()
-	_scale_tween.tween_property(
-		_target,
-		"scale",
-		_base_scale,
-		tween_duration
-	).set_trans(tween_transition).set_ease(tween_ease)
+	_scale_tween.tween_method(_set_scale_value, _scale_value, 1.0, tween_duration).set_trans(tween_transition).set_ease(tween_ease)
 	_scale_tween.tween_callback(_finish_tween_reaction)
 
 
@@ -102,8 +110,43 @@ func _update_spring(delta: float) -> void:
 
 func _finish_tween_reaction() -> void:
 	_scale_tween = null
-	_scale_value = 1.0
+	_set_scale_value(1.0)
 	_scale_velocity = 0.0
+	_finish_reaction()
+
+
+func _start_reaction() -> void:
+	if _is_reacting:
+		return
+
+	_is_reacting = true
+	reaction_started.emit()
+
+
+func _finish_reaction() -> void:
+	if not _is_reacting:
+		return
+
+	_is_reacting = false
+	reaction_finished.emit()
+
+
+func _has_settled() -> bool:
+	return absf(_scale_value - 1.0) <= spring_settle_distance \
+		and absf(_scale_velocity) <= spring_settle_velocity
+
+
+func _set_scale_value(scale_value: float) -> void:
+	_scale_value = scale_value
+	_apply_scale()
+
+
+func _apply_scale() -> void:
+	if _scale_applier.is_valid():
+		_scale_applier.call(_scale_value)
+		return
+
+	_target.scale = _base_scale * _scale_value
 
 
 func _reset() -> void:
@@ -113,5 +156,5 @@ func _reset() -> void:
 
 	_scale_value = 1.0
 	_scale_velocity = 0.0
-	if _target != null and is_instance_valid(_target):
-		_target.scale = _base_scale
+	_apply_scale()
+	_finish_reaction()

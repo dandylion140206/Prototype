@@ -13,7 +13,7 @@ z_index = -1
 z_as_relative = false
 position = Vector2(0, 190)
 script = ExtResource("2_box")
-collect_scale = Vector2(1.04, 1.2)
+collect_scale = Vector2(1, 1.135)
 
 [node name="Coins" type="Node2D" parent="." unique_id=1868955402]
 

@@ -4,9 +4,8 @@ extends Node2D
 @onready var _ball: Ball = $Ball
 @onready var _audio_manager: AudioManager = $AudioManager
 @onready var _camera: Camera2D = $Camera2D
-@onready var _spawn_line: LineSegment2D = $Camera2D/SpawnLine
-@onready var _left_exit_line: LineSegment2D = $Camera2D/LeftExitLine
-@onready var _right_exit_line: LineSegment2D = $Camera2D/RightExitLine
+@onready var _spawn_line: LineSegment2D = $SpawnLine
+@onready var _exit_line: LineSegment2D = $ExitLine
 @onready var _camera_shake: CameraShake = %CameraShake
 @onready var _impact_camera_shake: ImpactCameraShake = %ImpactCameraShake
 @onready var _enemy_spawner: WaveEnemySpawner = $EnemySpawner
@@ -19,7 +18,7 @@ extends Node2D
 func _ready() -> void:
 	_camera_shake.setup(_camera)
 	_impact_camera_shake.setup(_camera_shake)
-	var exit_lines: Array[LineSegment2D] = [_left_exit_line, _right_exit_line]
+	var exit_lines: Array[LineSegment2D] = [_exit_line]
 	_coin_raid_system.setup(_coin_system, exit_lines)
 	_ball.hit_landed.connect(_impact_camera_shake.apply_hit)
 	_ball.hit_landed.connect(_audio_manager.play_hit)
