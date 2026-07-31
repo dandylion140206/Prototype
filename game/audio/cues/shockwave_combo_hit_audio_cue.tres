@@ -7,6 +7,6 @@
 script = ExtResource("1_audio_cue")
 stream = ExtResource("2_rwul0")
 volume_db = -6.399999999999999
-sequence_pitch_step = 0.15
+sequence_pitch_step = 0.12
 max_sequence_pitch_offset = 3.0
 aggregation_mode = 1

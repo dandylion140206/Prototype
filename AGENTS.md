@@ -75,7 +75,9 @@ Godot Editorとの連携にはGodot AI MCPを使用する。公開ドメイン�
 2. GodotのCLIコマンド
 3. 静的なファイル確認
 
-CLIコマンドを使用する場合は、プロジェクトルートで次を実行する。
+CLI検証は、プロジェクトルートから、Godotコマンドに限り通常ユーザー権限のサンドボックス外で実行する。
+
+インポート検証:
 
 ```powershell
 cmd.exe /d /c 'set "APPDATA=%TEMP%\codex-godot-validation\Roaming" && set "LOCALAPPDATA=%TEMP%\codex-godot-validation\Local" && call godot.cmd --headless --path . --import'
@@ -83,6 +85,12 @@ cmd.exe /d /c 'set "APPDATA=%TEMP%\codex-godot-validation\Roaming" && set "LOCAL
 
 > [!WARNING]
 > PowerShell の外側の単一引用符を二重引用符へ変更したり、`\"` でエスケープしたりしてはならない。
+
+シーン実行検証:
+
+```powershell
+godot --headless --path . "res://検証対象シーン.tscn" --quit-after 60
+```
 
 ## 実装後の報告
 

@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" uid="uid://g3hjyqdduhw0" path="res://game/ball/ball.gd" id="1_6plaf"]
 [ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://game/ball/ball_movement.gd" id="2_movement"]
-[ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="3_biv8x"]
-[ext_resource type="Texture2D" uid="uid://dk2mad7ab5o6v" path="res://assets/sprites/ball.png" id="3_mpjoa"]
+[ext_resource type="Script" uid="uid://d1l1pfkva1241" path="res://game/ball/ball_visual.gd" id="3_olm8i"]
 [ext_resource type="Script" uid="uid://d6u7un6lhflh" path="res://game/ball/hit/ball_hit_controller.gd" id="4_controller"]
 [ext_resource type="Script" uid="uid://baeqwfpgl2bo3" path="res://game/ball/hit/ball_hitbox.gd" id="5_hitbox"]
 [ext_resource type="Script" uid="uid://dev2b81tccxlv" path="res://game/ball/hit/ball_attack.gd" id="6_attack"]
@@ -15,7 +14,7 @@
 [ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/cues/ball_hit_audio_cue.tres" id="11_hit_audio"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
-radius = 24.0
+radius = 28.0
 
 [node name="Ball" type="Node2D" unique_id=698706806]
 physics_interpolation_mode = 1
@@ -23,14 +22,11 @@ script = ExtResource("1_6plaf")
 hit_audio_cue = ExtResource("11_hit_audio")
 
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
-script = ExtResource("3_biv8x")
-radius = 24.0
-metadata/_custom_type_script = "uid://b3mrwkpsh0eno"
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2038007253]
-visible = false
-scale = Vector2(0.275, 0.275)
-texture = ExtResource("3_mpjoa")
+script = ExtResource("3_olm8i")
+outer_color = Color(0, 0.203125, 1, 1)
+gradient_position = 0.8
+gradient_width = 0.8
+metadata/_custom_type_script = "uid://d1l1pfkva1241"
 
 [node name="Movement" type="Node" parent="." unique_id=607524805]
 script = ExtResource("2_movement")

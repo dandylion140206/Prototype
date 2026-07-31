@@ -10,28 +10,38 @@
 [ext_resource type="Script" uid="uid://caf2kqdeap40l" path="res://visuals/post_processing/effects/shadow_mask/shadow_mask.gd" id="8_shadow_mask"]
 [ext_resource type="Script" uid="uid://cvf1wk7ect3rh" path="res://visuals/post_processing/effects/scanlines/scanlines.gd" id="9_scanlines"]
 [ext_resource type="Script" uid="uid://bxi2nj00snym1" path="res://visuals/post_processing/effects/vignette/vignette.gd" id="10_vignette"]
+[ext_resource type="Script" uid="uid://buwognefyeets" path="res://visuals/post_processing/effects/blur/blur.gd" id="11_blur"]
 
 [sub_resource type="Resource" id="Resource_pixelation"]
 script = ExtResource("3_pixelation")
 
+[sub_resource type="Resource" id="Resource_hw0dq"]
+script = ExtResource("11_blur")
+strength = 0.25
+metadata/_custom_type_script = "uid://buwognefyeets"
+
 [sub_resource type="Resource" id="Resource_color_grading"]
 script = ExtResource("4_color_grading")
+enabled = false
 brightness = -0.05000000000000004
 contrast = 1.05
 gamma = 1.07
 
 [sub_resource type="Resource" id="Resource_chromatic_aberration"]
 script = ExtResource("5_chromatic_aberration")
-amount = 3.0
+enabled = false
 
 [sub_resource type="Resource" id="Resource_color_quantization"]
 script = ExtResource("6_color_quantization")
 enabled = false
+blue_levels = 4
 
 [sub_resource type="Resource" id="Resource_glow"]
 script = ExtResource("7_glow")
-threshold = 0.4
+enabled = false
+threshold = 0.7
 softness = 0.61
+strength = 0.6
 
 [sub_resource type="Resource" id="Resource_shadow_mask"]
 script = ExtResource("8_shadow_mask")
@@ -53,5 +63,5 @@ falloff = 0.95
 
 [node name="PostProcessing" type="Node" unique_id=1336312614]
 script = ExtResource("1_post_processing")
-world_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pixelation")])
+world_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pixelation"), SubResource("Resource_hw0dq")])
 composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_chromatic_aberration"), SubResource("Resource_color_quantization"), SubResource("Resource_glow"), SubResource("Resource_shadow_mask"), SubResource("Resource_scanlines"), SubResource("Resource_vignette")])

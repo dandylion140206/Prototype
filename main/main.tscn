@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://efcd8y1ki25f" path="res://components/background/checkboard_background.gdshader" id="2_background_shader"]
 [ext_resource type="Script" uid="uid://bp1kypbjxpikr" path="res://debug/debug_controller.gd" id="3_debug_controller"]
 [ext_resource type="PackedScene" uid="uid://cg1ug3ry6a5x1" path="res://game/cursor/cursor.tscn" id="4_cursor"]
+[ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_temp/画像/0040997d99e7fc8ecebb4518ae97c9e9.png" id="4_qs5eo"]
 [ext_resource type="Script" uid="uid://brlgnkqw8xfsb" path="res://components/background/checkerboard_background.gd" id="5_background"]
 [ext_resource type="Script" uid="uid://b0fwdbfkgu6dr" path="res://main/input_controller.gd" id="6_input"]
 [ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="7_ball"]
@@ -22,11 +23,24 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
 shader = ExtResource("2_background_shader")
-shader_parameter/dark_color = Color(0.26075834, 0.2581, 0.29, 1)
-shader_parameter/light_color = Color(0.31149998, 0.31149998, 0.35, 1)
+shader_parameter/dark_color = Color(0.35966668, 0.356, 0.4, 1)
+shader_parameter/light_color = Color(0.3827, 0.3827, 0.43, 1)
 shader_parameter/cell_size = 84.0
 shader_parameter/edge_softness = 4.0000000596048
 shader_parameter/pattern_center = Vector2(960, 540)
+
+[sub_resource type="Gradient" id="Gradient_piupu"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.67484665)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a4b0t"]
+gradient = SubResource("Gradient_piupu")
+width = 700
+height = 700
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="Main" type="Node2D" unique_id=442907969]
 physics_interpolation_mode = 2
@@ -37,6 +51,10 @@ script = ExtResource("1_test")
 [node name="Checkerboard" type="ColorRect" parent="Background" unique_id=1385326766]
 material = SubResource("ShaderMaterial_background")
 script = ExtResource("5_background")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=1526111258]
+visible = false
+texture = ExtResource("4_qs5eo")
 
 [node name="Controllers" type="Node" parent="." unique_id=1208014403]
 
@@ -50,6 +68,10 @@ script = ExtResource("3_debug_controller")
 
 [node name="Ball" parent="Gameplay" unique_id=1105125244 instance=ExtResource("7_ball")]
 z_index = 20
+
+[node name="PointLight2D2" type="PointLight2D" parent="Gameplay/Ball" unique_id=2092282514]
+energy = 0.07
+texture = SubResource("GradientTexture2D_a4b0t")
 
 [node name="Cursor" parent="Gameplay" unique_id=1314549472 instance=ExtResource("4_cursor")]
 z_index = 10
