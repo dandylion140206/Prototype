@@ -11,9 +11,8 @@ signal died
 var _is_dying: bool = false
 
 @onready var _visual: Node2D = $Visual
-@onready var _scale: EnemyVisual = $Visual/Scale
-@onready var _spawn_animation: EnemySpawnAnimation = $Visual/Scale/SpawnAnimation
 @onready var _hit_flash: HitFlash = %HitFlash
+@onready var _spawn_animation: EnemySpawnAnimation = %SpawnAnimation
 @onready var _hit_scale_reaction: HitScaleReaction = %HitScaleReaction
 @onready var _hurtbox: Hurtbox = $Hurtbox
 @onready var _hit_stop: HitStop = $HitStop
@@ -29,12 +28,12 @@ var _is_dying: bool = false
 func _ready() -> void:
 	assert(body_stats != null, "body_stats must not be null.")
 
-	_hit_flash.setup(_scale)
-	_hit_scale_reaction.setup(_scale, _scale.set_hit_scale)
-	_hit_scale_reaction.reaction_started.connect(_scale.start_hit_scale)
-	_hit_scale_reaction.reaction_finished.connect(_scale.finish_hit_scale)
+	_hit_flash.setup(_visual)
+	_hit_scale_reaction.setup(_visual, _visual.set_hit_scale)
+	_hit_scale_reaction.reaction_started.connect(_visual.start_hit_scale)
+	_hit_scale_reaction.reaction_finished.connect(_visual.finish_hit_scale)
 	_hurtbox.set_enabled(false)
-	_spawn_animation.setup(_scale.set_spawn_scale)
+	_spawn_animation.setup(_visual.set_spawn_scale)
 	_spawn_animation.hit_detection_ready.connect(_on_spawn_animation_hit_detection_ready)
 	_spawn_animation.play()
 	_knockback.setup(body_stats, _motion_modifiers, _hit_stop)
@@ -99,7 +98,7 @@ func _on_hit_received(hit_data: HitData) -> void:
 
 
 func _on_health_changed(current_health: float, max_health: float) -> void:
-	_scale.update_health(current_health, max_health)
+	_visual.update_health(current_health, max_health)
 	health_changed.emit(current_health, max_health)
 
 

@@ -1,17 +1,18 @@
 [gd_scene format=3 uid="uid://cherfu7ivdcyx"]
 
 [ext_resource type="Script" uid="uid://0xh102dl4abt" path="res://game/ball/abilities/boost/boost.gd" id="1_ra6ms"]
-[ext_resource type="Resource" path="res://game/audio/cues/boost_audio_cue.tres" id="2_c2dil"]
+[ext_resource type="Resource" uid="uid://befobi7xg3qie" path="res://game/audio/cues/boost_audio_cue.tres" id="2_c2dil"]
 [ext_resource type="Script" uid="uid://svpwvxd17hmo" path="res://game/ball/abilities/boost/boost_trail.gd" id="3_c2dil"]
 [ext_resource type="Script" uid="uid://b3ye53qcjhqid" path="res://visuals/effects/trail.gd" id="4_rp6jb"]
 
 [sub_resource type="Curve" id="Curve_25t5i"]
-_data = [Vector2(0, 0), 0.0, 1.2453185, 0, 0, Vector2(1, 1), 0.6404491, 0.0, 0, 0]
+_data = [Vector2(0, 0.02), 0.0, 1.0534217, 0, 0, Vector2(1, 1), 0.9302966, 0.0, 0, 0]
 point_count = 2
 metadata/_snap_count = 50
 metadata/_snap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_ubwg0"]
+offsets = PackedFloat32Array(0, 0.99115044)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
 
 [node name="Boost" type="Node2D" unique_id=293315367]
@@ -28,7 +29,8 @@ top_level = true
 script = ExtResource("3_c2dil")
 
 [node name="Trail" type="Line2D" parent="BoostTrail" unique_id=547840986]
-width = 42.0
+points = PackedVector2Array(1112, 351)
+width = 54.0
 width_curve = SubResource("Curve_25t5i")
 gradient = SubResource("Gradient_ubwg0")
 joint_mode = 2

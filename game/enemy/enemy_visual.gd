@@ -1,6 +1,8 @@
 class_name EnemyVisual
 extends Node2D
 
+signal scale_changed(scale_value: Vector2)
+
 @export_range(1.0, 500.0, 1.0) var radius: float = 40.0
 @export var full_health_color: Color = Color(0.2, 0.7, 1.0, 1.0)
 @export var low_health_color: Color = Color(1.0, 0.3, 0.3, 1.0)
@@ -54,8 +56,12 @@ func finish_hit_scale() -> void:
 
 
 func _apply_scale() -> void:
-	if _is_hit_scale_active:
-		scale = _base_scale * _hit_scale
-		return
+	var applied_scale: Vector2
 
-	scale = _base_scale * _spawn_scale
+	if _is_hit_scale_active:
+		applied_scale = _base_scale * _hit_scale
+	else:
+		applied_scale = _base_scale * _spawn_scale
+
+	scale = applied_scale
+	scale_changed.emit(applied_scale)

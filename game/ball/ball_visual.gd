@@ -31,25 +31,13 @@ const GRADIENT_STEP_COUNT: int = 64
 
 
 func _draw() -> void:
-	var gradient_start := clampf(
-		gradient_position - gradient_width * 0.5,
-		0.0,
-		1.0
-	)
-	var gradient_end := clampf(
-		gradient_position + gradient_width * 0.5,
-		0.0,
-		1.0
-	)
+	var gradient_start := clampf(gradient_position - gradient_width * 0.5, 0.0, 1.0)
+	var gradient_end := clampf(gradient_position + gradient_width * 0.5, 0.0, 1.0)
 
 	draw_circle(Vector2.ZERO, radius, outer_color, true, -1.0, true)
 
 	for step in range(GRADIENT_STEP_COUNT - 1, 0, -1):
 		var radius_ratio := float(step) / float(GRADIENT_STEP_COUNT)
-		var color_ratio := smoothstep(
-			gradient_start,
-			gradient_end,
-			radius_ratio
-		)
+		var color_ratio := smoothstep(gradient_start, gradient_end, radius_ratio)
 		var color := center_color.lerp(outer_color, color_ratio)
 		draw_circle(Vector2.ZERO, radius * radius_ratio, color)

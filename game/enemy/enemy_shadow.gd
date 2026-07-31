@@ -1,8 +1,8 @@
 @tool
-class_name EnemyShadow
+class_name CircleVisual
 extends Node2D
 
-@export var radius: float = 20.0:
+@export_range(0.0, 100.0, 0.1) var radius: float = 20.0:
 	set(value):
 		radius = maxf(value, 0.0)
 		queue_redraw()
@@ -24,8 +24,3 @@ extends Node2D
 func _draw() -> void:
 	draw_set_transform(Vector2.ZERO, 0.0, aspect_ratio)
 	draw_circle(Vector2.ZERO, radius, color)
-
-
-func _on_scale_changed(scale_value: Vector2) -> void:
-	scale = scale_value
-	

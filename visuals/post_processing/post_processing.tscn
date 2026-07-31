@@ -17,19 +17,19 @@ script = ExtResource("3_pixelation")
 
 [sub_resource type="Resource" id="Resource_hw0dq"]
 script = ExtResource("11_blur")
+enabled = false
 strength = 0.25
 metadata/_custom_type_script = "uid://buwognefyeets"
 
 [sub_resource type="Resource" id="Resource_color_grading"]
 script = ExtResource("4_color_grading")
-enabled = false
 brightness = -0.05000000000000004
 contrast = 1.05
 gamma = 1.07
 
 [sub_resource type="Resource" id="Resource_chromatic_aberration"]
 script = ExtResource("5_chromatic_aberration")
-enabled = false
+amount = 3.0
 
 [sub_resource type="Resource" id="Resource_color_quantization"]
 script = ExtResource("6_color_quantization")
