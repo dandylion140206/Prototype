@@ -28,7 +28,7 @@ const EFFECT_SHADER: Shader = preload("./glow.gdshader")
 		softness = value
 		notify_change()
 
-@export_range(0.0, 2.0, 0.05) var strength: float = 0.5:
+@export_range(0.0, 10.0, 0.05) var strength: float = 0.5:
 	set(value):
 		if is_equal_approx(strength, value):
 			return

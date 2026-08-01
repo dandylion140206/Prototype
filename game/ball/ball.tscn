@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="10_orjm5"]
 [ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/cues/ball_hit_audio_cue.tres" id="11_hit_audio"]
 [ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="13_1yxkn"]
+[ext_resource type="Script" uid="uid://co835m81hfkhj" path="res://_wip/lightning.gd" id="16_wp3hx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ua4af"]
 radius = 28.0
@@ -46,15 +47,16 @@ target_hit_stop_frames = 0
 
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
 script = ExtResource("3_olm8i")
-outer_color = Color(0.59765625, 0.59765625, 0.59765625, 1)
+outer_color = Color(0.29960632, 0.99609375, 0.9797698, 1)
 gradient_position = 0.59
 metadata/_custom_type_script = "uid://d1l1pfkva1241"
 
 [node name="Outline" type="Node2D" parent="Visual" unique_id=1815256731]
+visible = false
 z_index = -1
 script = ExtResource("7_yywfg")
-radius = 32.0
-color = Color(0.48046875, 0.48046875, 0.48046875, 1)
+radius = 34.0
+color = Color(0.18017578, 0.43120193, 0.48046875, 1)
 metadata/_custom_type_script = "uid://c27pbb34deye6"
 
 [node name="Shadow" type="Node2D" parent="." unique_id=26834447]
@@ -82,3 +84,14 @@ secondary_ability = ExtResource("9_shockwave_ability")
 
 [node name="PhysicsPositionInterpolator" type="Node" parent="." unique_id=908929602]
 script = ExtResource("7_melhi")
+
+[node name="Lightning" type="Node2D" parent="." unique_id=261089107]
+script = ExtResource("16_wp3hx")
+sphere_radius = 53.0
+surface_spread = 0.8099999999999999
+segment_count = 3
+min_length = 0.2
+max_length = 0.74
+surface_jitter = 0.2
+glow_color = Color(0.10196078, 0.9789522, 1, 0.2784314)
+core_color = Color(0.7490196, 0.9764706, 1, 0.9490196)

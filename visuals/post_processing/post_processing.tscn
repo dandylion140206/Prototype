@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://pv8rl0usf0p" path="res://visuals/post_processing/effects/pixelation/pixelation.gd" id="3_pixelation"]
 [ext_resource type="Script" uid="uid://dmtqxgv4ipcro" path="res://visuals/post_processing/effects/color_grading/color_grading.gd" id="4_color_grading"]
 [ext_resource type="Script" uid="uid://cx0vlog6xb4ll" path="res://visuals/post_processing/effects/chromatic_aberration/chromatic_aberration.gd" id="5_chromatic_aberration"]
-[ext_resource type="Script" uid="uid://0xb20wnkikxu" path="res://visuals/post_processing/effects/color_quantization/color_quantization.gd" id="6_color_quantization"]
 [ext_resource type="Script" uid="uid://63lshmje3eqe" path="res://visuals/post_processing/effects/glow/glow.gd" id="7_glow"]
 [ext_resource type="Script" uid="uid://caf2kqdeap40l" path="res://visuals/post_processing/effects/shadow_mask/shadow_mask.gd" id="8_shadow_mask"]
 [ext_resource type="Script" uid="uid://cvf1wk7ect3rh" path="res://visuals/post_processing/effects/scanlines/scanlines.gd" id="9_scanlines"]
@@ -31,17 +30,9 @@ gamma = 1.07
 script = ExtResource("5_chromatic_aberration")
 amount = 3.0
 
-[sub_resource type="Resource" id="Resource_color_quantization"]
-script = ExtResource("6_color_quantization")
-enabled = false
-blue_levels = 4
-
 [sub_resource type="Resource" id="Resource_glow"]
 script = ExtResource("7_glow")
 enabled = false
-threshold = 0.7
-softness = 0.61
-strength = 0.6
 
 [sub_resource type="Resource" id="Resource_shadow_mask"]
 script = ExtResource("8_shadow_mask")
@@ -64,4 +55,4 @@ falloff = 0.95
 [node name="PostProcessing" type="Node" unique_id=1336312614]
 script = ExtResource("1_post_processing")
 world_effects = Array[ExtResource("2_effect")]([SubResource("Resource_pixelation"), SubResource("Resource_hw0dq")])
-composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_chromatic_aberration"), SubResource("Resource_color_quantization"), SubResource("Resource_glow"), SubResource("Resource_shadow_mask"), SubResource("Resource_scanlines"), SubResource("Resource_vignette")])
+composite_effects = Array[ExtResource("2_effect")]([SubResource("Resource_color_grading"), SubResource("Resource_chromatic_aberration"), SubResource("Resource_glow"), SubResource("Resource_shadow_mask"), SubResource("Resource_scanlines"), SubResource("Resource_vignette")])

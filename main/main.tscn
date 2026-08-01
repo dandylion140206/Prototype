@@ -29,27 +29,20 @@ shader_parameter/cell_size = 84.0
 shader_parameter/edge_softness = 4.0000000596048
 shader_parameter/pattern_center = Vector2(960, 540)
 
-[sub_resource type="Gradient" id="Gradient_piupu"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.67484665)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_a4b0t"]
-gradient = SubResource("Gradient_piupu")
-width = 700
-height = 700
-use_hdr = true
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
-[node name="Main" type="Node2D" unique_id=442907969]
+[node name="Main" type="Node" unique_id=999458904]
 physics_interpolation_mode = 2
 script = ExtResource("1_test")
 
 [node name="Background" type="Node2D" parent="." unique_id=194929257]
 
 [node name="Checkerboard" type="ColorRect" parent="Background" unique_id=1385326766]
+z_index = -100
 material = SubResource("ShaderMaterial_background")
+offset_left = -32768.0
+offset_top = -32768.0
+offset_right = 32768.0
+offset_bottom = 32768.0
+mouse_filter = 2
 script = ExtResource("5_background")
 
 [node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=1526111258]
@@ -68,10 +61,6 @@ script = ExtResource("3_debug_controller")
 
 [node name="Ball" parent="Gameplay" unique_id=1105125244 instance=ExtResource("7_ball")]
 z_index = 20
-
-[node name="PointLight2D2" type="PointLight2D" parent="Gameplay/Ball" unique_id=2092282514]
-energy = 0.07
-texture = SubResource("GradientTexture2D_a4b0t")
 
 [node name="Cursor" parent="Gameplay" unique_id=1314549472 instance=ExtResource("4_cursor")]
 z_index = 10
