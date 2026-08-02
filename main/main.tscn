@@ -15,11 +15,13 @@
 [ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://gameplay/audio/cues/enemy_death_audio_cue.tres" id="11_q0sk7"]
 [ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="12_performance"]
 [ext_resource type="PackedScene" path="res://gameplay/audio/audio_director.tscn" id="13_p07pb"]
-[ext_resource type="Script" uid="uid://dvrvkqmrob1o2" path="res://gameplay/enemy/wandering_enemy_system.gd" id="13_wandering_system"]
+[ext_resource type="Script" path="res://gameplay/enemy/population/enemy_population.gd" id="13_population"]
 [ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://gameplay/enemy/enemy.tscn" id="14_enemy"]
 [ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://gameplay/enemy/crowd/enemy_crowd_system.tscn" id="15_crowd"]
 [ext_resource type="Script" uid="uid://biifx44042o10" path="res://debug/overlay/enemy_overlay_panel.gd" id="16_enemy_overlay"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="20_health_bars"]
+[ext_resource type="Script" path="res://gameplay/enemy/population/enemy_spawner.gd" id="21_spawner"]
+[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_motion_system.gd" id="22_motion_system"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
 shader = ExtResource("2_background_shader")
@@ -64,18 +66,27 @@ script = ExtResource("3_debug_controller")
 [node name="Cursor" parent="Gameplay" unique_id=1314549472 instance=ExtResource("4_cursor")]
 z_index = 30
 
-[node name="WanderingEnemySystem" type="Node2D" parent="Gameplay" unique_id=631167769]
-script = ExtResource("13_wandering_system")
-enemy_scene = ExtResource("14_enemy")
+[node name="EnemyPopulation" type="Node2D" parent="Gameplay" unique_id=631167769]
+script = ExtResource("13_population")
 enemy_death_audio_cue = ExtResource("11_q0sk7")
 enemy_count = 70
 wander_area = Rect2(-900, -450, 1800, 900)
 
-[node name="ActiveEnemies" type="Node2D" parent="Gameplay/WanderingEnemySystem" unique_id=49338834]
+[node name="EnemySpawner" type="Node2D" parent="Gameplay/EnemyPopulation" unique_id=49338834]
+script = ExtResource("21_spawner")
+enemy_scene = ExtResource("14_enemy")
+spawn_area = Rect2(-900, -450, 1800, 900)
+minimum_spawn_distance = 50.0
+placement_attempts_per_enemy = 100
+
+[node name="EnemyMotionSystem" type="Node" parent="Gameplay/EnemyPopulation" unique_id=49338835]
+script = ExtResource("22_motion_system")
+
+[node name="EnemyCrowdSystem" parent="Gameplay/EnemyPopulation" unique_id=1572037012 instance=ExtResource("15_crowd")]
+
+[node name="ActiveEnemies" type="Node2D" parent="Gameplay/EnemyPopulation" unique_id=49338836]
 physics_interpolation_mode = 1
 y_sort_enabled = true
-
-[node name="EnemyCrowdSystem" parent="Gameplay/WanderingEnemySystem" unique_id=1572037012 instance=ExtResource("15_crowd")]
 
 [node name="AudioDirector" parent="." unique_id=584685882 instance=ExtResource("13_p07pb")]
 
@@ -122,7 +133,7 @@ color = Color(0, 0, 0, 0.6)
 layout_mode = 2
 script = ExtResource("12_performance")
 
-[node name="EnemyOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=1543463865 node_paths=PackedStringArray("wandering_enemy_system")]
+[node name="EnemyOverlayPanel" type="Label" parent="DebugOverlay/PanelContainer" unique_id=1543463865 node_paths=PackedStringArray("enemy_population")]
 layout_mode = 2
 script = ExtResource("16_enemy_overlay")
-wandering_enemy_system = NodePath("../../../Gameplay/WanderingEnemySystem")
+enemy_population = NodePath("../../../Gameplay/EnemyPopulation")

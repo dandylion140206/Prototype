@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://dn5lp5qqjba2i"]
 
-[ext_resource type="Script" uid="uid://bf4vaw62gtyk4" path="res://gameplay/enemy/crowd/enemy_crowd_system.gd" id="1_e852g"]
-[ext_resource type="Script" uid="uid://dl02rxdjn5duk" path="res://gameplay/enemy/crowd/enemy_crowd_solver.gd" id="2_wrmgt"]
-[ext_resource type="Script" uid="uid://b6t3sg2libref" path="res://gameplay/enemy/crowd/enemy_overlap_solver.gd" id="3_x42lf"]
+[ext_resource type="Script" path="res://gameplay/enemy/crowd/enemy_crowd_system.gd" id="1_system"]
+[ext_resource type="Script" path="res://gameplay/enemy/crowd/enemy_crowd_separation_solver.gd" id="2_separation"]
+[ext_resource type="Script" path="res://gameplay/enemy/crowd/enemy_crowd_overlap_solver.gd" id="3_overlap"]
 
 [node name="EnemyCrowdSystem" type="Node" unique_id=1572037012]
-script = ExtResource("1_e852g")
+script = ExtResource("1_system")
 
-[node name="CrowdSolver" type="Node" parent="." unique_id=1975261864]
-script = ExtResource("2_wrmgt")
+[node name="SeparationSolver" type="Node" parent="." unique_id=1975261864]
+script = ExtResource("2_separation")
 
 [node name="OverlapSolver" type="Node" parent="." unique_id=209402658]
-script = ExtResource("3_x42lf")
+script = ExtResource("3_overlap")

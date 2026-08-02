@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var _input_controller: InputController = $Controllers/InputController
 @onready var _ball: Ball = $Gameplay/Ball
-@onready var _wandering_enemy_system: WanderingEnemySystem = $Gameplay/WanderingEnemySystem
+@onready var _enemy_population: EnemyPopulation = $Gameplay/EnemyPopulation
 @onready var _audio_director: AudioDirector = $AudioDirector
 @onready var _camera: Camera2D = $Camera2D
 @onready var _camera_shake: CameraShake = %CameraShake
@@ -18,8 +18,8 @@ func _ready() -> void:
 	_ball.shockwave_activated.connect(_on_shockwave_activated)
 	_input_controller.primary_ability_requested.connect(_ball.request_primary_ability_activation)
 	_input_controller.secondary_ability_requested.connect(_ball.request_secondary_ability_activation)
-	_wandering_enemy_system.enemy_spawned.connect(_enemy_health_bar_layer.add_enemy)
-	_wandering_enemy_system.audio_requested.connect(_audio_director.request)
+	_enemy_population.enemy_spawned.connect(_enemy_health_bar_layer.add_enemy)
+	_enemy_population.audio_requested.connect(_audio_director.request)
 
 	var mouse_position := get_global_mouse_position()
 	_ball.global_position = mouse_position

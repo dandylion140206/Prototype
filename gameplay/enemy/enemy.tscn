@@ -1,21 +1,20 @@
 [gd_scene format=3 uid="uid://bswtqb2xtbf20"]
 
-[ext_resource type="Script" uid="uid://c1blppbwj3h6t" path="res://gameplay/enemy/enemy.gd" id="1_enemy"]
-[ext_resource type="Resource" uid="uid://cb3grieyhg0x3" path="res://gameplay/enemy/stats/default_enemy.tres" id="2_4elnr"]
-[ext_resource type="Script" uid="uid://dn3oyokvk2t61" path="res://gameplay/enemy/enemy_visual.gd" id="2_visual"]
-[ext_resource type="Script" uid="uid://dp55a0aroiq8k" path="res://components/hit/hit_flash.gd" id="3_hit_flash"]
-[ext_resource type="Script" uid="uid://b3gbktsl3efdv" path="res://components/hit/hit_scale_reaction.gd" id="4_hit_scale_reaction"]
-[ext_resource type="Script" uid="uid://ce65r6ygj75pg" path="res://components/hit/hurtbox.gd" id="4_hurtbox"]
-[ext_resource type="Script" uid="uid://duxi53mhs2f2s" path="res://components/health/health.gd" id="5_health"]
-[ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="8_18wug"]
-[ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="8_hit_stop"]
-[ext_resource type="Script" uid="uid://3xs256tnqovt" path="res://gameplay/enemy/enemy_movement.gd" id="9_movement"]
-[ext_resource type="Script" uid="uid://bfkc3udymp28k" path="res://gameplay/enemy/enemy_destination.gd" id="10_destination"]
-[ext_resource type="Script" uid="uid://b6qqb7huppfla" path="res://gameplay/enemy/enemy_knockback.gd" id="11_rqrnf"]
-[ext_resource type="Script" uid="uid://gyuqeth4db5k" path="res://gameplay/enemy/enemy_steering.gd" id="11_steering"]
-[ext_resource type="Script" uid="uid://oql1lmfrqg6u" path="res://gameplay/enemy/enemy_motion_modifier_stack.gd" id="14_rqrnf"]
-[ext_resource type="Script" uid="uid://mm0asb6f8drp" path="res://gameplay/enemy/crowd/enemy_crowd_agent.gd" id="15_r6v05"]
-[ext_resource type="Script" uid="uid://ce6jjy2awwfda" path="res://gameplay/enemy/enemy_spawn_animation.gd" id="16_spawn_animation"]
+[ext_resource type="Script" path="res://gameplay/enemy/enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" path="res://gameplay/enemy/stats/default_enemy_stats.tres" id="2_stats"]
+[ext_resource type="Resource" path="res://gameplay/enemy/stats/default_enemy_crowd_stats.tres" id="3_crowd_stats"]
+[ext_resource type="Script" path="res://gameplay/enemy/enemy_visual.gd" id="4_visual"]
+[ext_resource type="Script" path="res://components/hit/hit_flash.gd" id="5_hit_flash"]
+[ext_resource type="Script" path="res://components/hit/hit_scale_reaction.gd" id="6_hit_scale_reaction"]
+[ext_resource type="Script" path="res://components/hit/hurtbox.gd" id="7_hurtbox"]
+[ext_resource type="Script" path="res://components/health/health.gd" id="8_health"]
+[ext_resource type="Script" path="res://components/circle_visual.gd" id="9_shadow"]
+[ext_resource type="Script" path="res://components/hit/hit_stop.gd" id="10_hit_stop"]
+[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_motor.gd" id="11_motor"]
+[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_knockback.gd" id="12_knockback"]
+[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_motion_modifier_stack.gd" id="13_modifiers"]
+[ext_resource type="Script" path="res://gameplay/enemy/crowd/enemy_crowd_agent.gd" id="14_crowd_agent"]
+[ext_resource type="Script" path="res://gameplay/enemy/enemy_spawn_animation.gd" id="15_spawn_animation"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 40.0
@@ -25,70 +24,65 @@ physics_interpolation_mode = 1
 z_index = 10
 y_sort_enabled = true
 script = ExtResource("1_enemy")
-body_stats = ExtResource("2_4elnr")
+stats = ExtResource("2_stats")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1386295835]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("4_hurtbox")
+script = ExtResource("7_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=257935518]
 shape = SubResource("CircleShape2D_hurtbox")
 
 [node name="Visual" type="Node2D" parent="." unique_id=9975807]
-script = ExtResource("2_visual")
+script = ExtResource("4_visual")
 full_health_color = Color(0.13128662, 0.63406605, 0.93359375, 1)
 low_health_color = Color(1, 0.234375, 0.234375, 1)
 
 [node name="HitFlash" type="Node" parent="Visual" unique_id=698111814]
 unique_name_in_owner = true
-script = ExtResource("3_hit_flash")
+script = ExtResource("5_hit_flash")
 flash_modulate = Color(1.7867532, 1.7867532, 1.7867532, 1)
 
 [node name="Scale" type="Node2D" parent="Visual" unique_id=552542528]
 
 [node name="SpawnAnimation" type="Node" parent="Visual/Scale" unique_id=1831135336]
 unique_name_in_owner = true
-script = ExtResource("16_spawn_animation")
+script = ExtResource("15_spawn_animation")
 spring_damping = 5.0
 
 [node name="HitScaleReaction" type="Node" parent="Visual/Scale" unique_id=1456777285]
 unique_name_in_owner = true
-script = ExtResource("4_hit_scale_reaction")
+script = ExtResource("6_hit_scale_reaction")
 tween_duration = 1.0
 
 [node name="Shadow" type="Node2D" parent="." unique_id=11726330]
 z_index = -10
 z_as_relative = false
 position = Vector2(0, 38)
-script = ExtResource("8_18wug")
+script = ExtResource("9_shadow")
 radius = 30.0
 aspect_ratio = Vector2(1, 0.4)
 color = Color(0, 0, 0, 0.5882353)
 metadata/_custom_type_script = "uid://b3mrwkpsh0eno"
 
 [node name="HitStop" type="Node" parent="." unique_id=376194325]
-script = ExtResource("8_hit_stop")
+script = ExtResource("10_hit_stop")
 
 [node name="Health" type="Node" parent="." unique_id=1781612605]
-script = ExtResource("5_health")
+script = ExtResource("8_health")
 
-[node name="Movement" type="Node" parent="." unique_id=1669864983]
-script = ExtResource("9_movement")
-
-[node name="Steering" type="Node" parent="." unique_id=2013910406]
-script = ExtResource("11_steering")
+[node name="Motor" type="Node" parent="." unique_id=1669864983]
+script = ExtResource("11_motor")
 
 [node name="Knockback" type="Node" parent="." unique_id=541626083]
-script = ExtResource("11_rqrnf")
-
-[node name="Destination" type="Node" parent="." unique_id=299966659]
-script = ExtResource("10_destination")
-
-[node name="CrowdAgent" type="Node" parent="." unique_id=1159136486]
-script = ExtResource("15_r6v05")
+script = ExtResource("12_knockback")
 
 [node name="MotionModifiers" type="Node" parent="." unique_id=1134014106]
-script = ExtResource("14_rqrnf")
+script = ExtResource("13_modifiers")
+
+[node name="CrowdAgent" type="Node" parent="." unique_id=1159136486]
+script = ExtResource("14_crowd_agent")
+crowd_stats = ExtResource("3_crowd_stats")
 
 [connection signal="scale_changed" from="Visual" to="Shadow" method="_on_scale_changed"]

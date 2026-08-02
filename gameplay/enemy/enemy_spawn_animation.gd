@@ -1,7 +1,6 @@
 class_name EnemySpawnAnimation
 extends Node
 
-
 signal finished
 signal hit_detection_ready
 

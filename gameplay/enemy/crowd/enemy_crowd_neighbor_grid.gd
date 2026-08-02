@@ -1,4 +1,4 @@
-class_name NeighborGrid
+class_name EnemyCrowdNeighborGrid
 extends RefCounted
 
 const MAX_CELL_COUNT: int = 65536
@@ -6,19 +6,19 @@ const MAX_CELL_COUNT: int = 65536
 static var _neighbor_column_offsets: PackedInt32Array = PackedInt32Array([1, -1, 0, 1])
 static var _neighbor_row_offsets: PackedInt32Array = PackedInt32Array([0, 1, 1, 1])
 
-var _positions: PackedVector2Array = PackedVector2Array()
+var _positions := PackedVector2Array()
 var _item_count: int = 0
-var _origin: Vector2 = Vector2.ZERO
+var _origin := Vector2.ZERO
 var _inverse_cell_size: float = 1.0
 var _column_count: int = 1
 var _row_count: int = 1
-var _item_cells: PackedInt32Array = PackedInt32Array()
-var _item_columns: PackedInt32Array = PackedInt32Array()
-var _item_rows: PackedInt32Array = PackedInt32Array()
-var _cell_starts: PackedInt32Array = PackedInt32Array()
-var _cell_cursors: PackedInt32Array = PackedInt32Array()
-var _cell_items: PackedInt32Array = PackedInt32Array()
-var _pairs: PackedInt32Array = PackedInt32Array()
+var _item_cells := PackedInt32Array()
+var _item_columns := PackedInt32Array()
+var _item_rows := PackedInt32Array()
+var _cell_starts := PackedInt32Array()
+var _cell_cursors := PackedInt32Array()
+var _cell_items := PackedInt32Array()
+var _pairs := PackedInt32Array()
 var _pair_count: int = 0
 
 
@@ -63,8 +63,16 @@ func build(positions: PackedVector2Array, cell_size: float) -> void:
 	var last_row := _row_count - 1
 	for index in _item_count:
 		var position := positions[index]
-		var column := clampi(int((position.x - _origin.x) * _inverse_cell_size), 0, last_column)
-		var row := clampi(int((position.y - _origin.y) * _inverse_cell_size), 0, last_row)
+		var column := clampi(
+			int((position.x - _origin.x) * _inverse_cell_size),
+			0,
+			last_column
+		)
+		var row := clampi(
+			int((position.y - _origin.y) * _inverse_cell_size),
+			0,
+			last_row
+		)
 		var cell_index := row * _column_count + column
 
 		_item_columns[index] = column
@@ -87,7 +95,7 @@ func build(positions: PackedVector2Array, cell_size: float) -> void:
 
 func collect_pairs(max_distance: float) -> void:
 	_pair_count = 0
-	if _item_count < 2:
+	if _item_count < 2 or max_distance <= 0.0:
 		return
 
 	var max_distance_squared := max_distance * max_distance
@@ -111,12 +119,7 @@ func collect_pairs(max_distance: float) -> void:
 			if a_position.distance_squared_to(_positions[b_index]) >= max_distance_squared:
 				continue
 
-			if _pair_count * 2 + 2 > _pairs.size():
-				_pairs.resize(_pairs.size() * 2)
-
-			_pairs[_pair_count * 2] = a_index
-			_pairs[_pair_count * 2 + 1] = b_index
-			_pair_count += 1
+			_append_pair(a_index, b_index)
 
 		for offset_index in 4:
 			var column := a_column + _neighbor_column_offsets[offset_index]
@@ -136,12 +139,7 @@ func collect_pairs(max_distance: float) -> void:
 				if a_position.distance_squared_to(_positions[neighbor_index]) >= max_distance_squared:
 					continue
 
-				if _pair_count * 2 + 2 > _pairs.size():
-					_pairs.resize(_pairs.size() * 2)
-
-				_pairs[_pair_count * 2] = a_index
-				_pairs[_pair_count * 2 + 1] = neighbor_index
-				_pair_count += 1
+				_append_pair(a_index, neighbor_index)
 
 
 func get_pairs() -> PackedInt32Array:
@@ -150,6 +148,15 @@ func get_pairs() -> PackedInt32Array:
 
 func get_pair_count() -> int:
 	return _pair_count
+
+
+func _append_pair(a_index: int, b_index: int) -> void:
+	if _pair_count * 2 + 2 > _pairs.size():
+		_pairs.resize(maxi(_pairs.size() * 2, 64))
+
+	_pairs[_pair_count * 2] = a_index
+	_pairs[_pair_count * 2 + 1] = b_index
+	_pair_count += 1
 
 
 func _get_axis_cell_count(extent: float, cell_size: float) -> int:

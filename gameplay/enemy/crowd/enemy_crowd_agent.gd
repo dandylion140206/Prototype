@@ -1,62 +1,66 @@
 class_name EnemyCrowdAgent
 extends Node
 
-## EnemyCrowdSystem が敵個体を操作するための窓口。
-## Solver は Enemy 型を知らず、このクラス経由でのみ個体へアクセスする。
+## EnemyCrowdSystemとEnemyMotorの間の窓口。
+## Crowd側はEnemy本体を参照せず、このAgentだけを扱う。
 
-## Solver が毎フレーム参照するため、getter を介さず直接公開する。
-var stats: EnemyBodyStats
+@export var crowd_stats: EnemyCrowdStats
 
-var _body: Node2D
-var _movement: EnemyMovement
-var _knockback: EnemyKnockback
+var _motor: EnemyMotor
 var _motion_modifiers: EnemyMotionModifierStack
-var _is_active: bool = true
+var _hit_stop: HitStop
 
 
 func setup(
-	body: Node2D,
-	body_stats: EnemyBodyStats,
-	movement: EnemyMovement,
-	knockback: EnemyKnockback,
-	motion_modifiers: EnemyMotionModifierStack
+	motor: EnemyMotor,
+	motion_modifiers: EnemyMotionModifierStack,
+	hit_stop: HitStop
 ) -> void:
-	assert(body != null, "body must not be null.")
-	assert(body_stats != null, "body_stats must not be null.")
-	assert(movement != null, "movement must not be null.")
-	assert(knockback != null, "knockback must not be null.")
+	assert(crowd_stats != null, "crowd_stats must not be null.")
+	assert(motor != null, "motor must not be null.")
 	assert(motion_modifiers != null, "motion_modifiers must not be null.")
+	assert(hit_stop != null, "hit_stop must not be null.")
 
-	_body = body
-	stats = body_stats
-	_movement = movement
-	_knockback = knockback
+	crowd_stats.validate()
+	_motor = motor
 	_motion_modifiers = motion_modifiers
+	_hit_stop = hit_stop
 
 
-func is_active() -> bool:
-	return _is_active
+func get_current_position() -> Vector2:
+	return _motor.get_current_position()
 
 
-func set_active(active: bool) -> void:
-	_is_active = active
+func get_predicted_position() -> Vector2:
+	return _motor.get_predicted_position()
 
 
-func get_position() -> Vector2:
-	return _body.global_position
-
-
-func set_position(position: Vector2) -> void:
-	_body.global_position = position
-
-
-func get_effective_velocity() -> Vector2:
-	return _movement.get_effective_velocity() + _knockback.get_velocity()
+func get_crowd_velocity() -> Vector2:
+	return _motor.get_base_effective_velocity()
 
 
 func get_inverse_mass() -> float:
-	return stats.get_inverse_mass() / _motion_modifiers.get_mass_multiplier()
+	if is_hit_stop_active():
+		return 0.0
+
+	return _motion_modifiers.get_effective_inverse_mass()
+
+
+func is_hit_stop_active() -> bool:
+	return _hit_stop.is_active()
 
 
 func apply_crowd_acceleration(acceleration: Vector2) -> void:
-	_movement.apply_crowd_acceleration(acceleration)
+	_motor.set_crowd_acceleration(acceleration)
+
+
+func set_contact_velocity_correction(correction: Vector2) -> void:
+	_motor.set_contact_velocity_correction(correction)
+
+
+func set_resolved_position(position: Vector2) -> void:
+	_motor.set_resolved_position(position)
+
+
+func get_overlap_iterations() -> int:
+	return crowd_stats.overlap_iterations
