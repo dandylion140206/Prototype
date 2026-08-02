@@ -18,6 +18,8 @@ var _approach_damping_accelerations := PackedVector2Array()
 
 func solve(agents: Array[EnemyCrowdAgent], delta: float) -> void:
 	_agents = agents
+	_grid.clear_pairs()
+
 	var agent_count := _agents.size()
 	if agent_count == 0:
 		return

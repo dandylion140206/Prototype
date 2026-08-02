@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 	_crowd_system.solve_overlap()
 
 	for motor in _motors:
-		motor.apply_resolved_position()
+		motor.apply_resolved_position(delta)
 
 
 func _collect_valid_motors() -> void:

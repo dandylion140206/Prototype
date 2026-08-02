@@ -15,13 +15,13 @@
 [ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://gameplay/audio/cues/enemy_death_audio_cue.tres" id="11_q0sk7"]
 [ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="12_performance"]
 [ext_resource type="PackedScene" path="res://gameplay/audio/audio_director.tscn" id="13_p07pb"]
-[ext_resource type="Script" path="res://gameplay/enemy/population/enemy_population.gd" id="13_population"]
+[ext_resource type="Script" uid="uid://w7ewm7p1onuj" path="res://gameplay/enemy/population/enemy_population.gd" id="13_population"]
 [ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://gameplay/enemy/enemy.tscn" id="14_enemy"]
 [ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://gameplay/enemy/crowd/enemy_crowd_system.tscn" id="15_crowd"]
 [ext_resource type="Script" uid="uid://biifx44042o10" path="res://debug/overlay/enemy_overlay_panel.gd" id="16_enemy_overlay"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="20_health_bars"]
-[ext_resource type="Script" path="res://gameplay/enemy/population/enemy_spawner.gd" id="21_spawner"]
-[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_motion_system.gd" id="22_motion_system"]
+[ext_resource type="Script" uid="uid://c1wpxtgn5nmtx" path="res://gameplay/enemy/population/enemy_spawner.gd" id="21_spawner"]
+[ext_resource type="Script" uid="uid://bjqitfeos7niw" path="res://gameplay/enemy/motion/enemy_motion_system.gd" id="22_motion_system"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
 shader = ExtResource("2_background_shader")
@@ -76,8 +76,6 @@ wander_area = Rect2(-900, -450, 1800, 900)
 script = ExtResource("21_spawner")
 enemy_scene = ExtResource("14_enemy")
 spawn_area = Rect2(-900, -450, 1800, 900)
-minimum_spawn_distance = 50.0
-placement_attempts_per_enemy = 100
 
 [node name="EnemyMotionSystem" type="Node" parent="Gameplay/EnemyPopulation" unique_id=49338835]
 script = ExtResource("22_motion_system")

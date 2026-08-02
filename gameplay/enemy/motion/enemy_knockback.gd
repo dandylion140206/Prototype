@@ -13,7 +13,6 @@ extends Node
 
 var _motion_modifiers: EnemyMotionModifierStack
 var _knockback_velocity := Vector2.ZERO
-var _decay_start_velocity := Vector2.ZERO
 var _decay_elapsed: float = 0.0
 var _is_decaying: bool = false
 
@@ -49,9 +48,15 @@ func apply_knockback(
 	)
 
 	_knockback_velocity = (_knockback_velocity + added_velocity).limit_length(max_speed)
-	_decay_start_velocity = _knockback_velocity
 	_decay_elapsed = 0.0
 	_is_decaying = not _knockback_velocity.is_zero_approx()
+
+
+func apply_velocity_correction(correction: Vector2) -> void:
+	if correction.is_zero_approx():
+		return
+
+	_knockback_velocity += correction
 
 
 func update_decay(delta: float) -> void:
@@ -61,17 +66,16 @@ func update_decay(delta: float) -> void:
 	if delta <= 0.0:
 		return
 
+	var previous_elapsed := _decay_elapsed
 	_decay_elapsed = minf(_decay_elapsed + delta, duration)
-	_knockback_velocity = Vector2(
-		Tween.interpolate_value(
-			_decay_start_velocity,
-			-_decay_start_velocity,
-			_decay_elapsed,
-			duration,
-			transition_type,
-			ease_type
-		)
-	)
+	var previous_progress := _get_decay_progress(previous_elapsed)
+	var current_progress := _get_decay_progress(_decay_elapsed)
+	var previous_remaining := 1.0 - previous_progress
+	var current_remaining := 1.0 - current_progress
+	if previous_remaining <= 0.0:
+		_knockback_velocity = Vector2.ZERO
+	else:
+		_knockback_velocity *= current_remaining / previous_remaining
 
 	if _decay_elapsed >= duration:
 		_knockback_velocity = Vector2.ZERO
@@ -80,3 +84,16 @@ func update_decay(delta: float) -> void:
 
 func get_velocity() -> Vector2:
 	return _knockback_velocity
+
+
+func _get_decay_progress(elapsed: float) -> float:
+	return float(
+		Tween.interpolate_value(
+			0.0,
+			1.0,
+			elapsed,
+			duration,
+			transition_type,
+			ease_type
+		)
+	)

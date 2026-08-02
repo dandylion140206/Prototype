@@ -22,6 +22,10 @@ func unregister(agent: EnemyCrowdAgent) -> void:
 
 func begin_frame() -> Array[EnemyCrowdAgent]:
 	_active_agents.clear()
+	_crowd_pair_count = 0
+	_unresolved_overlap_count = 0
+	_max_unresolved_penetration = 0.0
+
 	for agent in _registry.get_agents():
 		if agent == null or not is_instance_valid(agent) or agent.is_queued_for_deletion():
 			continue

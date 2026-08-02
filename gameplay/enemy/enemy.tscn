@@ -1,20 +1,20 @@
 [gd_scene format=3 uid="uid://bswtqb2xtbf20"]
 
-[ext_resource type="Script" path="res://gameplay/enemy/enemy.gd" id="1_enemy"]
-[ext_resource type="Resource" path="res://gameplay/enemy/stats/default_enemy_stats.tres" id="2_stats"]
+[ext_resource type="Script" uid="uid://c1blppbwj3h6t" path="res://gameplay/enemy/enemy.gd" id="1_enemy"]
+[ext_resource type="Resource" uid="uid://0c3riw4runwn" path="res://gameplay/enemy/stats/default_enemy_stats.tres" id="2_stats"]
 [ext_resource type="Resource" path="res://gameplay/enemy/stats/default_enemy_crowd_stats.tres" id="3_crowd_stats"]
-[ext_resource type="Script" path="res://gameplay/enemy/enemy_visual.gd" id="4_visual"]
-[ext_resource type="Script" path="res://components/hit/hit_flash.gd" id="5_hit_flash"]
-[ext_resource type="Script" path="res://components/hit/hit_scale_reaction.gd" id="6_hit_scale_reaction"]
-[ext_resource type="Script" path="res://components/hit/hurtbox.gd" id="7_hurtbox"]
-[ext_resource type="Script" path="res://components/health/health.gd" id="8_health"]
-[ext_resource type="Script" path="res://components/circle_visual.gd" id="9_shadow"]
-[ext_resource type="Script" path="res://components/hit/hit_stop.gd" id="10_hit_stop"]
-[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_motor.gd" id="11_motor"]
-[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_knockback.gd" id="12_knockback"]
-[ext_resource type="Script" path="res://gameplay/enemy/motion/enemy_motion_modifier_stack.gd" id="13_modifiers"]
-[ext_resource type="Script" path="res://gameplay/enemy/crowd/enemy_crowd_agent.gd" id="14_crowd_agent"]
-[ext_resource type="Script" path="res://gameplay/enemy/enemy_spawn_animation.gd" id="15_spawn_animation"]
+[ext_resource type="Script" uid="uid://dn3oyokvk2t61" path="res://gameplay/enemy/enemy_visual.gd" id="4_visual"]
+[ext_resource type="Script" uid="uid://dp55a0aroiq8k" path="res://components/hit/hit_flash.gd" id="5_hit_flash"]
+[ext_resource type="Script" uid="uid://b3gbktsl3efdv" path="res://components/hit/hit_scale_reaction.gd" id="6_hit_scale_reaction"]
+[ext_resource type="Script" uid="uid://ce65r6ygj75pg" path="res://components/hit/hurtbox.gd" id="7_hurtbox"]
+[ext_resource type="Script" uid="uid://duxi53mhs2f2s" path="res://components/health/health.gd" id="8_health"]
+[ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="9_shadow"]
+[ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="10_hit_stop"]
+[ext_resource type="Script" uid="uid://d2uyntbq3jo5g" path="res://gameplay/enemy/motion/enemy_motor.gd" id="11_motor"]
+[ext_resource type="Script" uid="uid://ceoh38tlgg1lu" path="res://gameplay/enemy/motion/enemy_knockback.gd" id="12_knockback"]
+[ext_resource type="Script" uid="uid://ujc86c6a55ev" path="res://gameplay/enemy/motion/enemy_motion_modifier_stack.gd" id="13_modifiers"]
+[ext_resource type="Script" uid="uid://mm0asb6f8drp" path="res://gameplay/enemy/crowd/enemy_crowd_agent.gd" id="14_crowd_agent"]
+[ext_resource type="Script" uid="uid://ce6jjy2awwfda" path="res://gameplay/enemy/enemy_spawn_animation.gd" id="15_spawn_animation"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 40.0
@@ -75,11 +75,11 @@ script = ExtResource("8_health")
 [node name="Motor" type="Node" parent="." unique_id=1669864983]
 script = ExtResource("11_motor")
 
-[node name="Knockback" type="Node" parent="." unique_id=541626083]
-script = ExtResource("12_knockback")
-
 [node name="MotionModifiers" type="Node" parent="." unique_id=1134014106]
 script = ExtResource("13_modifiers")
+
+[node name="Knockback" type="Node" parent="." unique_id=541626083]
+script = ExtResource("12_knockback")
 
 [node name="CrowdAgent" type="Node" parent="." unique_id=1159136486]
 script = ExtResource("14_crowd_agent")

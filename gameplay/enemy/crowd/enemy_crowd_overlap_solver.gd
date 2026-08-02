@@ -28,7 +28,6 @@ func solve(agents: Array[EnemyCrowdAgent]) -> void:
 	_contact_corrections.resize(agent_count)
 	for index in agent_count:
 		_contact_corrections[index] = Vector2.ZERO
-		_agents[index].set_contact_velocity_correction(Vector2.ZERO)
 		_agents[index].set_resolved_position(_positions[index])
 
 	if agent_count < 2:
@@ -56,6 +55,9 @@ func solve(agents: Array[EnemyCrowdAgent]) -> void:
 	_grid.collect_pairs(pair_search_distance)
 	_solve_position_pairs(_grid.get_pairs(), _grid.get_pair_count(), agent_count)
 
+	# 追加補正で発生した接触を含めて、最終状態を計測する。
+	_grid.build(_positions, pair_search_distance)
+	_grid.collect_pairs(pair_search_distance)
 	_apply_contact_velocity_corrections(agent_count)
 	_measure_unresolved_overlap(_grid.get_pairs(), _grid.get_pair_count())
 
@@ -147,7 +149,11 @@ func _apply_contact_velocity_corrections(agent_count: int) -> void:
 		)
 
 	for index in agent_count:
-		_agents[index].set_contact_velocity_correction(_contact_corrections[index])
+		var correction := _contact_corrections[index]
+		if correction.is_zero_approx():
+			continue
+
+		_agents[index].apply_contact_velocity_correction(correction)
 
 
 func _measure_unresolved_overlap(

@@ -54,8 +54,8 @@ func apply_crowd_acceleration(acceleration: Vector2) -> void:
 	_motor.set_crowd_acceleration(acceleration)
 
 
-func set_contact_velocity_correction(correction: Vector2) -> void:
-	_motor.set_contact_velocity_correction(correction)
+func apply_contact_velocity_correction(correction: Vector2) -> void:
+	_motor.apply_contact_velocity_correction(correction)
 
 
 func set_resolved_position(position: Vector2) -> void:

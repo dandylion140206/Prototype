@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://bn7xq3fsmvk0r" path="res://components/physics_position_interpolator.gd" id="7_melhi"]
 [ext_resource type="Script" uid="uid://c27pbb34deye6" path="res://gameplay/enemy/enemy_shadow.gd" id="7_yywfg"]
 [ext_resource type="Resource" uid="uid://caa0d37a5a6od" path="res://gameplay/ball/abilities/boost/boost_definition.tres" id="8_ability"]
+[ext_resource type="Texture2D" uid="uid://b6t8820bl8abi" path="res://_temp/ball.png" id="8_ljm2s"]
 [ext_resource type="Script" uid="uid://gxrfd04hun14" path="res://gameplay/ball/abilities/ability_controller.gd" id="9_melhi"]
 [ext_resource type="Resource" path="res://gameplay/ball/abilities/shockwave/shockwave_definition.tres" id="9_shockwave_ability"]
 [ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="10_orjm5"]
@@ -45,6 +46,7 @@ damage_add_per_100_speed = 0.7
 target_hit_stop_frames = 0
 
 [node name="Visual" type="Node2D" parent="." unique_id=125996670]
+visible = false
 script = ExtResource("3_olm8i")
 outer_color = Color(0.29960632, 0.99609375, 0.9797698, 1)
 gradient_position = 0.59
@@ -57,6 +59,10 @@ script = ExtResource("7_yywfg")
 radius = 34.0
 color = Color(0.18017578, 0.43120193, 0.48046875, 1)
 metadata/_custom_type_script = "uid://c27pbb34deye6"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=209573663]
+scale = Vector2(0.31, 0.31)
+texture = ExtResource("8_ljm2s")
 
 [node name="Shadow" type="Node2D" parent="." unique_id=26834447]
 z_index = -10

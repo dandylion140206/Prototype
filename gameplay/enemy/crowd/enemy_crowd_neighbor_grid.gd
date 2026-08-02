@@ -142,6 +142,10 @@ func collect_pairs(max_distance: float) -> void:
 				_append_pair(a_index, neighbor_index)
 
 
+func clear_pairs() -> void:
+	_pair_count = 0
+
+
 func get_pairs() -> PackedInt32Array:
 	return _pairs
 
