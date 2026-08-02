@@ -1,7 +1,7 @@
 class_name EnemyMotionModifierStack
 extends Node
 
-const ENEMY_MOTION_MODIFIER_RESOURCE = preload("res://game/enemy/enemy_motion_modifier.gd")
+const ENEMY_MOTION_MODIFIER_RESOURCE = preload("res://gameplay/enemy/enemy_motion_modifier.gd")
 
 var _modifiers: Dictionary[int, ENEMY_MOTION_MODIFIER_RESOURCE] = {}
 var _next_modifier_id: int = 1

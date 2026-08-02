@@ -3,23 +3,23 @@
 [ext_resource type="Script" uid="uid://ba2bca1grj2e6" path="res://main/main.gd" id="1_test"]
 [ext_resource type="Shader" uid="uid://efcd8y1ki25f" path="res://components/background/checkboard_background.gdshader" id="2_background_shader"]
 [ext_resource type="Script" uid="uid://bp1kypbjxpikr" path="res://debug/debug_controller.gd" id="3_debug_controller"]
-[ext_resource type="PackedScene" uid="uid://cg1ug3ry6a5x1" path="res://game/cursor/cursor.tscn" id="4_cursor"]
+[ext_resource type="PackedScene" uid="uid://cg1ug3ry6a5x1" path="res://gameplay/cursor/cursor.tscn" id="4_cursor"]
 [ext_resource type="Texture2D" uid="uid://b06oaci8b0bhj" path="res://_temp/画像/0040997d99e7fc8ecebb4518ae97c9e9.png" id="4_qs5eo"]
 [ext_resource type="Script" uid="uid://brlgnkqw8xfsb" path="res://components/background/checkerboard_background.gd" id="5_background"]
 [ext_resource type="Script" uid="uid://b0fwdbfkgu6dr" path="res://main/input_controller.gd" id="6_input"]
-[ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://game/ball/ball.tscn" id="7_ball"]
+[ext_resource type="PackedScene" uid="uid://baj11f6v855i" path="res://gameplay/ball/ball.tscn" id="7_ball"]
 [ext_resource type="Script" uid="uid://d0yihjvph111e" path="res://main/camera/camera_shake.gd" id="8_camera_shake"]
 [ext_resource type="Script" uid="uid://cb4ft125etweq" path="res://main/camera/impact_camera_shake.gd" id="9_impact_shake"]
 [ext_resource type="PackedScene" uid="uid://bny6c42gh8ouj" path="res://visuals/post_processing/post_processing.tscn" id="10_post_processing"]
 [ext_resource type="Script" uid="uid://blw028u5wmg2t" path="res://debug/overlay/debug_overlay_layer.gd" id="11_debug_overlay"]
+[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://gameplay/audio/cues/enemy_death_audio_cue.tres" id="11_q0sk7"]
 [ext_resource type="Script" uid="uid://dh7s5qmqhmn7v" path="res://debug/overlay/performance_overlay_panel.gd" id="12_performance"]
-[ext_resource type="PackedScene" path="res://game/audio/audio_director.tscn" id="13_p07pb"]
-[ext_resource type="Script" uid="uid://dvrvkqmrob1o2" path="res://game/enemy/wandering_enemy_system.gd" id="13_wandering_system"]
-[ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://game/enemy/enemy.tscn" id="14_enemy"]
-[ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://game/enemy/crowd/enemy_crowd_system.tscn" id="15_crowd"]
+[ext_resource type="PackedScene" path="res://gameplay/audio/audio_director.tscn" id="13_p07pb"]
+[ext_resource type="Script" uid="uid://dvrvkqmrob1o2" path="res://gameplay/enemy/wandering_enemy_system.gd" id="13_wandering_system"]
+[ext_resource type="PackedScene" uid="uid://bswtqb2xtbf20" path="res://gameplay/enemy/enemy.tscn" id="14_enemy"]
+[ext_resource type="PackedScene" uid="uid://dn5lp5qqjba2i" path="res://gameplay/enemy/crowd/enemy_crowd_system.tscn" id="15_crowd"]
 [ext_resource type="Script" uid="uid://biifx44042o10" path="res://debug/overlay/enemy_overlay_panel.gd" id="16_enemy_overlay"]
 [ext_resource type="Script" uid="uid://dngchjng38th" path="res://components/health/enemy_health_bar_layer.gd" id="20_health_bars"]
-[ext_resource type="Resource" uid="uid://bxjadu5paw07g" path="res://game/audio/cues/enemy_death_audio_cue.tres" id="26_death_audio"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
 shader = ExtResource("2_background_shader")
@@ -29,7 +29,7 @@ shader_parameter/cell_size = 84.0
 shader_parameter/edge_softness = 4.0000000596048
 shader_parameter/pattern_center = Vector2(960, 540)
 
-[node name="Main" type="Node" unique_id=999458904]
+[node name="Main" type="Node2D" unique_id=993973498]
 physics_interpolation_mode = 2
 script = ExtResource("1_test")
 
@@ -60,22 +60,22 @@ script = ExtResource("3_debug_controller")
 [node name="Gameplay" type="Node2D" parent="." unique_id=1953252216]
 
 [node name="Ball" parent="Gameplay" unique_id=1105125244 instance=ExtResource("7_ball")]
-z_index = 20
 
 [node name="Cursor" parent="Gameplay" unique_id=1314549472 instance=ExtResource("4_cursor")]
-z_index = 10
+z_index = 30
 
 [node name="WanderingEnemySystem" type="Node2D" parent="Gameplay" unique_id=631167769]
 script = ExtResource("13_wandering_system")
 enemy_scene = ExtResource("14_enemy")
-enemy_death_audio_cue = ExtResource("26_death_audio")
-wander_area = Rect2(-900, -490, 1800, 980)
-
-[node name="EnemyCrowdSystem" parent="Gameplay/WanderingEnemySystem" unique_id=1528871980 instance=ExtResource("15_crowd")]
+enemy_death_audio_cue = ExtResource("11_q0sk7")
+enemy_count = 70
+wander_area = Rect2(-900, -450, 1800, 900)
 
 [node name="ActiveEnemies" type="Node2D" parent="Gameplay/WanderingEnemySystem" unique_id=49338834]
 physics_interpolation_mode = 1
 y_sort_enabled = true
+
+[node name="EnemyCrowdSystem" parent="Gameplay/WanderingEnemySystem" unique_id=1572037012 instance=ExtResource("15_crowd")]
 
 [node name="AudioDirector" parent="." unique_id=584685882 instance=ExtResource("13_p07pb")]
 

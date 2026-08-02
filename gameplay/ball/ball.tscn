@@ -1,18 +1,18 @@
 [gd_scene format=3 uid="uid://baj11f6v855i"]
 
-[ext_resource type="Script" uid="uid://g3hjyqdduhw0" path="res://game/ball/ball.gd" id="1_6plaf"]
-[ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://game/ball/ball_movement.gd" id="2_movement"]
-[ext_resource type="Script" uid="uid://d1l1pfkva1241" path="res://game/ball/ball_visual.gd" id="3_olm8i"]
-[ext_resource type="Script" uid="uid://d6u7un6lhflh" path="res://game/ball/hit/ball_hit_controller.gd" id="4_controller"]
-[ext_resource type="Script" uid="uid://baeqwfpgl2bo3" path="res://game/ball/hit/ball_hitbox.gd" id="5_hitbox"]
-[ext_resource type="Script" uid="uid://dev2b81tccxlv" path="res://game/ball/hit/ball_attack.gd" id="6_attack"]
+[ext_resource type="Script" uid="uid://g3hjyqdduhw0" path="res://gameplay/ball/ball.gd" id="1_6plaf"]
+[ext_resource type="Script" uid="uid://cmfnqgmqx1sow" path="res://gameplay/ball/ball_movement.gd" id="2_movement"]
+[ext_resource type="Script" uid="uid://d1l1pfkva1241" path="res://gameplay/ball/ball_visual.gd" id="3_olm8i"]
+[ext_resource type="Script" uid="uid://d6u7un6lhflh" path="res://gameplay/ball/hit/ball_hit_controller.gd" id="4_controller"]
+[ext_resource type="Script" uid="uid://baeqwfpgl2bo3" path="res://gameplay/ball/hit/ball_hitbox.gd" id="5_hitbox"]
+[ext_resource type="Script" uid="uid://dev2b81tccxlv" path="res://gameplay/ball/hit/ball_attack.gd" id="6_attack"]
 [ext_resource type="Script" uid="uid://bn7xq3fsmvk0r" path="res://components/physics_position_interpolator.gd" id="7_melhi"]
-[ext_resource type="Script" uid="uid://c27pbb34deye6" path="res://game/enemy/enemy_shadow.gd" id="7_yywfg"]
-[ext_resource type="Resource" uid="uid://caa0d37a5a6od" path="res://game/ball/abilities/boost/boost_definition.tres" id="8_ability"]
-[ext_resource type="Script" uid="uid://gxrfd04hun14" path="res://game/ball/abilities/ability_controller.gd" id="9_melhi"]
-[ext_resource type="Resource" path="res://game/ball/abilities/shockwave/shockwave_definition.tres" id="9_shockwave_ability"]
+[ext_resource type="Script" uid="uid://c27pbb34deye6" path="res://gameplay/enemy/enemy_shadow.gd" id="7_yywfg"]
+[ext_resource type="Resource" uid="uid://caa0d37a5a6od" path="res://gameplay/ball/abilities/boost/boost_definition.tres" id="8_ability"]
+[ext_resource type="Script" uid="uid://gxrfd04hun14" path="res://gameplay/ball/abilities/ability_controller.gd" id="9_melhi"]
+[ext_resource type="Resource" path="res://gameplay/ball/abilities/shockwave/shockwave_definition.tres" id="9_shockwave_ability"]
 [ext_resource type="Script" uid="uid://cyv0rwf4lf2bv" path="res://components/hit/hit_stop.gd" id="10_orjm5"]
-[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://game/audio/cues/ball_hit_audio_cue.tres" id="11_hit_audio"]
+[ext_resource type="Resource" uid="uid://cv7ca3dcdq1oa" path="res://gameplay/audio/cues/ball_hit_audio_cue.tres" id="11_hit_audio"]
 [ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="13_1yxkn"]
 [ext_resource type="Script" uid="uid://co835m81hfkhj" path="res://_wip/lightning.gd" id="16_wp3hx"]
 
@@ -21,8 +21,7 @@ radius = 28.0
 
 [node name="Ball" type="Node2D" unique_id=698706806]
 physics_interpolation_mode = 1
-z_index = 10
-y_sort_enabled = true
+z_index = 20
 script = ExtResource("1_6plaf")
 hit_audio_cue = ExtResource("11_hit_audio")
 

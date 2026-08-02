@@ -2,9 +2,7 @@ extends Node2D
 
 @onready var _input_controller: InputController = $Controllers/InputController
 @onready var _ball: Ball = $Gameplay/Ball
-@onready var _wandering_enemy_system: WanderingEnemySystem = (
-	$Gameplay/WanderingEnemySystem
-)
+@onready var _wandering_enemy_system: WanderingEnemySystem = $Gameplay/WanderingEnemySystem
 @onready var _audio_director: AudioDirector = $AudioDirector
 @onready var _camera: Camera2D = $Camera2D
 @onready var _camera_shake: CameraShake = %CameraShake

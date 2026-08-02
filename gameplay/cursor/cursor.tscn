@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cg1ug3ry6a5x1"]
 
-[ext_resource type="Script" uid="uid://x2eidoit6g4x" path="res://game/cursor/cursor.gd" id="1_g0wji"]
+[ext_resource type="Script" uid="uid://x2eidoit6g4x" path="res://gameplay/cursor/cursor.gd" id="1_g0wji"]
 [ext_resource type="Script" uid="uid://b3mrwkpsh0eno" path="res://components/circle_visual.gd" id="1_isnha"]
 
 [node name="Cursor" type="Node2D" unique_id=413606096]

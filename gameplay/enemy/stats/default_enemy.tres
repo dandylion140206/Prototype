@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EnemyBodyStats" format=3 uid="uid://cb3grieyhg0x3"]
 
-[ext_resource type="Script" uid="uid://dehffkq2cyj5v" path="res://game/enemy/enemy_body_stats.gd" id="1_salqr"]
+[ext_resource type="Script" uid="uid://dehffkq2cyj5v" path="res://gameplay/enemy/enemy_body_stats.gd" id="1_salqr"]
 
 [resource]
 script = ExtResource("1_salqr")

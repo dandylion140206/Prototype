@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cherfu7ivdcyx"]
 
-[ext_resource type="Script" uid="uid://0xh102dl4abt" path="res://game/ball/abilities/boost/boost.gd" id="1_ra6ms"]
-[ext_resource type="Resource" uid="uid://befobi7xg3qie" path="res://game/audio/cues/boost_audio_cue.tres" id="2_c2dil"]
-[ext_resource type="Script" uid="uid://svpwvxd17hmo" path="res://game/ball/abilities/boost/boost_trail.gd" id="3_c2dil"]
+[ext_resource type="Script" uid="uid://0xh102dl4abt" path="res://gameplay/ball/abilities/boost/boost.gd" id="1_ra6ms"]
+[ext_resource type="Resource" uid="uid://befobi7xg3qie" path="res://gameplay/audio/cues/boost_audio_cue.tres" id="2_c2dil"]
+[ext_resource type="Script" uid="uid://svpwvxd17hmo" path="res://gameplay/ball/abilities/boost/boost_trail.gd" id="3_c2dil"]
 [ext_resource type="Script" uid="uid://b3ye53qcjhqid" path="res://visuals/effects/trail.gd" id="4_rp6jb"]
 
 [sub_resource type="Curve" id="Curve_25t5i"]
