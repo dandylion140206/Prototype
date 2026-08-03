@@ -52,13 +52,6 @@ func apply_knockback(
 	_is_decaying = not _knockback_velocity.is_zero_approx()
 
 
-func apply_velocity_correction(correction: Vector2) -> void:
-	if correction.is_zero_approx():
-		return
-
-	_knockback_velocity += correction
-
-
 func update_decay(delta: float) -> void:
 	if not _is_decaying:
 		return

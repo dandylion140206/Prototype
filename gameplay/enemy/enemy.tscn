@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://ujc86c6a55ev" path="res://gameplay/enemy/motion/enemy_motion_modifier_stack.gd" id="13_modifiers"]
 [ext_resource type="Script" uid="uid://mm0asb6f8drp" path="res://gameplay/enemy/crowd/enemy_crowd_agent.gd" id="14_crowd_agent"]
 [ext_resource type="Script" uid="uid://ce6jjy2awwfda" path="res://gameplay/enemy/enemy_spawn_animation.gd" id="15_spawn_animation"]
+[ext_resource type="Script" uid="uid://g66v3mpqlitl" path="res://gameplay/enemy/motion/enemy_locomotion.gd" id="16_locomotion"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
 radius = 40.0
@@ -71,6 +72,9 @@ script = ExtResource("10_hit_stop")
 
 [node name="Health" type="Node" parent="." unique_id=1781612605]
 script = ExtResource("8_health")
+
+[node name="Locomotion" type="Node" parent="."]
+script = ExtResource("16_locomotion")
 
 [node name="Motor" type="Node" parent="." unique_id=1669864983]
 script = ExtResource("11_motor")

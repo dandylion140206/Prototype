@@ -35,15 +35,15 @@ func begin_frame() -> Array[EnemyCrowdAgent]:
 	return _active_agents
 
 
-func solve_separation(delta: float) -> void:
-	_separation_solver.solve(_active_agents, delta)
+func solve_separation() -> void:
+	_separation_solver.solve(_active_agents)
 	_crowd_pair_count = _separation_solver.get_pair_count()
 
 
 func solve_overlap() -> void:
 	_overlap_solver.solve(_active_agents)
-	_unresolved_overlap_count = _overlap_solver._get_unresolved_overlap_count()
-	_max_unresolved_penetration = _overlap_solver._get_max_unresolved_penetration()
+	_unresolved_overlap_count = _overlap_solver.get_unresolved_overlap_count()
+	_max_unresolved_penetration = _overlap_solver.get_max_unresolved_penetration()
 
 
 func get_active_agents() -> Array[EnemyCrowdAgent]:
@@ -56,3 +56,11 @@ func get_agent_count() -> int:
 
 func get_crowd_pair_count() -> int:
 	return _crowd_pair_count
+
+
+func get_unresolved_overlap_count() -> int:
+	return _unresolved_overlap_count
+
+
+func get_max_unresolved_penetration() -> float:
+	return _max_unresolved_penetration

@@ -18,6 +18,7 @@ var _movement_behavior: EnemyMovementBehavior
 @onready var _hurtbox: Hurtbox = $Hurtbox
 @onready var _hit_stop: HitStop = $HitStop
 @onready var _health: Health = $Health
+@onready var _locomotion: EnemyLocomotion = $Locomotion
 @onready var _motor: EnemyMotor = $Motor
 @onready var _knockback: EnemyKnockback = $Knockback
 @onready var _crowd_agent: EnemyCrowdAgent = $CrowdAgent
@@ -43,15 +44,19 @@ func _ready() -> void:
 	add_child(idle_behavior)
 	idle_behavior.name = "MovementBehavior"
 	_movement_behavior = idle_behavior
-	_motor.setup(
-		self,
+	_movement_behavior.activate()
+	_locomotion.setup(
 		stats,
 		_movement_behavior,
+		_motion_modifiers
+	)
+	_motor.setup(
+		self,
+		_locomotion,
 		_knockback,
-		_motion_modifiers,
 		_hit_stop
 	)
-	_crowd_agent.setup(_motor, _motion_modifiers, _hit_stop)
+	_crowd_agent.setup(_motor, _motion_modifiers)
 
 	_hurtbox.hit_received.connect(_on_hit_received)
 	_health.health_changed.connect(_on_health_changed)
@@ -81,7 +86,7 @@ func set_movement_behavior(behavior: EnemyMovementBehavior) -> void:
 	add_child(behavior)
 	behavior.name = "MovementBehavior"
 	_movement_behavior = behavior
-	_motor.set_movement_behavior(behavior)
+	_locomotion.set_movement_behavior(behavior)
 	behavior.activate()
 
 
@@ -134,7 +139,11 @@ func remove_motion_modifier(modifier_id: int) -> void:
 
 
 func get_velocity() -> Vector2:
-	return _motor.get_effective_velocity()
+	return _motor.get_actual_velocity()
+
+
+func get_requested_velocity() -> Vector2:
+	return _motor.get_requested_velocity()
 
 
 func get_current_health() -> float:

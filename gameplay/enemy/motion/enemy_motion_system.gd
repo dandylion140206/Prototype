@@ -60,16 +60,10 @@ func _physics_process(delta: float) -> void:
 		motor.begin_frame()
 
 	for motor in _motors:
-		motor.update_movement(delta)
-
-	for motor in _motors:
-		motor.update_knockback(delta)
+		motor.update_sources(delta)
 
 	_crowd_system.begin_frame()
-	_crowd_system.solve_separation(delta)
-
-	for motor in _motors:
-		motor.apply_crowd_acceleration(delta)
+	_crowd_system.solve_separation()
 
 	for motor in _motors:
 		motor.prepare_prediction(delta)
