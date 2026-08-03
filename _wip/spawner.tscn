@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c8oidk8unqbgx"]
+
+[ext_resource type="Script" uid="uid://c01wnbyirx1oc" path="res://_wip/spawner.gd" id="1_wqxg0"]
+[ext_resource type="PackedScene" uid="uid://bss731vvfgcbx" path="res://_wip/enemy.tscn" id="2_qf375"]
+
+[node name="Spawner" type="Node" unique_id=866709757 node_paths=PackedStringArray("chase_target")]
+script = ExtResource("1_wqxg0")
+enemy_scene = ExtResource("2_qf375")
+max_enemy_count = 100
+wander_area = Rect2(0, 9, 1920, 1080)
+chase_target = NodePath("")
+min_respawn_delay = 0.5
+max_respawn_delay = 1.4

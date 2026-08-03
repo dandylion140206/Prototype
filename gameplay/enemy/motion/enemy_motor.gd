@@ -69,10 +69,7 @@ func update_movement(delta: float) -> void:
 		delta
 	)
 	desired_velocity = desired_velocity.limit_length(effective_max_speed)
-	_normal_velocity = _normal_velocity.move_toward(
-		desired_velocity,
-		_stats.acceleration * delta
-	)
+	_normal_velocity = _normal_velocity.move_toward(desired_velocity, _stats.acceleration * delta)
 
 
 func update_knockback(delta: float) -> void:

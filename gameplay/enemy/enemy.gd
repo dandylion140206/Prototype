@@ -1,9 +1,7 @@
 class_name Enemy
 extends Node2D
 
-const ENEMY_MOTION_MODIFIER_RESOURCE = preload(
-	"res://gameplay/enemy/motion/enemy_motion_modifier.gd"
-)
+const ENEMY_MOTION_MODIFIER_RESOURCE = preload("res://gameplay/enemy/motion/enemy_motion_modifier.gd")
 
 signal health_changed(current_health: float, max_health: float)
 signal died

@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://bss731vvfgcbx"]
+
+[ext_resource type="Script" uid="uid://b1sj3geo5pmk0" path="res://_wip/enemy.gd" id="1_ek2xe"]
+[ext_resource type="Script" uid="uid://c27pbb34deye6" path="res://gameplay/enemy/enemy_shadow.gd" id="2_a1212"]
+[ext_resource type="Script" uid="uid://cnb025ybsfxc8" path="res://_wip/wander_provider.gd" id="3_68emh"]
+[ext_resource type="Script" uid="uid://dc1jxfae1f34u" path="res://_wip/chase_provider.gd" id="4_68emh"]
+[ext_resource type="Script" uid="uid://n0l5u4kwf77s" path="res://_wip/seeker.gd" id="5_yo5c7"]
+[ext_resource type="Script" uid="uid://blys77kj7lx6o" path="res://_wip/knockback.gd" id="6_cpilg"]
+[ext_resource type="Script" uid="uid://sm3i3wnyotfp" path="res://_wip/separation.gd" id="7_nq4us"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r3xot"]
+radius = 60.0
+
+[node name="Enemy" type="Node2D" unique_id=2048718565]
+script = ExtResource("1_ek2xe")
+
+[node name="CircleVisual" type="Node2D" parent="." unique_id=302748003]
+script = ExtResource("2_a1212")
+radius = 40.0
+color = Color(0.33691406, 0.9375, 0.78266144, 1)
+metadata/_custom_type_script = "uid://c27pbb34deye6"
+
+[node name="WanderProvider" type="Node" parent="." unique_id=714477453]
+script = ExtResource("3_68emh")
+
+[node name="ChaseProvider" type="Node" parent="." unique_id=554528373]
+script = ExtResource("4_68emh")
+
+[node name="Seeker" type="Node" parent="." unique_id=947238888]
+script = ExtResource("5_yo5c7")
+
+[node name="Knockback" type="Node" parent="." unique_id=2058458356]
+script = ExtResource("6_cpilg")
+
+[node name="Separation" type="Area2D" parent="." unique_id=57210320]
+script = ExtResource("7_nq4us")
+max_push_speed = 1000.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Separation" unique_id=1931355431]
+shape = SubResource("CircleShape2D_r3xot")
