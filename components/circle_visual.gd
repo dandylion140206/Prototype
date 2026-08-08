@@ -28,4 +28,3 @@ func _draw() -> void:
 
 func _on_scale_changed(scale_value: Vector2) -> void:
 	scale = scale_value
-	

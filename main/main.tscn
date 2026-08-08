@@ -69,7 +69,7 @@ z_index = 30
 [node name="EnemyPopulation" type="Node2D" parent="Gameplay" unique_id=631167769]
 script = ExtResource("13_population")
 enemy_death_audio_cue = ExtResource("11_q0sk7")
-enemy_count = 70
+enemy_count = 124
 wander_area = Rect2(-900, -450, 1800, 900)
 
 [node name="EnemySpawner" type="Node2D" parent="Gameplay/EnemyPopulation" unique_id=49338834]

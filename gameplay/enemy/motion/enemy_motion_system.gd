@@ -46,10 +46,6 @@ func unregister(motor: EnemyMotor) -> void:
 		motor.tree_exiting.disconnect(exit_callable)
 
 
-func get_motor_count() -> int:
-	return _motors.size()
-
-
 func _physics_process(delta: float) -> void:
 	_collect_valid_motors()
 	if _motors.is_empty():

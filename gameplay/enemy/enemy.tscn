@@ -73,11 +73,11 @@ script = ExtResource("10_hit_stop")
 [node name="Health" type="Node" parent="." unique_id=1781612605]
 script = ExtResource("8_health")
 
-[node name="Locomotion" type="Node" parent="."]
-script = ExtResource("16_locomotion")
-
 [node name="Motor" type="Node" parent="." unique_id=1669864983]
 script = ExtResource("11_motor")
+
+[node name="Locomotion" type="Node" parent="." unique_id=2083547225]
+script = ExtResource("16_locomotion")
 
 [node name="MotionModifiers" type="Node" parent="." unique_id=1134014106]
 script = ExtResource("13_modifiers")

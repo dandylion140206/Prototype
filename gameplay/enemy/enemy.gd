@@ -142,10 +142,6 @@ func get_velocity() -> Vector2:
 	return _motor.get_actual_velocity()
 
 
-func get_requested_velocity() -> Vector2:
-	return _motor.get_requested_velocity()
-
-
 func get_current_health() -> float:
 	return _health.get_current_health()
 

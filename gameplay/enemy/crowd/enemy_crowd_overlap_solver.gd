@@ -60,10 +60,6 @@ func solve(agents: Array[EnemyCrowdAgent]) -> void:
 		_agents[index].set_resolved_position(_positions[index])
 
 
-func get_pair_count() -> int:
-	return _grid.get_pair_count()
-
-
 func get_unresolved_overlap_count() -> int:
 	return _unresolved_overlap_count
 
